@@ -553,9 +553,20 @@ html:has(dialog[open]){overflow-y:hidden}
 @media(max-width:640px){.cb-in{grid-template-columns:1fr;gap:22px;padding:24px 22px;justify-items:center}.cb-prev{width:170px}.cb-side{align-items:center;text-align:center}.cb-act{justify-content:center}}
 @media(prefers-reduced-motion:reduce){.cardbox[open],.cardbox[open]::backdrop{animation:none}}
 
-footer{border-top:1px solid var(--hair);padding:28px 0 120px;font-size:14.5px;color:var(--muted)}
-footer .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:space-between}
-footer nav{display:flex;flex-wrap:wrap;gap:6px 18px}
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--hair);padding:64px 0 calc(40px + env(safe-area-inset-bottom));font-size:15px;color:var(--muted)}
+.foot-top{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:48px}
+.foot-brand{display:flex;flex-direction:column;gap:14px;align-items:flex-start}
+.foot-brand .brand{color:var(--ink)}
+.foot-brand p{max-width:32ch}
+.foot-nav{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.foot-nav div{display:flex;flex-direction:column;align-items:flex-start}
+.foot-nav .label{margin-bottom:8px;text-transform:uppercase;letter-spacing:.08em}
+.foot-nav a{color:var(--ink);font-weight:500;text-decoration:none;padding:6px 0}
+.foot-nav a:hover{text-decoration:underline}
+.foot-base{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 24px;margin-top:48px;padding-top:20px;border-top:1px solid var(--hair);font-size:13.5px}
+/* on a phone: brand, then two columns of links with room for a thumb, then the small print stacked */
+@media(max-width:720px){footer{padding-top:48px}.foot-top{grid-template-columns:1fr;gap:32px}.foot-nav a{padding:10px 0}.foot-base{flex-direction:column;margin-top:32px}}
 
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
