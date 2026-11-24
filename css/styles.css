@@ -532,9 +532,10 @@ html.gs .dawn{height:100vh;height:100svh;max-height:1100px}
 .support p{color:var(--muted);font-size:15.5px;max-width:58ch}
 .support .btn{flex:none}
 /* Buy Me a Coffee's button, to the measurements in their own stylesheet (button.prod.min.js
-   1.0.0: 60 px tall, 12 px corners, no border, 24 px side padding, Cookie at 28 px, the cup
-   8 px from the text). It is a plain link: their script is not loaded */
-.btn.bmc{min-width:210px;height:60px;padding:0 24px;gap:8px;border:0;border-radius:12px;background:#FFDD00;color:#000;font:400 28px/27px Cookie,cursive;white-space:nowrap}
+   1.0.0: 60 px tall, 12 px corners, no border, 24 px side padding, the cup 8 px from the text).
+   The lettering is the site's own typeface at the size and weight their script gives a plain
+   font, 24 px bold, instead of their handwriting font. It is a plain link: their script is not loaded */
+.btn.bmc{min-width:210px;height:60px;padding:0 24px;gap:8px;border:0;border-radius:12px;background:#FFDD00;color:#000;font:700 24px/27px var(--body);letter-spacing:-.01em;white-space:nowrap}
 .btn.bmc:hover{background:#FFDD00}
 details{font-size:14.5px;color:var(--muted)}
 details code{display:block;margin-top:8px;font-size:12.5px;overflow-wrap:anywhere;background:var(--road);border-radius:10px;padding:10px}
