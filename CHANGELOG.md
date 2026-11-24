@@ -17,6 +17,8 @@ Notable changes to the Cycler landing page. Versions use the `0.1.N` format.
   Your data, and privacy and install are plain lists. No content was removed.
 - New footer: the brand, two columns of links and the small print, with thumb-sized link targets
   on phones.
+- The footer credit links to abhiramnj.com and kunj.company, and the structured data and
+  `llms.txt` carry the same addresses.
 
 ### Added
 - A loader for everywhere that is not the top. Reloading part-way down, or opening a link to a
