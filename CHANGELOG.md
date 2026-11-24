@@ -2,6 +2,26 @@
 
 Notable changes to the Cycler landing page. Versions use the `0.1.N` format.
 
+## 0.1.3
+
+### Added
+- The planner is real. Search a place (or use a preset or your location), pick a distance,
+  direction and bike, and it routes a round trip on real roads with the app's own method: Photon
+  for search, BRouter for routing, the same circle of waypoints and the same one-time resize when a
+  loop comes back too long or short.
+- A live map of the planned loop on OpenFreeMap tiles, loaded only when first needed.
+- The planned loop becomes the ride the page tells. Distance, climb, moving time, average speed,
+  elevation profile, kilometre stones, the ride bar, the save page, share cards, flyover, hero
+  loop and ticker all follow it. Current weather at the chosen place fills the start card.
+- Gravel as a fourth bike type, and a Distance figure and Very hard grade in the results, matching
+  the app.
+- Plain-word routing errors with a Retry button, and a shape-only fallback when map tiles cannot
+  load.
+
+### Changed
+- Charts no longer stretch a flat route to full height, and their labels read "high" and "low".
+- The privacy section says what this website's planner sends and to whom.
+
 ## 0.1.2
 
 ### Fixed

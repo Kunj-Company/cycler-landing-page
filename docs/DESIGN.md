@@ -54,6 +54,24 @@ stones, which mark each chapter.
 - **Hanken Grotesk** for body text and every number, with tabular figures so counters do not
   jiggle.
 
+## The planner and the ride model
+
+`RIDE` in `js/main.js` is the one object the page reads its ride from: name, place, distance,
+climb, moving time, date and a 401-sample elevation profile. It starts as the example ride.
+`applyRide()` pushes it into every element marked `data-r`, the charts, the ticker, the titles and
+the kilometre stones. `setShape()` gives the hero, share cards and flyover the route's outline.
+
+The planner replaces `RIDE` with a real loop, following the app's code:
+
+1. Photon returns up to six places; the label joins name, street, city, state and country.
+2. `loopWaypoints()` puts three points on a circle through the start, in the chosen direction. The
+   circle's circumference is the target distance divided by 1.3, because roads wiggle.
+3. BRouter routes start, the three points, and start again. If the result is more than 15 percent
+   off the target, the circle is resized once and the closer result is kept.
+4. Difficulty is the app's formula: kilometres plus climb divided by 40.
+
+Until a place is chosen the planner draws a sketch with estimated numbers and says so.
+
 ## The scroll-ride
 
 `build()` in `js/main.js` lays a spline through the ride:
@@ -64,8 +82,7 @@ stones, which mark each chapter.
 3. A lookup table maps a vertical position to a length along the path.
 
 Each frame, the middle of the viewport is converted to a length. That one number drives the red
-track, the rider dot, the distance, the climb (from a fixed elevation profile, 819 m to 982 m with
-412 m of ascent) and the kilometre stones. Speed is scroll velocity. Moving time counts only while
+track, the rider dot, the distance, the climb (from the ride's elevation profile) and the kilometre stones. Speed is scroll velocity. Moving time counts only while
 you scroll, which is what makes the auto-pause chapter work.
 
 Positions come from `offsetTop` and `offsetLeft`, not `getBoundingClientRect`, so transforms from
@@ -79,7 +96,7 @@ GSAP 3.12.5 with ScrollTrigger. All of it lives in the last block of `js/main.js
 |---|---|---|
 | Hero | Words rise and gain weight, the route draws with the rider tracing it | Page load |
 | Hero | Map zooms, loop rotates, scene darkens into the night | Scroll, scrubbed |
-| Plan | Map wipes in; loop redraws and numbers roll on every change | Enter, then input |
+| Plan | Map wipes in; loop redraws and numbers roll on every change; the map flies to a new route | Enter, then input |
 | Dawn | Pinned. Clock runs 9:40 pm to 5:52 am, stars fade, sun rises, sky becomes the map | Scroll, scrubbed |
 | Chapters | Stone drops and bounces, heading rises from a mask, demo tilts up | Enter |
 | Follow | Junction plays out with a live turn cue | Scroll, scrubbed |

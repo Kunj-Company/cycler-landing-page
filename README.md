@@ -10,6 +10,11 @@ later. Scrolling is riding: the planned route is drawn in blue, your scroll reco
 a ride bar at the bottom counts distance, speed, moving time and climb. Stop scrolling and it
 auto-pauses, the way the app does.
 
+![The planner with a real loop from Fort Kochi on the map](docs/preview-planner.jpg)
+
+The planner is live: search a place and it routes a real loop there, which the rest of the page
+then follows.
+
 | The night passes | A junction, played by scroll | Share cards |
 |---|---|---|
 | ![Pinned dawn scene with a running clock](docs/preview-dawn.jpg) | ![Turn cue demo in the ride](docs/preview-follow.jpg) | ![Share cards dealing out](docs/preview-share.jpg) |
@@ -72,7 +77,7 @@ section, the feature list heading and `llms.txt` together.
 |---|---|
 | `index.html` | The page markup, in story order |
 | `css/styles.css` | Design tokens and all styles |
-| `js/main.js` | Scroll-ride logic, the demos, and the GSAP choreography |
+| `js/main.js` | The ride model, the planner, scroll-ride logic, the demos, and the GSAP choreography |
 | `404.html` | Self-contained "you have left the route" page |
 | `img/` | App logo, icons, social preview and screenshots |
 | `site.webmanifest`, `robots.txt`, `llms.txt` | Browser and crawler metadata |
@@ -81,6 +86,11 @@ section, the feature list heading and `llms.txt` together.
 ## How it is built
 
 - **No framework.** One HTML file, one stylesheet, one script.
+- **A working planner.** Search a place, pick a distance, direction and bike, and the page routes
+  a real round trip the way the app does: Photon finds the place, BRouter routes a circle of
+  waypoints on real roads, and MapLibre draws it on OpenFreeMap tiles. The loop then becomes the
+  ride the rest of the page tells: distance, climb, time, elevation profile, kilometre stones,
+  share cards, flyover and ticker all follow it.
 - **Scroll-ride.** A single SVG path is laid through the ride chapters from their layout
   positions. Scroll position maps to a length along it, which drives the red track, the rider dot,
   the kilometre stones and the ride bar.
@@ -90,6 +100,23 @@ section, the feature list heading and `llms.txt` together.
   and static. The scroll-ride itself needs no library.
 - **Type.** Bricolage Grotesque and Hanken Grotesk from Google Fonts.
 
+## Services the planner calls
+
+The same free community servers the app uses, with no API keys. Nothing is called until a visitor
+uses the planner.
+
+| What | Service | Sent |
+|---|---|---|
+| Place search | Photon (photon.komoot.io) | The search text, and the last chosen place rounded to about 1 km |
+| Routing | BRouter (brouter.de) | Five waypoints of the loop and the bike profile |
+| Map | OpenFreeMap, drawn by MapLibre GL JS 4.7.1 from cdnjs | The tiles viewed |
+| Weather line | Open-Meteo | The chosen place rounded to about 100 m |
+
+These are shared servers, so the page goes easy on them: search waits for a pause in typing,
+routing runs once per change, an earlier request is cancelled when a new one starts, and results
+are cached for the visit. If the map cannot load, the route is drawn as a shape instead. If
+routing fails, the planner says why and offers a retry.
+
 ## Content
 
 Feature descriptions, the privacy list and version details follow the Cycler
@@ -98,7 +125,8 @@ Feature descriptions, the privacy list and version details follow the Cycler
 
 Some things on the page are illustrations, and the page says so where it matters:
 
-- The loop planner draws sketched loops. The app routes on real roads with BRouter.
+- Until you pick a start, the planner shows a sketched loop with estimated numbers. After that it
+  is a real route.
 - The activity week, segment times and bike-care numbers are sample data.
 - The times of day, the tea stall and the weather values are story details.
 

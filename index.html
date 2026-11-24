@@ -35,6 +35,9 @@
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="dns-prefetch" href="https://brouter.de">
+<link rel="dns-prefetch" href="https://photon.komoot.io">
+<link rel="dns-prefetch" href="https://tiles.openfreemap.org">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -292,18 +295,33 @@
   <div class="wrap">
     <div class="sec-head">
       <p class="when">The night before, 9:40 pm</p>
-      <h2>Pick a distance. Get a loop back to your door.</h2>
-      <p>Tell Cycler how far you want to go and it draws round trips in four directions, each with its climb, time and elevation profile. Try it.</p>
+      <h2>Pick a place and a distance. Get a loop back to your door.</h2>
+      <p>This is the app's planner, running here. Search anywhere, choose how far, and it routes a round trip on real roads. The rest of this page then tells the story of your loop.</p>
     </div>
     <div class="planner">
-      <div class="mapbox">
+      <div class="mapbox" id="planBox">
         <canvas id="planMap" aria-hidden="true"></canvas>
-        <svg viewBox="0 0 400 300" role="img" aria-label="Map with the suggested loop">
+        <svg viewBox="0 0 400 300" role="img" aria-label="Map with the planned loop">
           <path id="planLoop" pathLength="1" fill="none" stroke="#2563EB" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
           <circle id="planStart" r="7" fill="#1C1C1A" stroke="#fff" stroke-width="2.5"/>
         </svg>
+        <div id="planGL" hidden></div>
+        <p class="map-note" id="mapNote">A sketch for now. Search a place to plan on real roads.</p>
       </div>
-      <form class="ctl" id="planForm">
+      <form class="ctl" id="planForm" autocomplete="off">
+        <div class="row">
+          <label class="label" for="placeQ">Start from</label>
+          <div class="combo">
+            <input type="search" id="placeQ" placeholder="Search a town, landmark or address" role="combobox" aria-expanded="false" aria-controls="placeList" aria-autocomplete="list" enterkeyhint="search">
+            <ul id="placeList" role="listbox" aria-label="Places" hidden></ul>
+          </div>
+          <div class="seg" id="presets">
+            <button type="button" class="chip" aria-pressed="false" data-lat="12.9742535" data-lon="77.5921906" data-label="Cubbon Park, Bengaluru, Karnataka, India" data-short="Cubbon Park">Cubbon Park</button>
+            <button type="button" class="chip" aria-pressed="false" data-lat="9.967569" data-lon="76.2421901" data-label="Fort Kochi, Kochi, Kerala, India" data-short="Fort Kochi">Fort Kochi</button>
+            <button type="button" class="chip" aria-pressed="false" data-lat="13.2676857" data-lon="77.7194972" data-label="Nandi Hills Road, Devanahalli, Karnataka, India" data-short="Nandi Hills Road">Nandi Hills Road</button>
+            <button type="button" class="chip" id="geoBtn">Use my location</button>
+          </div>
+        </div>
         <div class="row">
           <label class="label" for="km">Loop distance</label>
           <div class="dist-out num"><output id="kmOut" for="km">32</output><small>km</small></div>
@@ -321,17 +339,24 @@
         <div class="row">
           <span class="label" id="bikeL">Bike</span>
           <div class="seg" role="radiogroup" aria-labelledby="bikeL" id="bikes">
-            <button type="button" class="chip" role="radio" aria-checked="true" data-b="24">Road</button>
-            <button type="button" class="chip" role="radio" aria-checked="false" data-b="19">Hybrid</button>
-            <button type="button" class="chip" role="radio" aria-checked="false" data-b="15">Mountain</button>
+            <button type="button" class="chip" role="radio" aria-checked="true" data-p="fastbike" data-b="24">Road</button>
+            <button type="button" class="chip" role="radio" aria-checked="false" data-p="trekking" data-b="19">Hybrid</button>
+            <button type="button" class="chip" role="radio" aria-checked="false" data-p="gravel" data-b="17">Gravel</button>
+            <button type="button" class="chip" role="radio" aria-checked="false" data-p="mtb" data-b="15">Mountain</button>
           </div>
         </div>
         <div class="result num" aria-live="polite">
-          <div><span class="label">Climb</span><b id="pClimb">412 m</b></div>
-          <div><span class="label">Time</span><b id="pTime">1h 34m</b></div>
+          <div><span class="label">Distance</span><b id="pDist">32 km</b></div>
+          <div><span class="label">Climb</span><b id="pClimb">406 m</b></div>
+          <div><span class="label">Time</span><b id="pTime">2h 5m</b></div>
           <div><span class="label">Difficulty</span><b id="pDiff">Moderate</b></div>
         </div>
-        <p class="fine">This is a sketch of the idea. In the app, loops follow real roads and paths, routed by BRouter.</p>
+        <div class="plan-foot">
+          <p class="plan-status" id="planStatus" role="status">These numbers are estimates until you pick a start.</p>
+          <button type="button" class="chip" id="planRetry" hidden>Retry</button>
+          <a class="btn go" id="rideBtn" href="#start" hidden>Ride this loop</a>
+        </div>
+        <p class="fine">Search runs on Photon, routing on BRouter and the map on OpenFreeMap, the same free community servers the app uses. Your search text and the loop's waypoints are sent to them when you plan.</p>
       </form>
     </div>
     <ul class="plan-more">
@@ -368,17 +393,18 @@
         <div class="ch-text">
           <p class="when">5:52 am, at the gate</p>
           <h2>One button. Then put the phone away.</h2>
-          <p>The blue line is last night's plan. Keep scrolling and you ride it: the red line is your recorded track, and the bar at the bottom is counting.</p>
+          <p>The blue line is last night's plan, the loop from <b data-r="place">Nandi foothills</b>. Keep scrolling and you ride it: the red line is your recorded track, and the bar at the bottom is counting.</p>
           <ul>
             <li><b>Weather on the map.</b> Wind, temperature and rain chance before you roll.</li>
             <li><b>A sunset warning.</b> So an evening ride does not end in the dark without lights.</li>
           </ul>
         </div>
         <div class="card panel">
+          <div class="follow"><span class="dotp"></span><div><b class="js-title">Nandi foothills at sunrise</b><span class="num"><span data-r="km">32.4</span> km to go</span></div></div>
           <span class="label">This week</span>
           <div class="big num"><span id="startKm">24.6</span><small>/ 50 km</small></div>
           <div class="bar"><span style="width:49%"></span></div>
-          <p style="font-size:14.5px;color:var(--muted)" class="num">19°, wind 6 km/h NE, rain 10%</p>
+          <p style="font-size:14.5px;color:var(--muted)" class="num" id="startWx">19°, wind 6 km/h NE, rain 10%</p>
           <a class="btn" href="#screenoff" style="justify-content:center">▶&nbsp; Start ride</a>
         </div>
       </div>
@@ -443,18 +469,18 @@
           <p class="when">6:48 am, where the road tilts</p>
           <h2>The hill, lap by lap.</h2>
           <p>Press Lap at the bottom and again at the top, or let auto-lap do it. Build an interval workout and Cycler calls out each block on screen, by vibration and out loud.</p>
-          <p>Climb is counted as you go. The profile here is this ride, and the dot is you.</p>
+          <p>Climb is counted as you go. The profile here is your loop, and the dot is you.</p>
         </div>
         <div class="card panel climb">
           <div class="grid2 num">
             <div><span class="label">Climb so far</span><b class="js-climb">0 m</b></div>
             <div><span class="label">Elevation</span><b class="js-elev">850 m</b></div>
           </div>
-          <svg viewBox="0 0 400 150" role="img" aria-label="Elevation profile of the ride, from 819 to 982 metres">
+          <svg viewBox="0 0 400 150" role="img" aria-label="Elevation profile of the ride">
             <defs><linearGradient id="gBig"><stop class="js-stop" offset="0" stop-color="#E5484D"/><stop class="js-stop" offset="0" stop-color="#2563EB"/></linearGradient></defs>
             <path id="profBig" fill="url(#gBig)" opacity=".9"/>
-            <text x="6" y="14" font-size="11" fill="#5D5C57">982 m</text>
-            <text x="6" y="144" font-size="11" fill="#fff">819 m</text>
+            <text x="6" y="14" font-size="11" fill="#5D5C57" data-r="high">high 982 m</text>
+            <text x="6" y="144" font-size="11" fill="#fff" data-r="low">low 819 m</text>
             <circle id="profDot" r="6" fill="#1C1C1A" stroke="#fff" stroke-width="2.5"/>
           </svg>
           <div class="workout">
@@ -529,10 +555,10 @@
         </div>
         <form class="card panel save" id="saveForm">
           <div class="grid4 num">
-            <div><span class="label">Distance</span><b>32.4 km</b></div>
-            <div><span class="label">Moving</span><b>1h 34m</b></div>
-            <div><span class="label">Climb</span><b>412 m</b></div>
-            <div><span class="label">Avg</span><b>20.7</b></div>
+            <div><span class="label">Distance</span><b><span data-r="km">32.4</span> km</b></div>
+            <div><span class="label">Moving</span><b data-r="movH">1h 34m</b></div>
+            <div><span class="label">Climb</span><b><span data-r="climb">412</span> m</b></div>
+            <div><span class="label">Avg</span><b data-r="avg">20.7</b></div>
           </div>
           <label class="label" for="rideTitle">Title</label>
           <input type="text" id="rideTitle" class="js-title-in" value="Nandi foothills at sunrise" maxlength="48">
@@ -560,7 +586,7 @@
   </article>
 </section>
 
-<div class="ticker" aria-hidden="true"><div class="ticker-row num"><span>32.4 km</span><span>412 m up</span><span>1h 34m</span><span>20.7 km/h</span><span>32.4 km</span><span>412 m up</span><span>1h 34m</span><span>20.7 km/h</span><span>32.4 km</span><span>412 m up</span><span>1h 34m</span><span>20.7 km/h</span></div></div>
+<div class="ticker" aria-hidden="true"><div class="ticker-row num" id="tickerRow"><span>32.4 km</span><span>412 m up</span><span>1h 34m</span><span>20.7 km/h</span><span>32.4 km</span><span>412 m up</span><span>1h 34m</span><span>20.7 km/h</span><span>32.4 km</span><span>412 m up</span><span>1h 34m</span><span>20.7 km/h</span></div></div>
 
 <!-- ================= SHARE ================= -->
 <section class="sec share" id="share">
@@ -576,24 +602,24 @@
     </div>
     <div class="cards" id="cards" tabindex="0" aria-label="Share card styles">
       <div class="sc s1"><svg class="loop" viewBox="0 0 200 160"><use href="#loop"/></svg>
-        <h3 class="js-title">Nandi foothills at sunrise</h3><div class="d">Wed 18 Nov 2026</div>
-        <div class="grid2 num"><div><span class="label">Distance</span><b>32.4<small>km</small></b></div><div><span class="label">Moving time</span><b>1:34<small>h</small></b></div><div><span class="label">Climb</span><b>412<small>m</small></b></div><div><span class="label">Avg speed</span><b>20.7<small>km/h</small></b></div></div>
+        <h3 class="js-title">Nandi foothills at sunrise</h3><div class="d" data-r="date">Wed 18 Nov 2026</div>
+        <div class="grid2 num"><div><span class="label">Distance</span><b><span data-r="km">32.4</span><small>km</small></b></div><div><span class="label">Moving time</span><b><span data-r="movC">1:34</span><small>h</small></b></div><div><span class="label">Climb</span><b><span data-r="climb">412</span><small>m</small></b></div><div><span class="label">Avg speed</span><b><span data-r="avg">20.7</span><small>km/h</small></b></div></div>
         <div class="mk">Cycler</div></div>
       <div class="sc s2"><svg class="loop" viewBox="0 0 200 160" style="color:#E5484D"><use href="#loop"/></svg>
-        <div class="inner"><h3 class="js-title">Nandi foothills at sunrise</h3><div class="d">Wed 18 Nov 2026</div>
-        <div class="grid2 num"><div><span class="label">Distance</span><b>32.4<small>km</small></b></div><div><span class="label">Moving time</span><b>1:34<small>h</small></b></div><div><span class="label">Climb</span><b>412<small>m</small></b></div><div><span class="label">Avg speed</span><b>20.7<small>km/h</small></b></div></div>
+        <div class="inner"><h3 class="js-title">Nandi foothills at sunrise</h3><div class="d" data-r="date">Wed 18 Nov 2026</div>
+        <div class="grid2 num"><div><span class="label">Distance</span><b><span data-r="km">32.4</span><small>km</small></b></div><div><span class="label">Moving time</span><b><span data-r="movC">1:34</span><small>h</small></b></div><div><span class="label">Climb</span><b><span data-r="climb">412</span><small>m</small></b></div><div><span class="label">Avg speed</span><b><span data-r="avg">20.7</span><small>km/h</small></b></div></div>
         <div class="mk">Cycler</div></div></div>
       <div class="sc s3"><svg class="loop" viewBox="0 0 200 160"><use href="#loop"/></svg>
-        <h3 class="js-title">Nandi foothills at sunrise</h3><div class="d">Wed 18 Nov 2026</div>
-        <div class="grid2 num"><div><span class="label">Distance</span><b>32.4<small>km</small></b></div><div><span class="label">Moving time</span><b>1:34<small>h</small></b></div><div><span class="label">Climb</span><b>412<small>m</small></b></div><div><span class="label">Avg speed</span><b>20.7<small>km/h</small></b></div></div>
+        <h3 class="js-title">Nandi foothills at sunrise</h3><div class="d" data-r="date">Wed 18 Nov 2026</div>
+        <div class="grid2 num"><div><span class="label">Distance</span><b><span data-r="km">32.4</span><small>km</small></b></div><div><span class="label">Moving time</span><b><span data-r="movC">1:34</span><small>h</small></b></div><div><span class="label">Climb</span><b><span data-r="climb">412</span><small>m</small></b></div><div><span class="label">Avg speed</span><b><span data-r="avg">20.7</span><small>km/h</small></b></div></div>
         <div class="mk">Cycler</div></div>
       <div class="sc s4"><svg class="prof" viewBox="0 0 400 150" preserveAspectRatio="none"><path class="js-prof" fill="#2563EB" opacity=".85"/></svg><svg class="loop" viewBox="0 0 200 160" style="color:#E5484D"><use href="#loop"/></svg>
-        <h3 class="js-title">Nandi foothills at sunrise</h3><div class="d">Wed 18 Nov 2026</div>
-        <div class="grid2 num"><div><span class="label">Distance</span><b>32.4<small>km</small></b></div><div><span class="label">Moving time</span><b>1:34<small>h</small></b></div><div><span class="label">Climb</span><b>412<small>m</small></b></div><div><span class="label">Avg speed</span><b>20.7<small>km/h</small></b></div></div>
+        <h3 class="js-title">Nandi foothills at sunrise</h3><div class="d" data-r="date">Wed 18 Nov 2026</div>
+        <div class="grid2 num"><div><span class="label">Distance</span><b><span data-r="km">32.4</span><small>km</small></b></div><div><span class="label">Moving time</span><b><span data-r="movC">1:34</span><small>h</small></b></div><div><span class="label">Climb</span><b><span data-r="climb">412</span><small>m</small></b></div><div><span class="label">Avg speed</span><b><span data-r="avg">20.7</span><small>km/h</small></b></div></div>
         <div class="mk">Cycler</div></div>
       <div class="sc s5"><svg class="loop" viewBox="0 0 200 160"><use href="#loop"/></svg>
-        <h3 class="js-title">Nandi foothills at sunrise</h3><div class="d">Wed 18 Nov 2026</div>
-        <div class="grid2 num"><div><span class="label">Distance</span><b>32.4<small>km</small></b></div><div><span class="label">Moving time</span><b>1:34<small>h</small></b></div><div><span class="label">Climb</span><b>412<small>m</small></b></div><div><span class="label">Avg speed</span><b>20.7<small>km/h</small></b></div></div>
+        <h3 class="js-title">Nandi foothills at sunrise</h3><div class="d" data-r="date">Wed 18 Nov 2026</div>
+        <div class="grid2 num"><div><span class="label">Distance</span><b><span data-r="km">32.4</span><small>km</small></b></div><div><span class="label">Moving time</span><b><span data-r="movC">1:34</span><small>h</small></b></div><div><span class="label">Climb</span><b><span data-r="climb">412</span><small>m</small></b></div><div><span class="label">Avg speed</span><b><span data-r="avg">20.7</span><small>km/h</small></b></div></div>
         <div class="mk">Cycler</div></div>
     </div>
     <p class="caption">The last one has a clear background, for laying over your own photo or story.</p>
@@ -720,7 +746,8 @@
       <div><b>Place search</b><span>Photon</span><span>The text you type, and your position rounded to about 1 km.</span></div>
       <div><b>Traffic signals</b><span>Overpass API</span><span>A bounding box around the route you open or follow.</span></div>
     </div>
-    <p class="fine" style="margin-top:20px">These are free community servers with no API keys. A backup is a zip file you save yourself. Full policy: <a href="https://github.com/Kunj-Company/cycler/blob/main/docs/PRIVACY.md">docs/PRIVACY.md</a>.</p>
+    <p class="fine" style="margin-top:20px">This website has no analytics either. Its planner uses the same servers, and only when you use it: your search text goes to Photon, the loop's waypoints to BRouter, map tiles come from OpenFreeMap and the weather line from Open-Meteo.</p>
+    <p class="fine" style="margin-top:10px">These are free community servers with no API keys. A backup is a zip file you save yourself. Full policy: <a href="https://github.com/Kunj-Company/cycler/blob/main/docs/PRIVACY.md">docs/PRIVACY.md</a>.</p>
   </div>
 </section>
 
