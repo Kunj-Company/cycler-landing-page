@@ -108,7 +108,7 @@ GSAP 3.12.5 with ScrollTrigger. All of it lives in the last block of `js/main.js
 | Climb | Profile springs up, interval clock counts down | Enter |
 | Tea stop | Steam rises from the glass | Ride state: auto-paused |
 | No signal | Signal bars drop to "No service" | Scroll, scrubbed |
-| Finish | Save bursts in the route colours | Click |
+| Finish | Save bursts in the route colours, then the share card popup rises in | Click |
 | Ticker | Drifts with scroll, skews with scroll velocity | Scroll |
 | Share | The card rises in, tilts a little under the pointer, cross-fades between styles | Enter, pointer, click |
 | Flyover | Camera pass that starts slow, speeds up, slows down | Enter or click |
@@ -156,6 +156,15 @@ than the ride:
 - A heading column that stays put while its list scrolls (features, privacy, FAQ).
 - The feature list is grouped into Ride, Plan, Look back and Your data.
 - Motion is one gesture: rise a little and fade in, once.
+
+## Share card popup
+
+Save ride, and "Download this card" in the share section, open a `<dialog>` with a preview of the
+card, the five styles, Download PNG and Share. `drawCard()` in `js/main.js` draws the card on a
+canvas to the same measurements as the HTML cards (every size is the stylesheet's, times a scale
+factor), at 540 px for the preview and 1080 by 1920 for the file. The Clear style is exported with
+real transparency. Nothing leaves the browser. Share only appears where the browser can pass an
+image file to other apps.
 
 ## Content rules
 

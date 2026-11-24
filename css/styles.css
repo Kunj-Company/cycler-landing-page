@@ -530,6 +530,29 @@ details code{display:block;margin-top:8px;font-size:12.5px;overflow-wrap:anywher
 .faq-list details[open] summary::after{transform:rotate(45deg)}
 .faq-list details p{padding:0 0 20px;color:var(--muted);max-width:60ch}
 
+/* ---------- share card popup ---------- */
+.share-side .btn{margin-top:-6px}
+.cardbox{border:0;padding:0;border-radius:28px;background:var(--paper);color:var(--ink);width:min(800px,calc(100% - 28px));max-height:calc(100vh - 28px);max-height:calc(100dvh - 28px);overflow:auto;box-shadow:0 40px 100px -30px rgba(0,0,0,.55)}
+.cardbox::backdrop{background:rgba(17,18,20,.6);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.cardbox[open]{animation:cbin .45s cubic-bezier(.2,.8,.2,1)}
+.cardbox[open]::backdrop{animation:cbfade .3s ease-out}
+@keyframes cbin{from{opacity:0;transform:translateY(24px) scale(.97)}}
+@keyframes cbfade{from{opacity:0}}
+html:has(dialog[open]){overflow-y:hidden}
+.cb-in{display:grid;grid-template-columns:250px minmax(0,1fr);gap:44px;align-items:center;padding:36px}
+.cb-prev{border-radius:22px;overflow:hidden;background:repeating-conic-gradient(#E3E3DF 0 25%,#fff 0 50%) 0 0/20px 20px;box-shadow:0 30px 50px -30px rgba(28,28,26,.5)}
+.cb-prev canvas{display:block;width:100%;height:auto}
+.cb-side{display:flex;flex-direction:column;gap:18px;align-items:flex-start}
+.cb-side h2{font-size:clamp(1.7rem,3.2vw,2.3rem);line-height:1.06}
+.cb-side>p{color:var(--muted);font-size:1.02rem;max-width:40ch}
+.cb-side .when{color:var(--muted)}
+.cb-side .fine{font-size:13.5px;margin:0}
+.cb-act{display:flex;flex-wrap:wrap;gap:10px}
+.cb-x{position:absolute;right:14px;top:14px;width:40px;height:40px;border-radius:50%;border:0;background:rgba(28,28,26,.08);color:var(--ink);font:400 24px/1 var(--body);cursor:pointer}
+.cb-x:hover{background:rgba(28,28,26,.14)}
+@media(max-width:640px){.cb-in{grid-template-columns:1fr;gap:22px;padding:24px 22px;justify-items:center}.cb-prev{width:170px}.cb-side{align-items:center;text-align:center}.cb-act{justify-content:center}}
+@media(prefers-reduced-motion:reduce){.cardbox[open],.cardbox[open]::backdrop{animation:none}}
+
 footer{border-top:1px solid var(--hair);padding:28px 0 120px;font-size:14.5px;color:var(--muted)}
 footer .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:space-between}
 footer nav{display:flex;flex-wrap:wrap;gap:6px 18px}

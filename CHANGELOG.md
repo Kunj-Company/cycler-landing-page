@@ -15,8 +15,13 @@ Notable changes to the Cycler landing page. Versions use the `0.1.N` format.
   instead of alternating bands and boxes. Share shows one card with a style picker, the app's
   screens and widgets sit behind tabs, the feature list is grouped into Ride, Plan, Look back and
   Your data, and privacy and install are plain lists. No content was removed.
+- New footer: the brand, two columns of links and the small print, with thumb-sized link targets
+  on phones.
 
 ### Added
+- Save ride now opens a share card popup: a live preview, five styles, Download PNG (1080 by
+  1920) and, where the browser supports it, Share. The share section has a "Download this card"
+  button that opens the same popup. The image is drawn in the browser; nothing is uploaded.
 - The hero, the install section, the FAQ and `llms.txt` now say that Cycler is coming soon to
   Google Play and is available from GitHub Releases until then.
 - A scroll speed cap, so a hard flick of the wheel, trackpad or finger cannot skip the story.

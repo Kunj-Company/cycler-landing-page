@@ -195,7 +195,7 @@ radio('#feel');$$('#tags .chip').forEach(function(b){b.addEventListener('click',
 
 /* ---- title flows from the save page to the share cards ---- */
 $$('.js-title-in').forEach(function(inp){inp.addEventListener('input',function(){titleEdited=true;var v=inp.value.trim()||'Morning ride';$$('.js-title').forEach(function(t){t.textContent=v});$$('.js-title-in').forEach(function(o){if(o!==inp)o.value=inp.value})})});
-$('#saveForm').addEventListener('submit',function(e){e.preventDefault();if(fx.save)fx.save(e.submitter||$('#saveForm .btn'));$('#savedNote').textContent='Saved. In the app, this ride now lives in your phone\'s storage and nowhere else.'});
+$('#saveForm').addEventListener('submit',function(e){e.preventDefault();if(fx.save)fx.save(e.submitter||$('#saveForm .btn'));$('#savedNote').textContent='Saved. In the app, this ride now lives in your phone\'s storage and nowhere else.';setTimeout(function(){if(fx.card)fx.card('Ride saved')},fx.save?750:0)}); // after the burst, offer a share card
 
 /* ---- the track down the ride ---- */
 var ride=$('#ride'),svg=$('#track'),pPlan=$('#trackPlan'),pRec=$('#trackRec'),rider=$('#rider'),pulse=$('#riderPulse'),L=0,LUT=[],y0=0,y1=1;
@@ -274,7 +274,7 @@ addEventListener('resize',function(){navAt=-2;navMark()});
     var d=tgt-pos,mv=d*(1-Math.exp(-dt*11)),cap=vmax(pos)*dt;if(Math.abs(mv)>cap)mv=d<0?-cap:cap;
     if(Math.abs(d)<.5){pos=tgt;tgt=null;raf=0}else{pos+=mv;raf=requestAnimationFrame(step)}
     scrollTo({top:pos,behavior:'instant'})}
-  addEventListener('wheel',function(e){if(e.ctrlKey||e.metaKey||e.defaultPrevented)return;var dy=e.deltaY;if(!dy||Math.abs(e.deltaX)>Math.abs(dy)||nested(e.target,dy))return;
+  addEventListener('wheel',function(e){if(e.ctrlKey||e.metaKey||e.defaultPrevented)return;if(document.querySelector('dialog[open]'))return;var dy=e.deltaY;if(!dy||Math.abs(e.deltaX)>Math.abs(dy)||nested(e.target,dy))return;
     if(tgt===null&&free(scrollY)>=1)return; // past the story: leave the wheel to the browser
     if(e.deltaMode===1)dy*=18;else if(e.deltaMode===2)dy*=innerHeight;e.preventDefault();
     if(tgt===null){pos=scrollY;tgt=pos}
@@ -289,7 +289,63 @@ function picker(btns,panels,attr){function show(i,focus){btns.forEach(function(b
   btns.forEach(function(b,i){b.addEventListener('click',function(){show(i)});
     b.addEventListener('keydown',function(e){var d=e.key==='ArrowRight'||e.key==='ArrowDown'?1:e.key==='ArrowLeft'||e.key==='ArrowUp'?-1:0;if(d){e.preventDefault();show((i+d+btns.length)%btns.length,true)}})})}
 var cards=document.getElementById('cards');
-picker(Array.prototype.slice.call(document.querySelectorAll('#cardStyles button')),Array.prototype.slice.call(cards.querySelectorAll('.sc')),'aria-checked');
+
+/* ---- share cards: one style at a time, and a popup to take one away as an image ----
+   The popup is opened by Save ride and by "Download this card". The image is drawn on a canvas
+   here in the page, to the same layout as the cards above, so nothing is uploaded. */
+(function(){
+  var A=function(sel,r){return Array.prototype.slice.call((r||document).querySelectorAll(sel))},
+      scs=A('.sc',cards),groups=[A('#cardStyles button'),A('#cbStyles button')],box=document.getElementById('cardBox'),cv=document.getElementById('cardCv'),note=document.getElementById('cbNote'),note0=note.textContent,style=0,INK='#1C1C1A';
+  function title(){return (document.querySelector('.js-title').textContent||'').trim()||'Morning ride'}
+  function rr(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath()}
+  /* st: 0 dark, 1 panel, 2 blue, 3 elevation, 4 clear. All sizes are the stylesheet's, times k */
+  function drawCard(cv,st,W){
+    var H=Math.round(W*16/9),k=W/310,c=cv.getContext('2d'),fg=st===1||st===3?INK:'#fff',i,g,
+        F=function(wt,px){c.font=wt+' '+(px*k).toFixed(2)+'px "Hanken Grotesk",system-ui,sans-serif'};
+    cv.width=W;cv.height=H;c.clearRect(0,0,W,H);
+    if(st===0){g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,'#27364F');g.addColorStop(.62,'#0B0C10');g.addColorStop(1,'#0B0C10');c.fillStyle=g;c.fillRect(0,0,W,H)}
+    else if(st===1){var q=32*k,ix,iy;c.fillStyle='#ECEEE8';c.fillRect(0,0,W,H);c.fillStyle='#DADFD3';for(iy=0;iy*q<H;iy++)for(ix=0;ix*q<W;ix++)if((ix+iy)%2)c.fillRect(ix*q,iy*q,q+1,q+1)}
+    else if(st===2){c.fillStyle='#2563EB';c.fillRect(0,0,W,H)}
+    else if(st===3){c.fillStyle='#fff';c.fillRect(0,0,W,H)}
+    /* the loop, from the same path the page draws */
+    var tr=document.getElementById('heroTrack'),len=tr.getTotalLength(),n=220,lw=st===3?W*.22:W*.76,lx=st===3?W*.70:W*.12,ly=st===3?H*.05:H*.09,u=lw/200,p0;
+    c.save();if(st===4){c.shadowColor='rgba(0,0,0,.4)';c.shadowBlur=5*k;c.shadowOffsetY=2*k}
+    c.strokeStyle=c.fillStyle=st===1||st===3?'#E5484D':'#fff';c.lineWidth=3.2*u;c.lineJoin=c.lineCap='round';c.beginPath();
+    for(i=0;i<=n;i++){var q2=tr.getPointAtLength(len*(i%n)/n);if(!i){p0=q2;c.moveTo(lx+q2.x*u,ly+q2.y*u)}else c.lineTo(lx+q2.x*u,ly+q2.y*u)}
+    c.stroke();c.beginPath();c.arc(lx+p0.x*u,ly+p0.y*u,4.2*u,0,6.2832);c.fill();c.restore();
+    /* the text block, laid out upwards from the bottom edge */
+    var pad=(st===1?26:22)*k,gap=(st===1?12:14)*k,x=pad,cw=W-pad*2,col=(cw-14*k)/2,bottom=H-pad,cell=53*k,
+        stats=[['Distance',RIDE.km.toFixed(1),'km'],['Moving time',fmtC(RIDE.min),'h'],['Climb',Math.round(RIDE.climb).toLocaleString('en-IN'),'m'],['Avg speed',(RIDE.km/(RIDE.min/60)).toFixed(1),'km/h']],
+        words=title().split(/\s+/),lines=[''],lh=25.5*k;
+    F(600,22.1);words.forEach(function(w){var t=lines[lines.length-1],tt=t?t+' '+w:w;if(t&&c.measureText(tt).width>cw)lines.push(w);else lines[lines.length-1]=tt});lines=lines.slice(0,3);
+    var total=lines.length*lh+(gap-8*k)+20*k+gap+cell*2+14*k+gap+19*k,top=bottom-total,y=top;
+    if(st===1){c.fillStyle='#fff';rr(c,10*k,top-16*k,W-20*k,total+32*k,18*k);c.fill()}
+    if(st===3){var pt=H*.14,ph=Math.min(H*.42,top-14*k-pt),pp=ph*.12;c.beginPath();c.moveTo(0,pt+ph);for(i=0;i<=100;i++)c.lineTo(i/100*W,pt+ph-pp-eNorm(i/100)*(ph-pp*2));c.lineTo(W,pt+ph);c.closePath();c.globalAlpha=.85;c.fillStyle='#2563EB';c.fill();c.globalAlpha=1} // the profile stops short of the title, however many lines it takes
+    c.save();if(st===4){c.shadowColor='rgba(0,0,0,.45)';c.shadowBlur=6*k;c.shadowOffsetY=1*k}
+    c.fillStyle=fg;c.textBaseline='alphabetic';c.textAlign='left';
+    F(600,22.1);lines.forEach(function(t){c.fillText(t,x,y+lh*.8);y+=lh});
+    y+=gap-8*k;F(400,13);c.globalAlpha=.75;c.fillText(RIDE.date,x,y+14.5*k);c.globalAlpha=1;y+=20*k+gap;
+    stats.forEach(function(sv,j){var sx=x+(j%2)*(col+14*k),sy=y+Math.floor(j/2)*(cell+14*k);
+      F(600,10.5);c.globalAlpha=.75;if('letterSpacing' in c)c.letterSpacing=(.5*k).toFixed(2)+'px';c.fillText(sv[0].toUpperCase(),sx,sy+11.5*k);if('letterSpacing' in c)c.letterSpacing='0px';c.globalAlpha=1;
+      F(600,27.2);c.fillText(sv[1],sx,sy+45*k);var vw=c.measureText(sv[1]).width;F(500,12.75);c.fillText(sv[2],sx+vw+3*k,sy+45*k)});
+    y+=cell*2+14*k+gap;F(600,12);c.fillText('Cycler',x,y+14*k);c.restore()}
+  function setStyle(i,focus){style=i;scs.forEach(function(el,j){el.classList.toggle('on',j===i)});
+    groups.forEach(function(bs){bs.forEach(function(b,j){b.setAttribute('aria-checked',j===i);b.tabIndex=j===i?0:-1})});
+    if(focus)focus[i].focus();if(box.open)drawCard(cv,style,540)}
+  groups.forEach(function(bs){bs.forEach(function(b,i){b.addEventListener('click',function(){setStyle(i)});
+    b.addEventListener('keydown',function(e){var d=e.key==='ArrowRight'||e.key==='ArrowDown'?1:e.key==='ArrowLeft'||e.key==='ArrowUp'?-1:0;if(d){e.preventDefault();setStyle((i+d+bs.length)%bs.length,bs)}})})});
+  function blob(done){var big=document.createElement('canvas');drawCard(big,style,1080);big.toBlob(function(b){done(b,'cycler-'+(title().toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'ride')+'.png')},'image/png')}
+  function open(label){if(!box.showModal)return;document.getElementById('cbWhen').textContent=label;note.textContent=note0;box.showModal();
+    var go=function(){drawCard(cv,style,540)};go();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(go)}
+  fx.card=open;
+  document.getElementById('cardGet').addEventListener('click',function(){open('Share card')});
+  box.addEventListener('click',function(e){if(e.target===box)box.close()}); // a click on the backdrop closes it
+  document.getElementById('cbDown').addEventListener('click',function(){blob(function(b,name){var a=document.createElement('a'),u=URL.createObjectURL(b);a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},4000);note.textContent='Saved '+name+' to your downloads.'})});
+  /* Share appears only where the browser can hand an image to other apps */
+  var sh=document.getElementById('cbShare');
+  try{if(navigator.canShare&&navigator.canShare({files:[new File([''],'x.png',{type:'image/png'})]}))sh.hidden=false}catch(e){}
+  sh.addEventListener('click',function(){blob(function(b,name){navigator.share({files:[new File([b],name,{type:'image/png'})],title:title()}).catch(function(){})})});
+})();
 picker(Array.prototype.slice.call(document.querySelectorAll('#galTabs button')),Array.prototype.slice.call(document.querySelectorAll('#galStage figure')),'aria-selected');
 
 /* ---- flyover: slow, fast, slow ---- */

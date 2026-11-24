@@ -652,6 +652,7 @@
           <button type="button" role="radio" aria-checked="false" aria-label="Clear" tabindex="-1"><i class="sw5"></i></button>
         </div>
         <p class="caption">The last one has a clear background, for laying over your own photo or story.</p>
+        <button class="btn ghost" type="button" id="cardGet">Download this card</button>
       </div>
     <div class="cards" id="cards" aria-live="polite">
         <div class="sc s1 on"><svg class="loop" viewBox="0 0 200 160"><use href="#loop"/></svg>
@@ -901,6 +902,31 @@
     <span>Maps © OpenStreetMap contributors</span>
   </div>
 </footer>
+
+<!-- the share card popup: opened by Save ride and by Download this card -->
+<dialog class="cardbox" id="cardBox" aria-labelledby="cardBoxT">
+  <form method="dialog"><button class="cb-x" aria-label="Close">&times;</button></form>
+  <div class="cb-in">
+    <div class="cb-prev"><canvas id="cardCv" width="540" height="960" role="img" aria-label="Preview of the share card"></canvas></div>
+    <div class="cb-side">
+      <p class="when" id="cbWhen">Ride saved</p>
+      <h2 id="cardBoxT">Take a card with you.</h2>
+      <p>Pick a style and download it as an image, 1080 by 1920. It is drawn in your browser. Nothing is uploaded.</p>
+      <div class="styles" role="radiogroup" aria-label="Card style" id="cbStyles">
+        <button type="button" role="radio" aria-checked="true" aria-label="Dark"><i class="sw1"></i></button>
+        <button type="button" role="radio" aria-checked="false" aria-label="Panel" tabindex="-1"><i class="sw2"></i></button>
+        <button type="button" role="radio" aria-checked="false" aria-label="Blue" tabindex="-1"><i class="sw3"></i></button>
+        <button type="button" role="radio" aria-checked="false" aria-label="Elevation" tabindex="-1"><i class="sw4"></i></button>
+        <button type="button" role="radio" aria-checked="false" aria-label="Clear" tabindex="-1"><i class="sw5"></i></button>
+      </div>
+      <div class="cb-act">
+        <button class="btn" type="button" id="cbDown" autofocus>Download PNG</button>
+        <button class="btn ghost" type="button" id="cbShare" hidden>Share</button>
+      </div>
+      <p class="fine" id="cbNote" role="status">A web sketch of the app's share cards. In Cycler you get 13 styles, your own photo and a choice of sizes.</p>
+    </div>
+  </div>
+</dialog>
 
 <!-- the ride bar -->
 <div class="hud num" id="hud" aria-hidden="true">
