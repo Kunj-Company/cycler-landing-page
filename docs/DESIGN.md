@@ -122,6 +122,10 @@ block before the GSAP layer in `js/main.js`). On touch devices `ScrollTrigger.no
 shortens how far a flick carries. The keyboard, the scrollbar and in-page links are not capped;
 they are how you jump. The cap is off under reduced motion.
 
+The story ends at the yellow ticker. As the ticker crosses the screen the cap eases off, and once
+it has left the top the wheel is the browser's own again and a touch flick carries as far as
+usual: what follows is reference, meant to be skimmed. Scrolling back up eases the cap back on.
+
 ### Fallbacks
 
 - `prefers-reduced-motion: reduce` skips the whole GSAP layer. The page is static and complete.

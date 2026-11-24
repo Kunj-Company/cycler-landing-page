@@ -259,20 +259,26 @@ addEventListener('resize',function(){navAt=-2;navMark()});
 /* ---- scroll speed cap ----
    The page is a story told by scrolling, so a hard flick of the wheel or trackpad cannot skip
    it: wheel input moves a target, and the page follows it at no more than about one and a half
-   screens a second. Keyboard, the scrollbar and in-page links are left alone as the way to jump.
-   Touch is capped in the GSAP layer. Off under reduced motion. */
-(function(){if(reduce)return;var tgt=null,pos=0,raf=0,last=0;
-  function vmax(){return Math.max(900,innerHeight*1.5)}
+   screens a second. The story ends at the yellow ticker. From there the cap eases off over one
+   screen and then scrolling is the browser's own again, because what follows is reference to
+   skim. Keyboard, the scrollbar and in-page links are never capped. Touch is handled in the
+   GSAP layer. Off under reduced motion. */
+(function(){if(reduce)return;var tgt=null,pos=0,raf=0,last=0,tk=document.querySelector('.ticker');
+  /* 0 inside the story, rising to 1 as the ticker crosses the screen and leaves the top */
+  function free(y){if(!tk)return 0;var b=tk.getBoundingClientRect().bottom+scrollY;return Math.max(0,Math.min(1,(y-(b-innerHeight))/innerHeight))}
+  fx.free=function(){return free(scrollY)};
+  function vmax(y){var f=free(y);return Math.max(900,innerHeight*1.5)*(1+f*f*5)}
   function stop(){tgt=null;if(raf)cancelAnimationFrame(raf);raf=0}
   function nested(el,dy){for(;el&&el.nodeType===1&&el!==document.body&&el!==document.documentElement;el=el.parentNode){var o=getComputedStyle(el).overflowY;if((o==='auto'||o==='scroll')&&el.scrollHeight>el.clientHeight+1&&(dy<0?el.scrollTop>0:el.scrollTop+el.clientHeight<el.scrollHeight-1))return true}return false}
   function step(now){var dt=Math.min(.05,(now-last)/1000)||.016;last=now;if(tgt===null){raf=0;return}
-    var d=tgt-pos,mv=d*(1-Math.exp(-dt*11)),cap=vmax()*dt;if(Math.abs(mv)>cap)mv=d<0?-cap:cap;
+    var d=tgt-pos,mv=d*(1-Math.exp(-dt*11)),cap=vmax(pos)*dt;if(Math.abs(mv)>cap)mv=d<0?-cap:cap;
     if(Math.abs(d)<.5){pos=tgt;tgt=null;raf=0}else{pos+=mv;raf=requestAnimationFrame(step)}
     scrollTo({top:pos,behavior:'instant'})}
   addEventListener('wheel',function(e){if(e.ctrlKey||e.metaKey||e.defaultPrevented)return;var dy=e.deltaY;if(!dy||Math.abs(e.deltaX)>Math.abs(dy)||nested(e.target,dy))return;
+    if(tgt===null&&free(scrollY)>=1)return; // past the story: leave the wheel to the browser
     if(e.deltaMode===1)dy*=18;else if(e.deltaMode===2)dy*=innerHeight;e.preventDefault();
     if(tgt===null){pos=scrollY;tgt=pos}
-    var lead=vmax()*.4,top=document.documentElement.scrollHeight-innerHeight;
+    var lead=vmax(pos)*.4,top=document.documentElement.scrollHeight-innerHeight;
     tgt=Math.max(0,Math.min(top,Math.max(pos-lead,Math.min(pos+lead,tgt+dy))));
     if(!raf){last=performance.now();raf=requestAnimationFrame(step)}},{passive:false});
   addEventListener('keydown',function(e){if(/^(Arrow|Page|Home|End| $)/.test(e.key))stop()});
@@ -407,7 +413,7 @@ mm.add('(max-width:820px), (max-height:679px)',function(){
   ScrollTrigger.sort();
 });
 /* touch: a flick may carry the page a little way, not through whole chapters */
-if(ScrollTrigger.isTouch)ScrollTrigger.normalizeScroll({type:'touch',allowNestedScroll:true,ignore:'input,textarea,select,.mapbox,#cards',momentum:function(self){return Math.min(.5,Math.abs(self.velocityY)/3200)}});
+if(ScrollTrigger.isTouch)ScrollTrigger.normalizeScroll({type:'touch',allowNestedScroll:true,ignore:'input,textarea,select,.mapbox,#cards',momentum:function(self){var f=fx.free?fx.free():0;return Math.min(.5+f*1.7,Math.abs(self.velocityY)/(3200-f*2200))}}); // past the story a flick carries as far as usual
 /* pointer: the phone leans towards the cursor, the map drifts the other way, buttons pull */
 var tilt=null;
 if(fine){var rx=gsap.quickTo(ptr,'rotationX',{duration:.9,ease:'power3'}),ry=gsap.quickTo(ptr,'rotationY',{duration:.9,ease:'power3'}),bgx=gsap.quickTo('.hero-bg','x',{duration:1.2,ease:'power3'}),bgy=gsap.quickTo('.hero-bg','y',{duration:1.2,ease:'power3'});

@@ -14,6 +14,7 @@ Notable changes to the Cycler landing page. Versions use the `0.1.N` format.
 ### Added
 - A scroll speed cap, so a hard flick of the wheel, trackpad or finger cannot skip the story.
   Keyboard, scrollbar and in-page links are not capped. Off under reduced motion.
+  The cap eases off after the yellow ticker, where the story ends and the reference sections begin.
 
 ### Fixed
 - On phones, reveal animations waiting off to the side widened the page layout.
