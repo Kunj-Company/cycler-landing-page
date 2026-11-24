@@ -33,6 +33,9 @@ Then open <http://localhost:8000>. Opening `index.html` straight from disk works
 
 ## Deploy
 
+The site is live at <https://cycler-landing-page.vercel.app>. It is a Vercel project linked to this
+repository: every push to `main` is deployed to production, and other branches get preview URLs.
+
 Any static host works with the repository root as the output folder and no build command:
 Vercel, Cloudflare Pages, Netlify or GitHub Pages. `404.html` is picked up automatically by all four.
 
