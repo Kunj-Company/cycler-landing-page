@@ -14,7 +14,8 @@ function spline(pts,closed){ // Catmull-Rom through points, as cubic beziers
   return d+(closed?'Z':'')}
 
 /* ---- a small drawn map ---- */
-function drawMap(cv,seed,scale){var r=cv.getBoundingClientRect();if(!r.width)return;var dpr=Math.min(2,devicePixelRatio||1),w=r.width,h=r.height;cv.width=w*dpr;cv.height=h*dpr;
+function drawMap(cv,seed,scale){var w=cv.offsetWidth,h=cv.offsetHeight;if(!w)return;var dpr=Math.min(2,devicePixelRatio||1); // layout size, so a tilted or scaled canvas still draws square
+  cv.width=w*dpr;cv.height=h*dpr;
   var c=cv.getContext('2d'),R=rng(seed),s=scale||1;c.scale(dpr,dpr);c.fillStyle='#ECEEE8';c.fillRect(0,0,w,h);
   c.save();c.translate(w/2,h/2);c.rotate(-.09);c.translate(-w/2,-h/2);var X=-w*.2,Y=-h*.2,W=w*1.4,H=h*1.4;
   function blob(x,y,rad,col){c.fillStyle=col;c.beginPath();for(var i=0;i<=24;i++){var a=i/24*6.283,rr=rad*(1+.25*Math.sin(3*a+x)+.12*Math.sin(5*a+y));c.lineTo(x+rr*Math.cos(a)*1.3,y+rr*Math.sin(a))}c.fill()}
@@ -22,7 +23,7 @@ function drawMap(cv,seed,scale){var r=cv.getBoundingClientRect();if(!r.width)ret
   c.strokeStyle='#fff';c.lineCap='round';var x=X;while(x<X+W){x+=(46+R()*88)*s;c.lineWidth=(R()<.22?7:3)*s;c.beginPath();c.moveTo(x,Y);c.lineTo(x+(R()-.5)*30,Y+H);c.stroke()}
   var y=Y;while(y<Y+H){y+=(42+R()*80)*s;c.lineWidth=(R()<.22?7:3)*s;c.beginPath();c.moveTo(X,y);c.lineTo(X+W,y+(R()-.5)*30);c.stroke()}
   c.lineWidth=9*s;c.beginPath();c.moveTo(X,Y+H*.85);c.bezierCurveTo(X+W*.3,Y+H*.6,X+W*.55,Y+H*.75,X+W,Y+H*.3);c.stroke();c.restore()}
-function maps(){drawMap($('#heroMap'),7,1.15);drawMap($('#planMap'),21,.8);drawMap($('#flyMap'),33,1.2)}
+function maps(){drawMap($('#heroMap'),7,1.15);drawMap($('#phoneMap'),7,.5);drawMap($('#planMap'),21,.8);drawMap($('#flyMap'),33,1.2)}
 
 /* ---- the ride that the whole page describes ----
    Starts as the example ride. The planner replaces it with a real loop. */
@@ -232,7 +233,50 @@ function frame(force){var now=performance.now(),dt=Math.min(.1,(now-prevFrame)/1
   for(var i=0;i<els.stops.length;i++)els.stops[i].setAttribute('offset',p);
   var e=eNorm(p);$('#hudMe').style.left=(p*100)+'%';$('#hudMe').style.bottom=(4+e*22)+'px';
   $('#profDot').setAttribute('cx',p*400);$('#profDot').setAttribute('cy',150-18-e*114)}
-(function loop(){frame();requestAnimationFrame(loop)})();
+/* ---- top bar: gathers into a pill, follows the section, goes dark over night, records progress ---- */
+var topBar=$('.top'),navA=$$('.links a',topBar),navInd=$('.ind',topBar),navProg=$('.prog i',topBar),navSec=navA.map(function(a){return document.getElementById(a.getAttribute('href').slice(1))}),darkEls=$$('.plan,.dawn,.ch.dark,.priv'),heroEl=$('.hero'),dawnEl=$('#dawn'),navAct=-1,navHov=-1,navAt=-2,navP=-1;
+function navMark(){var i=navHov>=0?navHov:navAct;if(i===navAt)return;navAt=i;if(i<0){navInd.style.opacity=0;return}var a=navA[i];navInd.style.opacity=1;navInd.style.width=a.offsetWidth+'px';navInd.style.transform='translateX('+a.offsetLeft+'px)'}
+function navTick(){var y=scrollY,line=42,i,r,dark=false,act=-1,pr;
+  topBar.classList.toggle('stuck',y>24);
+  r=heroEl.getBoundingClientRect();
+  if(r.top<=line&&r.bottom>line)dark=fx.heroDark?fx.heroDark():false;
+  else for(i=0;i<darkEls.length;i++){r=darkEls[i].getBoundingClientRect();if(r.top<=line&&r.bottom>line){dark=!(darkEls[i]===dawnEl&&fx.dawnLight);break}}
+  topBar.classList.toggle('dark',dark);
+  for(i=0;i<navSec.length;i++)if(navSec[i]&&navSec[i].getBoundingClientRect().top<=innerHeight*.45)act=i;
+  if(act!==navAct){navAct=act;navA.forEach(function(a,j){if(j===act)a.setAttribute('aria-current','true');else a.removeAttribute('aria-current')});navMark()}
+  pr=Math.max(0,Math.min(1,y/Math.max(1,document.documentElement.scrollHeight-innerHeight)));if(Math.abs(pr-navP)>.0005){navP=pr;navProg.style.transform='scaleX('+pr.toFixed(4)+')'}}
+navA.forEach(function(a,i){a.addEventListener('pointerenter',function(){navHov=i;navMark()});a.addEventListener('focus',function(){navHov=i;navMark()});a.addEventListener('blur',function(){navHov=-1;navMark()})});
+$('.links',topBar).addEventListener('pointerleave',function(){navHov=-1;navMark()});
+addEventListener('resize',function(){navAt=-2;navMark()});
+(function(){var btn=$('.menu',topBar);function open(v){topBar.classList.toggle('open',v);btn.setAttribute('aria-expanded',v)}
+  btn.addEventListener('click',function(){open(!topBar.classList.contains('open'))});
+  topBar.addEventListener('click',function(e){if(e.target.closest('a'))open(false)});
+  document.addEventListener('click',function(e){if(!topBar.contains(e.target))open(false)});
+  addEventListener('keydown',function(e){if(e.key==='Escape'&&topBar.classList.contains('open')){open(false);btn.focus()}})})();
+
+(function loop(){frame();navTick();requestAnimationFrame(loop)})();
+
+/* ---- scroll speed cap ----
+   The page is a story told by scrolling, so a hard flick of the wheel or trackpad cannot skip
+   it: wheel input moves a target, and the page follows it at no more than about one and a half
+   screens a second. Keyboard, the scrollbar and in-page links are left alone as the way to jump.
+   Touch is capped in the GSAP layer. Off under reduced motion. */
+(function(){if(reduce)return;var tgt=null,pos=0,raf=0,last=0;
+  function vmax(){return Math.max(900,innerHeight*1.5)}
+  function stop(){tgt=null;if(raf)cancelAnimationFrame(raf);raf=0}
+  function nested(el,dy){for(;el&&el.nodeType===1&&el!==document.body&&el!==document.documentElement;el=el.parentNode){var o=getComputedStyle(el).overflowY;if((o==='auto'||o==='scroll')&&el.scrollHeight>el.clientHeight+1&&(dy<0?el.scrollTop>0:el.scrollTop+el.clientHeight<el.scrollHeight-1))return true}return false}
+  function step(now){var dt=Math.min(.05,(now-last)/1000)||.016;last=now;if(tgt===null){raf=0;return}
+    var d=tgt-pos,mv=d*(1-Math.exp(-dt*11)),cap=vmax()*dt;if(Math.abs(mv)>cap)mv=d<0?-cap:cap;
+    if(Math.abs(d)<.5){pos=tgt;tgt=null;raf=0}else{pos+=mv;raf=requestAnimationFrame(step)}
+    scrollTo({top:pos,behavior:'instant'})}
+  addEventListener('wheel',function(e){if(e.ctrlKey||e.metaKey||e.defaultPrevented)return;var dy=e.deltaY;if(!dy||Math.abs(e.deltaX)>Math.abs(dy)||nested(e.target,dy))return;
+    if(e.deltaMode===1)dy*=18;else if(e.deltaMode===2)dy*=innerHeight;e.preventDefault();
+    if(tgt===null){pos=scrollY;tgt=pos}
+    var lead=vmax()*.4,top=document.documentElement.scrollHeight-innerHeight;
+    tgt=Math.max(0,Math.min(top,Math.max(pos-lead,Math.min(pos+lead,tgt+dy))));
+    if(!raf){last=performance.now();raf=requestAnimationFrame(step)}},{passive:false});
+  addEventListener('keydown',function(e){if(/^(Arrow|Page|Home|End| $)/.test(e.key))stop()});
+  addEventListener('pointerdown',stop);addEventListener('touchstart',stop,{passive:true});document.addEventListener('click',stop,true)})();
 
 /* ---- share cards ---- */
 var cards=$('#cards');function step(dir){var w=$('.sc',cards).getBoundingClientRect().width+20;cards.scrollBy({left:dir*w,behavior:reduce?'auto':'smooth'})}
@@ -273,40 +317,111 @@ var fine=matchMedia('(hover:hover) and (pointer:fine)').matches,wide=matchMedia(
 
 function splitWords(el){var txt=el.textContent.trim(),words=txt.split(/\s+/);el.setAttribute('aria-label',txt);el.textContent='';
   return words.map(function(w,i){var o=document.createElement('span'),n=document.createElement('span');o.className='w';o.setAttribute('aria-hidden','true');n.textContent=w;o.appendChild(n);el.appendChild(o);if(i<words.length-1)el.appendChild(document.createTextNode(' '));return n})}
-function splitLines(el){var inner=splitWords(el),lines=[],last=null,cur;
-  inner.forEach(function(n){var o=n.parentNode,t=o.offsetTop;if(last===null||Math.abs(t-last)>6){cur=[];lines.push(cur);last=t}cur.push(o)});
-  el.textContent='';lines.forEach(function(ws){var d=document.createElement('span');d.className='hline';ws.forEach(function(o,i){d.appendChild(o);if(i<ws.length-1)d.appendChild(document.createTextNode(' '))});el.appendChild(d)});return inner}
 function count(el,to,dec,trig,suffix){var c={v:0};gsap.to(c,{v:to,duration:1.5,ease:'power2.out',scrollTrigger:{trigger:trig||el,start:'top 82%',once:true},onUpdate:function(){el.innerHTML=c.v.toFixed(dec)+(suffix||'')}})}
 
-/* ---- 1. hero: load sequence ---- */
+/* ---- 1. hero ----
+   Each element has one owner per property, so the load sequence, the pointer and the scroll
+   never fight: load animates letters, the phone and the inner chips; scroll animates the
+   words, .hero-sub, the rig and the chip wrappers; the pointer tilts .rig-ptr. */
+var hero=$('.hero'),stage=$('.hero-stage'),rig=$('.phone-rig'),ptr=$('.rig-ptr'),night=$('.hero-night'),h1=$('.hero h1'),heroP=0;
+function offTo(el,stop){var x=0,y=0;while(el&&el!==stop){x+=el.offsetLeft;y+=el.offsetTop;el=el.offsetParent}return [x,y]}
+function mk(c){var e=document.createElement('span');e.className=c;return e}
+/* headline into words > masks > letters. The underline moves into its word's wrapper */
+var HS=(function(){var u=$('.hl-u',h1),hl=$('.hl',h1),hlWord=hl?hl.textContent.trim():'',label=h1.textContent.replace(/\s+/g,' ').trim(),chars=[],inners=[],outs=[];
+  h1.setAttribute('aria-label',label);h1.textContent='';
+  label.split(' ').forEach(function(w,i,a){var o=mk('hw'),m=mk('w'),n=mk('wi');o.setAttribute('aria-hidden','true');
+    w.split('').forEach(function(ch){var c=mk('c');c.textContent=ch;n.appendChild(c);chars.push(c)});
+    m.appendChild(n);o.appendChild(m);if(u&&w===hlWord){o.classList.add('hl');o.appendChild(u)}
+    h1.appendChild(o);if(i<a.length-1)h1.appendChild(document.createTextNode(' '));inners.push(n);outs.push(o)});
+  return {chars:chars,inners:inners,outs:outs}})();
+/* hold the line breaks while the letters change weight, so no word jumps a line mid-flight */
+function holdLines(){var lines=[],last=null,cur;HS.outs.forEach(function(o){var t=o.offsetTop;if(last===null||Math.abs(t-last)>6){cur=[];lines.push(cur);last=t}cur.push(o)});
+  h1.textContent='';lines.forEach(function(ws,j){var d=mk('hline');ws.forEach(function(o,i){d.appendChild(o);if(i<ws.length-1)d.appendChild(document.createTextNode(' '))});h1.appendChild(d);if(j<lines.length-1)h1.appendChild(document.createTextNode(' '))});h1.classList.add('lines')}
+gsap.set(rig,{rotationY:-18,rotationX:7,rotation:3});
+
 function intro(){
-  var h1=$('.hero h1'),label=h1.textContent,ws=splitLines(h1),track=$('#heroTrack'),dot=$('.hero-map .js-blob-start'),len=track.getTotalLength();
-  root.classList.remove('pre');
+  var track=$('#heroTrack'),dot=$('.ph-route .js-blob-start'),len=track.getTotalLength(),km=$('#hpKm'),boot=$('.hero-boot'),on=!!boot.offsetParent,
+      bx=on?boot.offsetLeft:stage.offsetWidth/2,by=on?boot.offsetTop:stage.offsetHeight/2,
+      R=Math.hypot(Math.max(bx,stage.offsetWidth-bx),Math.max(by,stage.offsetHeight-by))+40,iris={r:0};
+  function clip(){stage.style.clipPath='circle('+iris.r.toFixed(1)+'px at '+bx+'px '+by+'px)'}
+  holdLines();clip();gsap.set(boot,{display:'block'});root.classList.remove('pre');
   gsap.timeline({defaults:{ease:'expo.out'}})
-    .from('#heroMap',{autoAlpha:0,duration:1.8,ease:'power2.out'},0)
-    .from('.top .wrap>*',{y:-30,autoAlpha:0,duration:.9,stagger:.1},.2)
-    .from(ws,{yPercent:125,fontWeight:400,duration:1.3,stagger:.08},.15)
-    .from('.hero-copy p',{y:26,autoAlpha:0,duration:1},.8)
-    .from('.hero-facts li',{scale:.4,autoAlpha:0,duration:.7,stagger:.06,ease:'back.out(2.2)'},1)
-    .from('.hero-cta .btn',{y:30,autoAlpha:0,duration:.9,stagger:.1,clearProps:'transform'},1.15)
-    .from('.hero-map svg',{scale:.6,rotation:-30,autoAlpha:0,duration:1.7,transformOrigin:'50% 50%'},.3)
-    .fromTo(track,{strokeDashoffset:1},{strokeDashoffset:0,duration:2.6,ease:'power2.inOut',onUpdate:function(){var q=track.getPointAtLength(len*Math.min(.9999,1-gsap.getProperty(track,'strokeDashoffset')));dot.setAttribute('cx',q.x);dot.setAttribute('cy',q.y)}},.6)
-    .from('.wx',{scale:.5,autoAlpha:0,duration:.8,ease:'back.out(2)'},1.7)
-    .add(function(){h1.textContent=label;h1.removeAttribute('aria-label')},2.3)
-    .to('#heroComet',{opacity:.9,duration:.6},3.2);
+    /* the iris opens from the recording dot and the map settles out of a zoom */
+    .to(iris,{r:R,duration:1.5,ease:'expo.inOut',onUpdate:clip,onComplete:function(){stage.style.clipPath='';boot.style.display='none'}},0)
+    .to(boot,{scale:4,autoAlpha:0,duration:.7,ease:'power2.out'},.2)
+    .from('#heroMap',{scale:1.45,rotation:-5,duration:2.6},0)
+    .from('.navbar',{y:-70,autoAlpha:0,duration:1.2,clearProps:'transform'},.85)
+    .from('.brand,.links a,.top-end',{y:-18,autoAlpha:0,duration:.9,stagger:.07,clearProps:'all'},1)
+    /* letters swing up out of their masks and put on weight */
+    .from(HS.chars,{yPercent:118,rotationX:-80,fontWeight:400,transformOrigin:'50% 100%',transformPerspective:700,duration:1.25,stagger:.022},.55)
+    .from('.hl-u path',{strokeDashoffset:1,duration:.9,ease:'power3.inOut'},1.75)
+    .from('.hero-sub p',{y:28,autoAlpha:0,duration:1},1.15)
+    .from('.hero-facts li',{scale:.4,autoAlpha:0,duration:.7,stagger:.06,ease:'back.out(2.2)'},1.3)
+    .from('.hero .hero-cta .btn',{y:30,autoAlpha:0,duration:.9,stagger:.1,clearProps:'transform'},1.45)
+    .from('.hero-cue',{autoAlpha:0,duration:1,ease:'power2.out'},2.4)
+    /* the phone swings in, its sheet slides up and the ride records itself */
+    .from('.phone',{yPercent:60,rotationY:-75,rotationX:30,rotation:-10,scale:.55,autoAlpha:0,duration:2},.5)
+    .from('.sheet',{yPercent:105,duration:1.1},1.2)
+    .from('.wx',{scale:.5,autoAlpha:0,duration:.8,ease:'back.out(2)'},1.9)
+    .fromTo(track,{strokeDashoffset:1},{strokeDashoffset:0,duration:2.6,ease:'power2.inOut',onUpdate:function(){var t=1-gsap.getProperty(track,'strokeDashoffset'),q=track.getPointAtLength(len*Math.min(.9999,t));dot.setAttribute('cx',q.x);dot.setAttribute('cy',q.y);km.textContent=(RIDE.km*t).toFixed(1)}},1.3)
+    .from('.fl-in',{scale:0,autoAlpha:0,duration:.8,stagger:.14,ease:'back.out(2.4)'},2)
+    .add(function(){h1.classList.remove('lines')},2.7)
+    .to('#heroComet',{opacity:.9,duration:.6},3.9);
   gsap.to('#heroComet',{strokeDashoffset:-1,duration:6,ease:'none',repeat:-1});
+  /* idle: the phone floats, the chips bob out of step, the speed reading wanders like a live one */
+  gsap.to(ptr,{y:-12,duration:3.2,ease:'sine.inOut',yoyo:true,repeat:-1});
+  $$('.fl-in').forEach(function(f,i){gsap.to(f,{y:i%2?9:-9,duration:2.3+i*.5,ease:'sine.inOut',yoyo:true,repeat:-1,delay:i*.4})});
+  var spd=$$('.js-hspd'),k=0;setInterval(function(){if(document.hidden||heroP>=1)return;k++;var v=RIDE.km/(RIDE.min/60)+Math.sin(k*1.7)*1.4+Math.sin(k*.6)*.8;set(spd,v.toFixed(1))},1100);
 }
 var started=false;function go(){if(started)return;started=true;intro();ScrollTrigger.refresh()}
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(go);setTimeout(go,1200);
 
-/* hero: scroll out into the night */
-gsap.timeline({scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}})
-  .fromTo('#heroMap',{scale:1},{scale:1.25,ease:'none'},0)
-  .to('.hero-map',{rotation:28,scale:1.3,yPercent:12,ease:'none'},0)
-  .to('.hero-copy',{yPercent:-16,ease:'none'},0)
-  .to('.hero-night',{opacity:1,ease:'power2.in'},0);
-if(fine){var hx=gsap.quickTo('.hero-map svg','x',{duration:.8,ease:'power3'}),hy=gsap.quickTo('.hero-map svg','y',{duration:.8,ease:'power3'}),wx=gsap.quickTo('.wx','x',{duration:1,ease:'power3'}),wy=gsap.quickTo('.wx','y',{duration:1,ease:'power3'});
-  $('.hero').addEventListener('pointermove',function(e){var r=this.getBoundingClientRect(),px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;hx(px*26);hy(py*20);wx(px*-34);wy(py*-24)});
+/* hero: scroll. On a screen with room the hero pins: the copy leaves through its masks, the phone
+   lies flat in the middle and switches to the big-number screen, then the night spreads out from
+   behind it and stays for the planner. Small screens get the same idea without the pin. */
+var mm=gsap.matchMedia(),heroPinned=false;
+fx.heroDark=function(){return heroP>(heroPinned?.8:.62)}; // when the night has reached the top bar
+mm.add('(min-width:821px) and (min-height:680px)',function(){
+  var cx,cy,dx,dy,S,R;
+  function measure(){var o=offTo(rig,stage),w=rig.offsetWidth,h=rig.offsetHeight,W=stage.offsetWidth,H=Math.min(stage.offsetHeight,innerHeight);cx=W/2;cy=H/2;dx=cx-(o[0]+w/2);dy=cy-(o[1]+h/2);S=Math.min(1.25,H*.8/h);R=Math.hypot(cx,stage.offsetHeight-cy)+30}
+  function circle(r){return 'circle('+r.toFixed(1)+'px at '+cx.toFixed(1)+'px '+cy.toFixed(1)+'px)'}
+  measure();gsap.set(night,{opacity:1});heroPinned=true;
+  gsap.timeline({defaults:{ease:'none'},scrollTrigger:{trigger:hero,start:'top top',end:'+=130%',pin:true,scrub:.6,invalidateOnRefresh:true,refreshPriority:1,onUpdate:function(s){heroP=s.progress;if(heroP>.02&&tilt)tilt(0,0)}}})
+    .fromTo(HS.inners,{yPercent:0},{yPercent:-118,duration:.2,stagger:.014,ease:'power2.in'},0)
+    .fromTo('.hl-u',{opacity:1},{opacity:0,duration:.08},0)
+    .fromTo('.hero-sub',{y:0,opacity:1},{y:-50,opacity:0,duration:.22,ease:'power1.in'},.02)
+    .set('.hero-sub',{pointerEvents:'none'},.2)
+    .fromTo('.fl',{opacity:1},{opacity:0,duration:.14,stagger:.03},0)
+    .fromTo('.hero-cue',{opacity:1},{opacity:0,duration:.1},0)
+    .fromTo(rig,{x:0,y:0,rotationY:-18,rotationX:7,rotation:3,scale:1},{x:function(){measure();return dx},y:function(){return dy},rotationY:0,rotationX:0,rotation:0,scale:function(){return S},duration:.58,ease:'power2.inOut'},0)
+    .fromTo('.hero-bg',{scale:1},{scale:1.3,duration:1},0)
+    .fromTo('.soff',{opacity:0},{opacity:1,duration:.16},.36)
+    .fromTo(night,{clipPath:function(){return circle(0)}},{clipPath:function(){return circle(R)},duration:.5,ease:'power2.in'},.44)
+    .fromTo('.hero-dark .w>span',{yPercent:118},{yPercent:0,duration:.18,stagger:.06,ease:'power3.out'},.76)
+    /* once the night covers everything, take the map away so no light edge shows above the planner */
+    .set('.hero-bg',{visibility:'hidden'},.96).set(stage,{backgroundColor:'#111214'},.96);
+  ScrollTrigger.sort();
+});
+mm.add('(max-width:820px), (max-height:679px)',function(){
+  heroPinned=false;
+  gsap.timeline({defaults:{ease:'none'},scrollTrigger:{trigger:hero,start:'top top',end:'bottom top',scrub:true,refreshPriority:1,onUpdate:function(s){heroP=s.progress}}})
+    .fromTo('.hero-bg',{scale:1},{scale:1.25,duration:1},0)
+    .fromTo('.hero-copy',{opacity:1},{opacity:0,duration:.45},.05)
+    .fromTo('.fl',{opacity:1},{opacity:0,duration:.3},.2)
+    .fromTo(rig,{rotationY:-18,rotationX:7,rotation:3},{rotationY:0,rotationX:0,rotation:0,duration:.6,ease:'power1.inOut'},0)
+    .fromTo('.soff',{opacity:0},{opacity:1,duration:.09},.36)
+    .fromTo(night,{opacity:0},{opacity:1,duration:.7,ease:'power2.in'},.2)
+    .set('.hero-bg',{visibility:'hidden'},.92).set(stage,{backgroundColor:'#111214'},.92);
+  ScrollTrigger.sort();
+});
+/* touch: a flick may carry the page a little way, not through whole chapters */
+if(ScrollTrigger.isTouch)ScrollTrigger.normalizeScroll({type:'touch',allowNestedScroll:true,ignore:'input,textarea,select,.mapbox,#cards',momentum:function(self){return Math.min(.5,Math.abs(self.velocityY)/3200)}});
+/* pointer: the phone leans towards the cursor, the map drifts the other way, buttons pull */
+var tilt=null;
+if(fine){var rx=gsap.quickTo(ptr,'rotationX',{duration:.9,ease:'power3'}),ry=gsap.quickTo(ptr,'rotationY',{duration:.9,ease:'power3'}),bgx=gsap.quickTo('.hero-bg','x',{duration:1.2,ease:'power3'}),bgy=gsap.quickTo('.hero-bg','y',{duration:1.2,ease:'power3'});
+  tilt=function(px,py){ry(px*22);rx(py*-16);bgx(px*-26);bgy(py*-18)};
+  hero.addEventListener('pointermove',function(e){if(heroP>.02)return;var r=hero.getBoundingClientRect();tilt((e.clientX-r.left)/r.width-.5,(e.clientY-r.top)/r.height-.5)});
+  hero.addEventListener('pointerleave',function(){tilt(0,0)});
   $$('.hero-cta .btn').forEach(function(b){var qx=gsap.quickTo(b,'x',{duration:.45,ease:'power3'}),qy=gsap.quickTo(b,'y',{duration:.45,ease:'power3'});
     b.addEventListener('pointermove',function(e){var r=b.getBoundingClientRect();qx((e.clientX-r.left-r.width/2)*.28);qy((e.clientY-r.top-r.height/2)*.4)});
     b.addEventListener('pointerleave',function(){qx(0);qy(0)})})}
@@ -337,7 +452,7 @@ gsap.from('.plan-more li',{y:40,autoAlpha:0,stagger:.12,duration:.9,ease:'power3
 (function(){var ck=$('#clock'),dl=$('#dawnLine'),o={m:21*60+40},phase=-1,lines=['Route saved. Lights out.','Still dark. Still quiet.','The alarm goes off before the traffic does.'];
   function tick(){var m=Math.round(o.m)%1440,h=Math.floor(m/60);ck.textContent=(h%12||12)+':'+String(m%60).padStart(2,'0')+(h<12?' am':' pm')}
   gsap.set('.dawn-sky',{opacity:0});gsap.set('.dawn-stars',{opacity:1});gsap.set('.dawn-sun',{yPercent:170});gsap.set('.dawn-in',{color:'#EDEDEB'});tick();dl.textContent=lines[0];
-  gsap.timeline({defaults:{ease:'none'},scrollTrigger:{trigger:'#dawn',start:'top top',end:'+=170%',pin:true,scrub:.6,onUpdate:function(s){var ph=s.progress<.3?0:s.progress<.74?1:2;if(ph!==phase){phase=ph;dl.textContent=lines[ph];gsap.fromTo(dl,{y:14,autoAlpha:0},{y:0,autoAlpha:1,duration:.5,ease:'power3.out'})}}}})
+  gsap.timeline({defaults:{ease:'none'},scrollTrigger:{trigger:'#dawn',start:'top top',end:'+=170%',pin:true,scrub:.6,onUpdate:function(s){fx.dawnLight=s.progress>.62;var ph=s.progress<.3?0:s.progress<.74?1:2;if(ph!==phase){phase=ph;dl.textContent=lines[ph];gsap.fromTo(dl,{y:14,autoAlpha:0},{y:0,autoAlpha:1,duration:.5,ease:'power3.out'})}}}})
     .to(o,{m:29*60+52,duration:1,ease:'power1.inOut',onUpdate:tick},0)
     .fromTo('.clock',{scale:.78},{scale:1.06,duration:1},0)
     .to('.dawn-stars',{opacity:0,yPercent:-6,duration:.32},.28)

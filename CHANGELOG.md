@@ -2,6 +2,22 @@
 
 Notable changes to the Cycler landing page. Versions use the `0.1.N` format.
 
+## 0.1.5
+
+### Changed
+- New hero: a full-height map with a tilted phone that records the loop live. It loads through an
+  iris that opens from a recording dot, follows the pointer, and on scroll pins while the phone
+  switches to the big-number screen and the night spreads out from behind it into the planner.
+- New top bar: fixed, gathers into a glass pill on scroll, turns dark over night sections, marks
+  the current section, shows page progress as a recorded line, and has a menu on phones.
+
+### Added
+- A scroll speed cap, so a hard flick of the wheel, trackpad or finger cannot skip the story.
+  Keyboard, scrollbar and in-page links are not capped. Off under reduced motion.
+
+### Fixed
+- On phones, reveal animations waiting off to the side widened the page layout.
+
 ## 0.1.4
 
 ### Changed

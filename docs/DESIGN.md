@@ -97,8 +97,10 @@ GSAP 3.12.5 with ScrollTrigger. All of it lives in the last block of `js/main.js
 
 | Where | What happens | Driven by |
 |---|---|---|
-| Hero | Words rise and gain weight, the route draws with the rider tracing it | Page load |
-| Hero | Map zooms, loop rotates, scene darkens into the night | Scroll, scrubbed |
+| Top bar | Gathers into a glass pill, turns dark over night sections, marks the current section, fills a red progress line over a blue one | Scroll |
+| Hero | An iris opens from a recording dot, letters swing up and gain weight, the phone swings in and records the loop while its distance counts | Page load |
+| Hero | The phone leans towards the cursor, the map drifts the other way, the chips bob | Pointer, idle |
+| Hero | Pinned. The copy leaves through its masks, the phone lies flat and switches to the big-number screen, the night spreads out from behind it | Scroll, scrubbed |
 | Plan | Map wipes in; loop redraws and numbers roll on every change; the map flies to a new route | Enter, then input |
 | Dawn | Pinned. Clock runs 9:40 pm to 5:52 am, stars fade, sun rises, sky becomes the map | Scroll, scrubbed |
 | Chapters | Stone drops and bounces, heading rises from a mask, demo tilts up | Enter |
@@ -112,11 +114,21 @@ GSAP 3.12.5 with ScrollTrigger. All of it lives in the last block of `js/main.js
 | Flyover | Camera pass that starts slow, speeds up, slows down | Enter or click |
 | Look back | Bars grow, totals count, screenshot strip slides | Enter, scroll |
 
+### Scroll speed cap
+
+The page is a story told by scrolling, so a hard flick cannot skip it. Wheel and trackpad input
+moves a target and the page follows at no more than about one and a half screens a second (the
+block before the GSAP layer in `js/main.js`). On touch devices `ScrollTrigger.normalizeScroll`
+shortens how far a flick carries. The keyboard, the scrollbar and in-page links are not capped;
+they are how you jump. The cap is off under reduced motion.
+
 ### Fallbacks
 
 - `prefers-reduced-motion: reduce` skips the whole GSAP layer. The page is static and complete.
 - If GSAP fails to load, the same static page is shown. A timeout clears the pre-animation hiding
   of the hero after 3.5 seconds in any case.
+- Small or short screens (under 821 px wide or 680 px tall) get the hero's scroll transition
+  without the pin.
 - Pointer effects only attach on devices with hover and a fine pointer.
 
 ### One rule for ScrollTrigger
