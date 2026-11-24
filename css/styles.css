@@ -27,6 +27,8 @@
 html{scroll-behavior:smooth}
 /* ScrollTrigger measures by jumping the scroll position; smooth scrolling breaks that */
 html.gs{scroll-behavior:auto}
+/* reveal animations start off to the side; without this a phone widens its layout to fit them and the fixed top bar runs off screen */
+html{overflow-x:clip}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 img{max-width:100%;height:auto;display:block}
 a{color:inherit}
