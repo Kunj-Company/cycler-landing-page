@@ -332,7 +332,7 @@ function count(el,to,dec,trig,suffix){var c={v:0};gsap.to(c,{v:to,duration:1.5,e
    Each element has one owner per property, so the load sequence, the pointer and the scroll
    never fight: load animates letters, the phone and the inner chips; scroll animates the
    words, .hero-sub, the rig and the chip wrappers; the pointer tilts .rig-ptr. */
-var hero=$('.hero'),stage=$('.hero-stage'),rig=$('.phone-rig'),ptr=$('.rig-ptr'),night=$('.hero-night'),h1=$('.hero h1'),heroP=0;
+var introDone=false,hero=$('.hero'),stage=$('.hero-stage'),rig=$('.phone-rig'),ptr=$('.rig-ptr'),night=$('.hero-night'),h1=$('.hero h1'),heroP=0;
 function offTo(el,stop){var x=0,y=0;while(el&&el!==stop){x+=el.offsetLeft;y+=el.offsetTop;el=el.offsetParent}return [x,y]}
 function mk(c){var e=document.createElement('span');e.className=c;return e}
 /* headline into words > masks > letters. The underline moves into its word's wrapper */
@@ -351,10 +351,20 @@ gsap.set(rig,{rotationY:-18,rotationX:7,rotation:3});
    the supporting copy follows, then the ride records itself. */
 function intro(){
   var track=$('#heroTrack'),dot=$('.ph-route .js-blob-start'),len=track.getTotalLength(),km=$('#hpKm'),iris=$('.hero-iris'),boot=$('.hero-boot'),kmTxt='';
-  gsap.set([iris,boot],{display:'block'});root.classList.remove('pre');
+  gsap.set([iris,boot],{display:'block'});
+  /* The recording dot flies to where the ride starts on the phone's screen. The phone is still
+     swinging in while it travels, so the dot does not aim at a measured spot: every frame it
+     reads where the start point is now and closes k of the distance. At k = 1 it is locked on,
+     and the track is then drawn out of it. */
+  var hb=hero.getBoundingClientRect(),br=boot.getBoundingClientRect(),b0x=br.left+br.width/2-hb.left,b0y=br.top+br.height/2-hb.top,fol={k:0},
+      sx=[gsap.quickSetter(boot,'x','px'),gsap.quickSetter(iris,'x','px')],sy=[gsap.quickSetter(boot,'y','px'),gsap.quickSetter(iris,'y','px')];
+  function follow(){var h=hero.getBoundingClientRect(),r=dot.getBoundingClientRect(),x=(r.left+r.width/2-h.left-b0x)*fol.k,y=(r.top+r.height/2-h.top-b0y)*fol.k;sx[0](x);sx[1](x);sy[0](y);sy[1](y)}
+  gsap.ticker.add(follow);
+  root.classList.remove('pre');
   gsap.timeline({defaults:{ease:'power4.out'}})
     .fromTo(iris,{scale:15},{scale:0,duration:1.25,ease:'power3.inOut',onComplete:function(){iris.style.display='none'}},0)
-    .to(boot,{scale:0,duration:.5,ease:'power2.in',onComplete:function(){boot.style.display='none'}},.95)
+    .to(fol,{k:1,duration:1.25,ease:'power3.inOut'},0)
+    .to(boot,{scale:0,duration:.4,ease:'power2.in',onComplete:function(){gsap.ticker.remove(follow);boot.style.display='none';introDone=true}},1.4)
     .from('#heroMap',{scale:1.22,duration:2.4,ease:'power3.out'},0)
     .from(HS.chars,{yPercent:112,duration:1,stagger:.014},.45)
     .from('.hl-u path',{strokeDashoffset:1,duration:.9,ease:'power3.inOut'},1.25)
@@ -363,7 +373,7 @@ function intro(){
     .from('.phone',{yPercent:34,rotationY:-38,rotationX:16,rotation:-5,autoAlpha:0,duration:1.7,ease:'expo.out'},.55)
     .from('.sheet',{yPercent:105,duration:1.1,ease:'expo.out'},1.15)
     .from('.wx',{y:-10,autoAlpha:0,duration:.7},1.5)
-    .fromTo(track,{strokeDashoffset:1},{strokeDashoffset:0,duration:2.4,ease:'power2.inOut',onUpdate:function(){var t=1-gsap.getProperty(track,'strokeDashoffset'),q=track.getPointAtLength(len*Math.min(.9999,t)),v=(RIDE.km*t).toFixed(1);dot.setAttribute('cx',q.x);dot.setAttribute('cy',q.y);if(v!==kmTxt){kmTxt=v;km.textContent=v}}},1.35)
+    .fromTo(track,{strokeDashoffset:1},{strokeDashoffset:0,duration:2.4,ease:'power2.inOut',onUpdate:function(){var t=1-gsap.getProperty(track,'strokeDashoffset'),q=track.getPointAtLength(len*Math.min(.9999,t)),v=(RIDE.km*t).toFixed(1);dot.setAttribute('cx',q.x);dot.setAttribute('cy',q.y);if(v!==kmTxt){kmTxt=v;km.textContent=v}}},1.8)
     .from('.fl-in',{scale:.6,autoAlpha:0,duration:.8,stagger:.12,ease:'back.out(1.8)'},1.9)
     .from('.hero-cue',{autoAlpha:0,duration:1,ease:'power2.out'},2.3)
     .to('#heroComet',{opacity:.9,duration:.6},3.8);
@@ -421,7 +431,8 @@ if(ScrollTrigger.isTouch)ScrollTrigger.normalizeScroll({type:'touch',allowNested
 var tilt=null;
 if(fine){var rx=gsap.quickTo(ptr,'rotationX',{duration:.9,ease:'power3'}),ry=gsap.quickTo(ptr,'rotationY',{duration:.9,ease:'power3'}),bgx=gsap.quickTo('.hero-bg','x',{duration:1.2,ease:'power3'}),bgy=gsap.quickTo('.hero-bg','y',{duration:1.2,ease:'power3'});
   tilt=function(px,py){ry(px*22);rx(py*-16);bgx(px*-26);bgy(py*-18)};
-  hero.addEventListener('pointermove',function(e){if(heroP>.02)return;var r=hero.getBoundingClientRect();tilt((e.clientX-r.left)/r.width-.5,(e.clientY-r.top)/r.height-.5)});
+  hero.addEventListener('pointermove',function(e){if(heroP>.02||!introDone)return; // the phone holds still until the dot has landed on it
+    var r=hero.getBoundingClientRect();tilt((e.clientX-r.left)/r.width-.5,(e.clientY-r.top)/r.height-.5)});
   hero.addEventListener('pointerleave',function(){tilt(0,0)});
   /* buttons lean a few pixels towards the cursor. The pull is measured from where the button
      rests, not where it has moved to, and is capped, so it can never chase the cursor or

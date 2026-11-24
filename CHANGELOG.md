@@ -28,6 +28,9 @@ Notable changes to the Cycler landing page. Versions use the `0.1.N` format.
 - The load sequence stalled twice in its first second. It now animates transforms and opacity
   only and starts after layout has been measured.
 - The hero's blinking recording dot style leaked onto the ride bar and the tea stop card.
+- The loading dot now lands on the point where the ride starts on the phone's screen, and the
+  track is drawn out of it. It used to stop at a fixed spot nearby.
+- The hero and install buttons chased the cursor and slid over each other.
 
 ## 0.1.4
 
