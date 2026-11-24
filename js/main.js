@@ -423,8 +423,11 @@ if(fine){var rx=gsap.quickTo(ptr,'rotationX',{duration:.9,ease:'power3'}),ry=gsa
   tilt=function(px,py){ry(px*22);rx(py*-16);bgx(px*-26);bgy(py*-18)};
   hero.addEventListener('pointermove',function(e){if(heroP>.02)return;var r=hero.getBoundingClientRect();tilt((e.clientX-r.left)/r.width-.5,(e.clientY-r.top)/r.height-.5)});
   hero.addEventListener('pointerleave',function(){tilt(0,0)});
-  $$('.hero-cta .btn').forEach(function(b){var qx=gsap.quickTo(b,'x',{duration:.45,ease:'power3'}),qy=gsap.quickTo(b,'y',{duration:.45,ease:'power3'});
-    b.addEventListener('pointermove',function(e){var r=b.getBoundingClientRect();qx((e.clientX-r.left-r.width/2)*.28);qy((e.clientY-r.top-r.height/2)*.4)});
+  /* buttons lean a few pixels towards the cursor. The pull is measured from where the button
+     rests, not where it has moved to, and is capped, so it can never chase the cursor or
+     slide over its neighbour */
+  Array.prototype.forEach.call(document.querySelectorAll('.hero-cta .btn'),function(b){var qx=gsap.quickTo(b,'x',{duration:.4,ease:'power3'}),qy=gsap.quickTo(b,'y',{duration:.4,ease:'power3'}),cl=gsap.utils.clamp;
+    b.addEventListener('pointermove',function(e){var r=b.getBoundingClientRect(),hx=r.left+r.width/2-gsap.getProperty(b,'x'),hy=r.top+r.height/2-gsap.getProperty(b,'y');qx(cl(-5,5,(e.clientX-hx)*.12));qy(cl(-3,3,(e.clientY-hy)*.2))});
     b.addEventListener('pointerleave',function(){qx(0);qy(0)})})}
 
 /* ---- section headings: words rise out of a mask ---- */
