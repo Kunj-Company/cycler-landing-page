@@ -1,3 +1,6 @@
+/* Cycler landing page
+   Copyright (C) 2026 Abhiram N J
+   Licensed under the GNU Affero General Public License v3.0. See LICENSE. */
 (function(){
 "use strict";
 var $=function(s,r){return (r||document).querySelector(s)}, $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
