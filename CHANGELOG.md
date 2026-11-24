@@ -27,6 +27,7 @@ Notable changes to the Cycler landing page. Versions use the `0.1.N` format.
   button that opens the same popup. The image is drawn in the browser; nothing is uploaded.
 - The hero, the install section, the FAQ and `llms.txt` now say that Cycler is coming soon to
   Google Play and is available from GitHub Releases until then.
+- The FAQ and `llms.txt` say an iPhone version is planned, with Android first and no date yet.
 - A scroll speed cap, so a hard flick of the wheel, trackpad or finger cannot skip the story.
   Keyboard, scrollbar and in-page links are not capped. Off under reduced motion.
   The cap eases off after the yellow ticker, where the story ends and the reference sections begin.
