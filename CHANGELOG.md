@@ -5,8 +5,8 @@ Notable changes to the Cycler landing page. Versions use the `0.1.N` format.
 ## 0.1.5
 
 ### Changed
-- New hero: a full-height map with a tilted phone that records the loop live. It loads through an
-  iris that opens from a recording dot, follows the pointer, and on scroll pins while the phone
+- New hero: a full-height map with a tilted phone that records the loop live. It loads as the
+  dark draws back into a recording dot, follows the pointer, and on scroll pins while the phone
   switches to the big-number screen and the night spreads out from behind it into the planner.
 - New top bar: fixed, gathers into a glass pill on scroll, turns dark over night sections, marks
   the current section, shows page progress as a recorded line, and has a menu on phones.
@@ -17,6 +17,9 @@ Notable changes to the Cycler landing page. Versions use the `0.1.N` format.
 
 ### Fixed
 - On phones, reveal animations waiting off to the side widened the page layout.
+- The load sequence stalled twice in its first second. It now animates transforms and opacity
+  only and starts after layout has been measured.
+- The hero's blinking recording dot style leaked onto the ride bar and the tea stop card.
 
 ## 0.1.4
 

@@ -50,7 +50,7 @@ stones, which mark each chapter.
 
 ## Type
 
-- **Bricolage Grotesque** for display. Its weight axis is animated in the hero.
+- **Bricolage Grotesque** for display.
 - **Hanken Grotesk** for body text and every number, with tabular figures so counters do not
   jiggle.
 
@@ -98,7 +98,7 @@ GSAP 3.12.5 with ScrollTrigger. All of it lives in the last block of `js/main.js
 | Where | What happens | Driven by |
 |---|---|---|
 | Top bar | Gathers into a glass pill, turns dark over night sections, marks the current section, fills a red progress line over a blue one | Scroll |
-| Hero | An iris opens from a recording dot, letters swing up and gain weight, the phone swings in and records the loop while its distance counts | Page load |
+| Hero | The dark draws back into a recording dot, the headline rises out of its masks, the phone swings in and records the loop while its distance counts. Transforms and opacity only | Page load |
 | Hero | The phone leans towards the cursor, the map drifts the other way, the chips bob | Pointer, idle |
 | Hero | Pinned. The copy leaves through its masks, the phone lies flat and switches to the big-number screen, the night spreads out from behind it | Scroll, scrubbed |
 | Plan | Map wipes in; loop redraws and numbers roll on every change; the map flies to a new route | Enter, then input |

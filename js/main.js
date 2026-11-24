@@ -334,47 +334,39 @@ var HS=(function(){var u=$('.hl-u',h1),hl=$('.hl',h1),hlWord=hl?hl.textContent.t
     m.appendChild(n);o.appendChild(m);if(u&&w===hlWord){o.classList.add('hl');o.appendChild(u)}
     h1.appendChild(o);if(i<a.length-1)h1.appendChild(document.createTextNode(' '));inners.push(n);outs.push(o)});
   return {chars:chars,inners:inners,outs:outs}})();
-/* hold the line breaks while the letters change weight, so no word jumps a line mid-flight */
-function holdLines(){var lines=[],last=null,cur;HS.outs.forEach(function(o){var t=o.offsetTop;if(last===null||Math.abs(t-last)>6){cur=[];lines.push(cur);last=t}cur.push(o)});
-  h1.textContent='';lines.forEach(function(ws,j){var d=mk('hline');ws.forEach(function(o,i){d.appendChild(o);if(i<ws.length-1)d.appendChild(document.createTextNode(' '))});h1.appendChild(d);if(j<lines.length-1)h1.appendChild(document.createTextNode(' '))});h1.classList.add('lines')}
 gsap.set(rig,{rotationY:-18,rotationX:7,rotation:3});
 
+/* Load sequence. Everything in it is a transform or an opacity, so the browser never lays the
+   page out mid-flight, and it starts only after the fonts are in and ScrollTrigger has measured.
+   Beats: the dark draws back into the recording dot, the headline rises, the phone swings in,
+   the supporting copy follows, then the ride records itself. */
 function intro(){
-  var track=$('#heroTrack'),dot=$('.ph-route .js-blob-start'),len=track.getTotalLength(),km=$('#hpKm'),boot=$('.hero-boot'),on=!!boot.offsetParent,
-      bx=on?boot.offsetLeft:stage.offsetWidth/2,by=on?boot.offsetTop:stage.offsetHeight/2,
-      R=Math.hypot(Math.max(bx,stage.offsetWidth-bx),Math.max(by,stage.offsetHeight-by))+40,iris={r:0};
-  function clip(){stage.style.clipPath='circle('+iris.r.toFixed(1)+'px at '+bx+'px '+by+'px)'}
-  holdLines();clip();gsap.set(boot,{display:'block'});root.classList.remove('pre');
-  gsap.timeline({defaults:{ease:'expo.out'}})
-    /* the iris opens from the recording dot and the map settles out of a zoom */
-    .to(iris,{r:R,duration:1.5,ease:'expo.inOut',onUpdate:clip,onComplete:function(){stage.style.clipPath='';boot.style.display='none'}},0)
-    .to(boot,{scale:4,autoAlpha:0,duration:.7,ease:'power2.out'},.2)
-    .from('#heroMap',{scale:1.45,rotation:-5,duration:2.6},0)
-    .from('.navbar',{y:-70,autoAlpha:0,duration:1.2,clearProps:'transform'},.85)
-    .from('.brand,.links a,.top-end',{y:-18,autoAlpha:0,duration:.9,stagger:.07,clearProps:'all'},1)
-    /* letters swing up out of their masks and put on weight */
-    .from(HS.chars,{yPercent:118,rotationX:-80,fontWeight:400,transformOrigin:'50% 100%',transformPerspective:700,duration:1.25,stagger:.022},.55)
-    .from('.hl-u path',{strokeDashoffset:1,duration:.9,ease:'power3.inOut'},1.75)
-    .from('.hero-sub p',{y:28,autoAlpha:0,duration:1},1.15)
-    .from('.hero-facts li',{scale:.4,autoAlpha:0,duration:.7,stagger:.06,ease:'back.out(2.2)'},1.3)
-    .from('.hero .hero-cta .btn',{y:30,autoAlpha:0,duration:.9,stagger:.1,clearProps:'transform'},1.45)
-    .from('.hero-cue',{autoAlpha:0,duration:1,ease:'power2.out'},2.4)
-    /* the phone swings in, its sheet slides up and the ride records itself */
-    .from('.phone',{yPercent:60,rotationY:-75,rotationX:30,rotation:-10,scale:.55,autoAlpha:0,duration:2},.5)
-    .from('.sheet',{yPercent:105,duration:1.1},1.2)
-    .from('.wx',{scale:.5,autoAlpha:0,duration:.8,ease:'back.out(2)'},1.9)
-    .fromTo(track,{strokeDashoffset:1},{strokeDashoffset:0,duration:2.6,ease:'power2.inOut',onUpdate:function(){var t=1-gsap.getProperty(track,'strokeDashoffset'),q=track.getPointAtLength(len*Math.min(.9999,t));dot.setAttribute('cx',q.x);dot.setAttribute('cy',q.y);km.textContent=(RIDE.km*t).toFixed(1)}},1.3)
-    .from('.fl-in',{scale:0,autoAlpha:0,duration:.8,stagger:.14,ease:'back.out(2.4)'},2)
-    .add(function(){h1.classList.remove('lines')},2.7)
-    .to('#heroComet',{opacity:.9,duration:.6},3.9);
+  var track=$('#heroTrack'),dot=$('.ph-route .js-blob-start'),len=track.getTotalLength(),km=$('#hpKm'),iris=$('.hero-iris'),boot=$('.hero-boot'),kmTxt='';
+  gsap.set([iris,boot],{display:'block'});root.classList.remove('pre');
+  gsap.timeline({defaults:{ease:'power4.out'}})
+    .fromTo(iris,{scale:15},{scale:0,duration:1.25,ease:'power3.inOut',onComplete:function(){iris.style.display='none'}},0)
+    .to(boot,{scale:0,duration:.5,ease:'power2.in',onComplete:function(){boot.style.display='none'}},.95)
+    .from('#heroMap',{scale:1.22,duration:2.4,ease:'power3.out'},0)
+    .from(HS.chars,{yPercent:112,duration:1,stagger:.014},.45)
+    .from('.hl-u path',{strokeDashoffset:1,duration:.9,ease:'power3.inOut'},1.25)
+    .from('.hero-sub>*',{y:26,autoAlpha:0,duration:1,stagger:.1},.85)
+    .from('.navbar',{y:-28,autoAlpha:0,duration:1,clearProps:'transform'},.95)
+    .from('.phone',{yPercent:34,rotationY:-38,rotationX:16,rotation:-5,autoAlpha:0,duration:1.7,ease:'expo.out'},.55)
+    .from('.sheet',{yPercent:105,duration:1.1,ease:'expo.out'},1.15)
+    .from('.wx',{y:-10,autoAlpha:0,duration:.7},1.5)
+    .fromTo(track,{strokeDashoffset:1},{strokeDashoffset:0,duration:2.4,ease:'power2.inOut',onUpdate:function(){var t=1-gsap.getProperty(track,'strokeDashoffset'),q=track.getPointAtLength(len*Math.min(.9999,t)),v=(RIDE.km*t).toFixed(1);dot.setAttribute('cx',q.x);dot.setAttribute('cy',q.y);if(v!==kmTxt){kmTxt=v;km.textContent=v}}},1.35)
+    .from('.fl-in',{scale:.6,autoAlpha:0,duration:.8,stagger:.12,ease:'back.out(1.8)'},1.9)
+    .from('.hero-cue',{autoAlpha:0,duration:1,ease:'power2.out'},2.3)
+    .to('#heroComet',{opacity:.9,duration:.6},3.8);
   gsap.to('#heroComet',{strokeDashoffset:-1,duration:6,ease:'none',repeat:-1});
   /* idle: the phone floats, the chips bob out of step, the speed reading wanders like a live one */
-  gsap.to(ptr,{y:-12,duration:3.2,ease:'sine.inOut',yoyo:true,repeat:-1});
-  $$('.fl-in').forEach(function(f,i){gsap.to(f,{y:i%2?9:-9,duration:2.3+i*.5,ease:'sine.inOut',yoyo:true,repeat:-1,delay:i*.4})});
-  var spd=$$('.js-hspd'),k=0;setInterval(function(){if(document.hidden||heroP>=1)return;k++;var v=RIDE.km/(RIDE.min/60)+Math.sin(k*1.7)*1.4+Math.sin(k*.6)*.8;set(spd,v.toFixed(1))},1100);
+  gsap.to(ptr,{y:-12,duration:3.2,ease:'sine.inOut',yoyo:true,repeat:-1,delay:2});
+  Array.prototype.forEach.call(document.querySelectorAll('.fl-in'),function(f,i){gsap.to(f,{y:i%2?9:-9,duration:2.3+i*.5,ease:'sine.inOut',yoyo:true,repeat:-1,delay:2.8+i*.4})});
+  var spd=document.querySelectorAll('.js-hspd'),k=0;setInterval(function(){if(document.hidden||heroP>=1)return;k++;var v=RIDE.km/(RIDE.min/60)+Math.sin(k*1.7)*1.4+Math.sin(k*.6)*.8;set(spd,v.toFixed(1))},1100);
 }
-var started=false;function go(){if(started)return;started=true;intro();ScrollTrigger.refresh()}
-if(document.fonts&&document.fonts.ready)document.fonts.ready.then(go);setTimeout(go,1200);
+/* measure first, then give the browser two quiet frames before the first beat */
+var started=false;function go(){if(started)return;started=true;ScrollTrigger.refresh();requestAnimationFrame(function(){requestAnimationFrame(intro)})}
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(go);setTimeout(go,1500);
 
 /* hero: scroll. On a screen with room the hero pins: the copy leaves through its masks, the phone
    lies flat in the middle and switches to the big-number screen, then the night spreads out from
