@@ -1,0 +1,105 @@
+# Design notes
+
+How the Cycler landing page is put together and why.
+
+## Concept
+
+The page is one ride. Cycler's own follow-a-route screen shows the plan in blue and what you have
+ridden in red, so the site borrows exactly that: a blue line runs down the ride, and scrolling
+records it in red. Everything else stays quiet so that line can be the memorable thing.
+
+The story runs in time order, which is why chapters carry a time of day:
+
+| Section | When | Feature it carries |
+|---|---|---|
+| Hero | | What Cycler is, and what it leaves out |
+| Plan | The night before, 9:40 pm | Loops, A to B, suggested routes, GPX import |
+| Dawn | 9:40 pm to 5:52 am | No feature. The night passes |
+| Start | 5:52 am, km 0 | One-button start, weather, weekly goal |
+| Screen off | 6:03 am | Background recording, big-number screen |
+| Follow | 6:24 am | Turn cues, off-route vibration, signals |
+| Climb | 6:48 am | Laps, interval workouts, elevation |
+| Tea stop | 7:10 am | Auto-pause |
+| No signal | 7:31 am | Offline maps, recording without internet |
+| Finish | 7:49 am, km 32.4 | The save page: title, feeling, tags, notes |
+| Share | 8:15 am | Share cards, 3D flyover |
+| Look back | The weeks after | Activity, bike care, segments, widgets |
+| Privacy | | The five requests that leave the phone |
+| Install | | APK, version, licence |
+
+## Tokens
+
+Defined once at the top of `css/styles.css`.
+
+| Token | Value | Role |
+|---|---|---|
+| `--paper` | `#ECEEE8` | Map land, page background |
+| `--road` | `#FFFFFF` | Map roads, cards |
+| `--ink` | `#1C1C1A` | Text, primary buttons |
+| `--muted` | `#5D5C57` | Secondary text |
+| `--plan` | `#2563EB` | Planned route, selection (the app's accent) |
+| `--rec` | `#E5484D` | Recorded track, recording state |
+| `--stone` | `#F4C20D` | Kilometre stone cap, the stat ticker |
+| `--night` | `#111214` | Night sections, screen-off chapter |
+
+The palette is the app's: neutral surfaces, hairline borders, one blue, and red only for
+recording. The yellow is the one addition, taken from the caps of Indian roadside kilometre
+stones, which mark each chapter.
+
+## Type
+
+- **Bricolage Grotesque** for display. Its weight axis is animated in the hero.
+- **Hanken Grotesk** for body text and every number, with tabular figures so counters do not
+  jiggle.
+
+## The scroll-ride
+
+`build()` in `js/main.js` lays a spline through the ride:
+
+1. For each chapter it reads the kilometre stone's layout position and samples points down the
+   chapter's lane with a little seeded noise.
+2. The points become one SVG path, drawn twice: blue underneath, red on top with a dash offset.
+3. A lookup table maps a vertical position to a length along the path.
+
+Each frame, the middle of the viewport is converted to a length. That one number drives the red
+track, the rider dot, the distance, the climb (from a fixed elevation profile, 819 m to 982 m with
+412 m of ascent) and the kilometre stones. Speed is scroll velocity. Moving time counts only while
+you scroll, which is what makes the auto-pause chapter work.
+
+Positions come from `offsetTop` and `offsetLeft`, not `getBoundingClientRect`, so transforms from
+animations cannot bend the route.
+
+## Motion
+
+GSAP 3.12.5 with ScrollTrigger. All of it lives in the last block of `js/main.js`.
+
+| Where | What happens | Driven by |
+|---|---|---|
+| Hero | Words rise and gain weight, the route draws with the rider tracing it | Page load |
+| Hero | Map zooms, loop rotates, scene darkens into the night | Scroll, scrubbed |
+| Plan | Map wipes in; loop redraws and numbers roll on every change | Enter, then input |
+| Dawn | Pinned. Clock runs 9:40 pm to 5:52 am, stars fade, sun rises, sky becomes the map | Scroll, scrubbed |
+| Chapters | Stone drops and bounces, heading rises from a mask, demo tilts up | Enter |
+| Follow | Junction plays out with a live turn cue | Scroll, scrubbed |
+| Climb | Profile springs up, interval clock counts down | Enter |
+| Tea stop | Steam rises from the glass | Ride state: auto-paused |
+| No signal | Signal bars drop to "No service" | Scroll, scrubbed |
+| Finish | Save bursts in the route colours | Click |
+| Ticker | Drifts with scroll, skews with scroll velocity | Scroll |
+| Share | Cards deal out from a deck, tilt under the pointer | Scroll, pointer |
+| Flyover | Camera pass that starts slow, speeds up, slows down | Enter or click |
+| Look back | Bars grow, totals count, screenshot strip slides | Enter, scroll |
+
+### Fallbacks
+
+- `prefers-reduced-motion: reduce` skips the whole GSAP layer. The page is static and complete.
+- If GSAP fails to load, the same static page is shown. A timeout clears the pre-animation hiding
+  of the hero after 3.5 seconds in any case.
+- Pointer effects only attach on devices with hover and a fine pointer.
+
+## Content rules
+
+- Claims about the app follow the Cycler README and changelog.
+- Demos that are not the real app say so on the page.
+- The example ride (Nandi foothills at sunrise, 32.4 km, 412 m, 1:34 moving, 20.7 km/h) comes from
+  the app's own share-card screenshots.
