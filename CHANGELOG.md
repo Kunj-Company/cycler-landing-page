@@ -2,6 +2,16 @@
 
 Notable changes to the Cycler landing page. Versions use the `0.1.N` format.
 
+## 0.1.4
+
+### Changed
+- The page opens on a real default loop: 32 km heading south from Thattekad Bird Sanctuary,
+  Kerala (30.3 km, 249 m of climb, 1h 47m on a road bike). It was routed once with BRouter and is
+  stored in `js/default-loop.js`, so no server is called on load. It replaces the Nandi foothills
+  example everywhere on the page.
+- The planner's map and the weather line load when the planner scrolls into view.
+- Presets are now Thattekad Bird Sanctuary, Cubbon Park and Fort Kochi.
+
 ## 0.1.3
 
 ### Added

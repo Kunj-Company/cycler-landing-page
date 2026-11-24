@@ -10,10 +10,10 @@ later. Scrolling is riding: the planned route is drawn in blue, your scroll reco
 a ride bar at the bottom counts distance, speed, moving time and climb. Stop scrolling and it
 auto-pauses, the way the app does.
 
-![The planner with a real loop from Fort Kochi on the map](docs/preview-planner.jpg)
+![The planner showing the default loop from Thattekad Bird Sanctuary on the map](docs/preview-planner.jpg)
 
-The planner is live: search a place and it routes a real loop there, which the rest of the page
-then follows.
+The planner is live. It opens on a loop from Thattekad Bird Sanctuary in Kerala; search a place
+and it routes a real loop there, which the rest of the page then follows.
 
 | The night passes | A junction, played by scroll | Share cards |
 |---|---|---|
@@ -77,6 +77,7 @@ section, the feature list heading and `llms.txt` together.
 |---|---|
 | `index.html` | The page markup, in story order |
 | `css/styles.css` | Design tokens and all styles |
+| `js/default-loop.js` | The stored default loop: place, settings and the routed track |
 | `js/main.js` | The ride model, the planner, scroll-ride logic, the demos, and the GSAP choreography |
 | `404.html` | Self-contained "you have left the route" page |
 | `img/` | App logo, icons, social preview and screenshots |
@@ -102,8 +103,9 @@ section, the feature list heading and `llms.txt` together.
 
 ## Services the planner calls
 
-The same free community servers the app uses, with no API keys. Nothing is called until a visitor
-uses the planner.
+The same free community servers the app uses, with no API keys. The default loop is stored with
+the page, so nothing is called on load. Map tiles and the weather line load when the planner
+scrolls into view; search and routing run only when a visitor plans a loop.
 
 | What | Service | Sent |
 |---|---|---|
@@ -125,10 +127,10 @@ Feature descriptions, the privacy list and version details follow the Cycler
 
 Some things on the page are illustrations, and the page says so where it matters:
 
-- Until you pick a start, the planner shows a sketched loop with estimated numbers. After that it
-  is a real route.
+- The page opens on a real loop from Thattekad Bird Sanctuary, routed once with BRouter and stored
+  in `js/default-loop.js`. Planning your own replaces it.
 - The activity week, segment times and bike-care numbers are sample data.
-- The times of day, the tea stall and the weather values are story details.
+- The times of day and the tea stall are story details.
 
 ## Contributing
 

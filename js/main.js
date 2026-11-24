@@ -122,7 +122,8 @@ function useRoute(res,place){var c=res.pts,n=c.length,cum=[0],i;for(i=1;i<n;i++)
     var kx=Math.cos(rad((s+n)/2)),sc=Math.min(330/Math.max(1e-9,(e-w)*kx),230/Math.max(1e-9,n-s)),step=Math.max(1,Math.floor(c.length/300)),d='',P=function(p){return [200+(p[0]-(w+e)/2)*kx*sc,150-(p[1]-(s+n)/2)*sc]};
     for(i=0;i<c.length;i+=step){var xy=P(c[i]);d+=(i?'L':'M')+xy[0].toFixed(1)+' '+xy[1].toFixed(1)}
     var st=P(c[0]);$('#planLoop').setAttribute('d',d+'Z');$('#planStart').setAttribute('cx',st[0]);$('#planStart').setAttribute('cy',st[1]);if(fx.planDraw)fx.planDraw();
-    box.classList.add('real');note.textContent='Loading the map…';
+    box.classList.add('real');if(!PL.glWanted){note.textContent='';return}
+    note.textContent='Loading the map…';
     glMap().then(function(m){if(!m){note.textContent='Map tiles are not available here. This is the shape of your route.';return}
       if(PL.last!==res)return;note.textContent='';
       m.getSource('route').setData({type:'Feature',properties:{},geometry:{type:'LineString',coordinates:c.map(function(p){return [p[0],p[1]]})}});
@@ -142,14 +143,14 @@ function useRoute(res,place){var c=res.pts,n=c.length,cum=[0],i;for(i=1;i<n;i++)
     }).then(function(res){clearTimeout(to);box.classList.remove('busy');PL.cache[key]=res;if(PL.ctl===ctl)show(res)}).catch(function(e){clearTimeout(to);if(PL.ctl!==ctl)return;box.classList.remove('busy');
       if(e&&e.name==='AbortError'&&!timed)return;var t=String(e&&e.message||'').toLowerCase(),none=['no track found','not mapped','no route found','datafile','island'].some(function(x){return t.indexOf(x)>=0});
       say(timed?ERR.busy:navigator.onLine===false||e instanceof TypeError?ERR.off:none?ERR.none:ERR.busy,true);go.hidden=!RIDE.real})}
-  function soon(){clearTimeout(PL.timer);PL.timer=setTimeout(plan,450)}
+  function soon(){PL.glWanted=true;clearTimeout(PL.timer);PL.timer=setTimeout(plan,450)}
 
   function weather(pl){fetch('https://api.open-meteo.com/v1/forecast?latitude='+pl.lat.toFixed(3)+'&longitude='+pl.lon.toFixed(3)+'&current=temperature_2m,wind_speed_10m,wind_direction_10m&hourly=precipitation_probability&forecast_hours=3&timezone=auto').then(function(r){return r.json()}).then(function(o){
       if(PL.place!==pl||!o.current)return;var c=o.current,pr=o.hourly&&o.hourly.precipitation_probability||[],rain=0;pr.forEach(function(x){rain=Math.max(rain,x||0)});
       var from=['N','NE','E','SE','S','SW','W','NW'][Math.floor((((c.wind_direction_10m%360)+360)%360+22.5)/45)%8],t=Math.round(c.temperature_2m),wd=Math.round(c.wind_speed_10m);
       $('#startWx').textContent=t+'°, wind '+wd+' km/h '+from+', rain '+rain+'%. Now, at '+pl.short+'.';
       $('.wx').innerHTML=t+'°<span>'+wd+' km/h '+from+'</span><span>Rain '+rain+'%</span>'}).catch(function(){})}
-  function choose(pl){PL.place=pl;q.value=pl.label;close();$$('#presets [data-lat]').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.label===pl.label)});plan();weather(pl)}
+  function choose(pl){PL.glWanted=true;PL.place=pl;q.value=pl.label;close();$$('#presets [data-lat]').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.label===pl.label)});plan();weather(pl)}
 
   /* search box with suggestions */
   var sctl=null,stimer=0,items=[],sel=-1;
@@ -166,7 +167,7 @@ function useRoute(res,place){var c=res.pts,n=c.length,cum=[0],i;for(i=1;i<n;i++)
     else if(e.key==='Escape')close()});
   q.addEventListener('blur',function(){setTimeout(close,150)});
   $('#planForm').addEventListener('submit',function(e){e.preventDefault();if(items.length&&!list.hidden)choose(items[Math.max(0,sel)]);else search(true)});
-  $$('#presets [data-lat]').forEach(function(b){b.addEventListener('click',function(){choose({label:b.dataset.label,short:b.dataset.short,lat:+b.dataset.lat,lon:+b.dataset.lon})})});
+  $$('#presets [data-lat]').forEach(function(b){b.addEventListener('click',function(){choose({label:b.dataset.label,short:b.dataset.short,name:b.dataset.name,lat:+b.dataset.lat,lon:+b.dataset.lon})})});
   $('#geoBtn').addEventListener('click',function(){var b=this;if(!navigator.geolocation){say('Location is not available in this browser.',false);return}
     b.textContent='Finding you…';navigator.geolocation.getCurrentPosition(function(pos){b.textContent='Use my location';choose({label:'My location',short:'your location',name:'Morning loop',lat:pos.coords.latitude,lon:pos.coords.longitude})},
       function(){b.textContent='Use my location';say('Could not get your location. Search for a place instead.',false)},{timeout:12000,maximumAge:600000})});
@@ -176,7 +177,17 @@ function useRoute(res,place){var c=res.pts,n=c.length,cum=[0],i;for(i=1;i<n;i++)
   km.addEventListener('change',function(){if(PL.place)soon()});
   radio('#dirs',function(b){PL.dir=b.dataset.d;PL.place?soon():sketch()});
   radio('#bikes',function(b){PL.prof=b.dataset.p;PL.spd=+b.dataset.b;PL.place?soon():sketch()});
-  sketch()})();
+
+  /* open on the stored default loop: a real ride, with no request until the planner is on screen */
+  var D=window.CYCLER_DEFAULT;
+  if(D&&D.route&&D.route.pts&&D.route.pts.length>1){PL.place=D.place;PL.dir=D.dir;PL.prof=D.prof;km.value=D.km;$('#kmOut').textContent=D.km;q.value=D.place.label;
+    $$('#dirs [role=radio]').forEach(function(b){b.setAttribute('aria-checked',b.dataset.d===D.dir)});
+    $$('#bikes [role=radio]').forEach(function(b){b.setAttribute('aria-checked',b.dataset.p===D.prof);if(b.dataset.p===D.prof)PL.spd=+b.dataset.b});
+    $$('#presets [data-lat]').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.label===D.place.label)});
+    PL.cache[[D.place.lat.toFixed(5),D.place.lon.toFixed(5),D.dir,D.prof,D.km*1000].join('|')]=D.route;show(D.route);say('A loop from '+D.place.short+' to start with. Search anywhere to plan your own.');
+    var wake=function(){if(PL.glWanted)return;PL.glWanted=true;if(PL.last)drawRoute(PL.last);weather(PL.place)};
+    if('IntersectionObserver' in window){var io=new IntersectionObserver(function(en){if(en[0].isIntersecting){io.disconnect();wake()}},{rootMargin:'400px'});io.observe(box)}else wake()}
+  else sketch()})();
 function setPlan(climb,mins,k){$('#pClimb').textContent=Math.round(climb).toLocaleString('en-IN')+' m';$('#pTime').textContent=fmtH(mins);if(k!=null)$('#pDist').textContent=(k>=100?Math.round(k):+(+k).toFixed(1))+' km'}
 function radio(sel,fn){var bs=$$(sel+' [role=radio]');bs.forEach(function(b){b.addEventListener('click',function(){bs.forEach(function(x){x.setAttribute('aria-checked',x===b)});fn&&fn(b)})})}
 radio('#feel');$$('#tags .chip').forEach(function(b){b.addEventListener('click',function(){b.setAttribute('aria-pressed',b.getAttribute('aria-pressed')!=='true')})});
@@ -319,7 +330,7 @@ gsap.timeline({scrollTrigger:{trigger:'.planner',start:'top 78%',once:true}})
   .from('#planMap',{scale:1.5,duration:1.8,ease:'power3.out'},0)
   .from('.ctl',{x:70,autoAlpha:0,duration:1,ease:'power3.out'},.25)
   .from('.ctl .row,.ctl .result>div',{y:22,autoAlpha:0,stagger:.07,duration:.6,ease:'power3.out',clearProps:'transform'},.55)
-  .add(function(){planShown=true;pv.c=0;pv.m=0;fx.planDraw();setPlan(0,0,+$('#km').value);if(!PL.place)$('#km').dispatchEvent(new Event('input'))},.8);
+  .add(function(){planShown=true;pv.c=0;pv.m=0;pv.k=0;fx.planDraw();if(PL.last)fx.plan(PL.last.asc,PL.last.time/60,PL.last.dist/1000);else $('#km').dispatchEvent(new Event('input'))},.8);
 gsap.from('.plan-more li',{y:40,autoAlpha:0,stagger:.12,duration:.9,ease:'power3.out',scrollTrigger:{trigger:'.plan-more',start:'top 90%',once:true}});
 
 /* ---- 3. dawn: the clock runs through the night, pinned ---- */

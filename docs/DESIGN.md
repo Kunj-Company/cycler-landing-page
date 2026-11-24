@@ -57,7 +57,10 @@ stones, which mark each chapter.
 ## The planner and the ride model
 
 `RIDE` in `js/main.js` is the one object the page reads its ride from: name, place, distance,
-climb, moving time, date and a 401-sample elevation profile. It starts as the example ride.
+climb, moving time, date and a 401-sample elevation profile. On load it is filled from
+`js/default-loop.js`, a 32 km loop south from the entrance of Thattekad Bird Sanctuary that was
+routed once and stored, so the page opens on a real ride without calling a server. To change the
+default, route a loop and replace that file's place, settings and track.
 `applyRide()` pushes it into every element marked `data-r`, the charts, the ticker, the titles and
 the kilometre stones. `setShape()` gives the hero, share cards and flyover the route's outline.
 
@@ -70,7 +73,7 @@ The planner replaces `RIDE` with a real loop, following the app's code:
    off the target, the circle is resized once and the closer result is kept.
 4. Difficulty is the app's formula: kilometres plus climb divided by 40.
 
-Until a place is chosen the planner draws a sketch with estimated numbers and says so.
+If the default file is missing, the planner draws a sketch with estimated numbers instead.
 
 ## The scroll-ride
 
@@ -127,5 +130,4 @@ links call `scrollIntoView` with smooth behaviour instead.
 
 - Claims about the app follow the Cycler README and changelog.
 - Demos that are not the real app say so on the page.
-- The example ride (Nandi foothills at sunrise, 32.4 km, 412 m, 1:34 moving, 20.7 km/h) comes from
-  the app's own share-card screenshots.
+- The default ride is the stored Thattekad loop. Its numbers are BRouter's, not invented.
