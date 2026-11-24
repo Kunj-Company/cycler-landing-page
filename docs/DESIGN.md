@@ -110,9 +110,10 @@ GSAP 3.12.5 with ScrollTrigger. All of it lives in the last block of `js/main.js
 | No signal | Signal bars drop to "No service" | Scroll, scrubbed |
 | Finish | Save bursts in the route colours | Click |
 | Ticker | Drifts with scroll, skews with scroll velocity | Scroll |
-| Share | Cards deal out from a deck, tilt under the pointer | Scroll, pointer |
+| Share | The card rises in, tilts a little under the pointer, cross-fades between styles | Enter, pointer, click |
 | Flyover | Camera pass that starts slow, speeds up, slows down | Enter or click |
-| Look back | Bars grow, totals count, screenshot strip slides | Enter, scroll |
+| Look back | Bars grow, totals count | Enter |
+| After the ride | Each block rises a little and fades in, once | Enter |
 
 ### Scroll speed cap
 
@@ -141,6 +142,20 @@ usual: what follows is reference, meant to be skimmed. Scrolling back up eases t
 the scroll position to measure sections, and smooth scrolling turns that jump into an animation,
 so every start and end is measured wrong. The `gs` class on `html` switches it off, and in-page
 links call `scrollIntoView` with smooth behaviour instead.
+
+## After the ride
+
+The yellow ticker ends the story. Everything below it is reference, so it is deliberately quieter
+than the ride:
+
+- One paper surface. No alternating bands, no dark section; sections are separated by a hairline
+  and 128 px of space.
+- Hairlines instead of boxes. The only filled panels are the activity chart and the screenshots.
+- One thing to look at per section: one share card with a style picker instead of a row of five,
+  one sheet of screens behind tabs instead of a strip of four.
+- A heading column that stays put while its list scrolls (features, privacy, FAQ).
+- The feature list is grouped into Ride, Plan, Look back and Your data.
+- Motion is one gesture: rise a little and fade in, once.
 
 ## Content rules
 

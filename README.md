@@ -17,7 +17,7 @@ and it routes a real loop there, which the rest of the page then follows.
 
 | The night passes | A junction, played by scroll | Share cards |
 |---|---|---|
-| ![Pinned dawn scene with a running clock](docs/preview-dawn.jpg) | ![Turn cue demo in the ride](docs/preview-follow.jpg) | ![Share cards dealing out](docs/preview-share.jpg) |
+| ![Pinned dawn scene with a running clock](docs/preview-dawn.jpg) | ![Turn cue demo in the ride](docs/preview-follow.jpg) | ![A share card with its title field and style picker](docs/preview-share.jpg) |
 
 ## Run it
 

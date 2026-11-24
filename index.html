@@ -633,40 +633,48 @@
 <div class="ticker" aria-hidden="true"><div class="ticker-row num" id="tickerRow"><span>30.3 km</span><span>249 m up</span><span>1h 47m</span><span>17.1 km/h</span><span>30.3 km</span><span>249 m up</span><span>1h 47m</span><span>17.1 km/h</span><span>30.3 km</span><span>249 m up</span><span>1h 47m</span><span>17.1 km/h</span></div></div>
 
 <!-- ================= SHARE ================= -->
-<section class="sec share" id="share">
+<section class="sec quiet share" id="share">
   <div class="wrap">
+    <div class="share-grid">
+      <div class="share-side">
     <div class="sec-head">
-      <p class="when">8:15 am, second breakfast</p>
-      <h2>Show the ride without handing over your data.</h2>
-      <p>Share a card in 13 styles. Edit the title, pick the numbers, add a photo, choose the size. These are five of them, wearing your title.</p>
+          <p class="when">8:15 am, second breakfast</p>
+          <h2>Show the ride without handing over your data.</h2>
+          <p>Share a card in 13 styles. Edit the title, pick the numbers, add a photo, choose the size. These are five of them, wearing your title.</p>
+        </div>
+        <label class="field"><span class="label">Card title</span><input type="text" id="cardTitle" class="js-title-in" value="Thattekad at sunrise" maxlength="48"></label>
+        <div class="styles" role="radiogroup" aria-label="Card style" id="cardStyles">
+          <button type="button" role="radio" aria-checked="true" aria-label="Dark"><i class="sw1"></i></button>
+          <button type="button" role="radio" aria-checked="false" aria-label="Panel" tabindex="-1"><i class="sw2"></i></button>
+          <button type="button" role="radio" aria-checked="false" aria-label="Blue" tabindex="-1"><i class="sw3"></i></button>
+          <button type="button" role="radio" aria-checked="false" aria-label="Elevation" tabindex="-1"><i class="sw4"></i></button>
+          <button type="button" role="radio" aria-checked="false" aria-label="Clear" tabindex="-1"><i class="sw5"></i></button>
+        </div>
+        <p class="caption">The last one has a clear background, for laying over your own photo or story.</p>
+      </div>
+    <div class="cards" id="cards" aria-live="polite">
+        <div class="sc s1 on"><svg class="loop" viewBox="0 0 200 160"><use href="#loop"/></svg>
+          <h3 class="js-title">Thattekad at sunrise</h3><div class="d" data-r="date">Wed 25 Nov 2026</div>
+          <div class="grid2 num"><div><span class="label">Distance</span><b><span data-r="km">30.3</span><small>km</small></b></div><div><span class="label">Moving time</span><b><span data-r="movC">1:47</span><small>h</small></b></div><div><span class="label">Climb</span><b><span data-r="climb">249</span><small>m</small></b></div><div><span class="label">Avg speed</span><b><span data-r="avg">17.1</span><small>km/h</small></b></div></div>
+          <div class="mk">Cycler</div></div>
+        <div class="sc s2"><svg class="loop" viewBox="0 0 200 160" style="color:#E5484D"><use href="#loop"/></svg>
+          <div class="inner"><h3 class="js-title">Thattekad at sunrise</h3><div class="d" data-r="date">Wed 25 Nov 2026</div>
+          <div class="grid2 num"><div><span class="label">Distance</span><b><span data-r="km">30.3</span><small>km</small></b></div><div><span class="label">Moving time</span><b><span data-r="movC">1:47</span><small>h</small></b></div><div><span class="label">Climb</span><b><span data-r="climb">249</span><small>m</small></b></div><div><span class="label">Avg speed</span><b><span data-r="avg">17.1</span><small>km/h</small></b></div></div>
+          <div class="mk">Cycler</div></div></div>
+        <div class="sc s3"><svg class="loop" viewBox="0 0 200 160"><use href="#loop"/></svg>
+          <h3 class="js-title">Thattekad at sunrise</h3><div class="d" data-r="date">Wed 25 Nov 2026</div>
+          <div class="grid2 num"><div><span class="label">Distance</span><b><span data-r="km">30.3</span><small>km</small></b></div><div><span class="label">Moving time</span><b><span data-r="movC">1:47</span><small>h</small></b></div><div><span class="label">Climb</span><b><span data-r="climb">249</span><small>m</small></b></div><div><span class="label">Avg speed</span><b><span data-r="avg">17.1</span><small>km/h</small></b></div></div>
+          <div class="mk">Cycler</div></div>
+        <div class="sc s4"><svg class="prof" viewBox="0 0 400 150" preserveAspectRatio="none"><path class="js-prof" fill="#2563EB" opacity=".85"/></svg><svg class="loop" viewBox="0 0 200 160" style="color:#E5484D"><use href="#loop"/></svg>
+          <h3 class="js-title">Thattekad at sunrise</h3><div class="d" data-r="date">Wed 25 Nov 2026</div>
+          <div class="grid2 num"><div><span class="label">Distance</span><b><span data-r="km">30.3</span><small>km</small></b></div><div><span class="label">Moving time</span><b><span data-r="movC">1:47</span><small>h</small></b></div><div><span class="label">Climb</span><b><span data-r="climb">249</span><small>m</small></b></div><div><span class="label">Avg speed</span><b><span data-r="avg">17.1</span><small>km/h</small></b></div></div>
+          <div class="mk">Cycler</div></div>
+        <div class="sc s5"><svg class="loop" viewBox="0 0 200 160"><use href="#loop"/></svg>
+          <h3 class="js-title">Thattekad at sunrise</h3><div class="d" data-r="date">Wed 25 Nov 2026</div>
+          <div class="grid2 num"><div><span class="label">Distance</span><b><span data-r="km">30.3</span><small>km</small></b></div><div><span class="label">Moving time</span><b><span data-r="movC">1:47</span><small>h</small></b></div><div><span class="label">Climb</span><b><span data-r="climb">249</span><small>m</small></b></div><div><span class="label">Avg speed</span><b><span data-r="avg">17.1</span><small>km/h</small></b></div></div>
+          <div class="mk">Cycler</div></div>
+      </div>
     </div>
-    <div class="share-edit">
-      <label><span class="label">Card title</span><input type="text" id="cardTitle" class="js-title-in" value="Thattekad at sunrise" maxlength="48"></label>
-      <div class="navbtns"><button type="button" id="prevCard" aria-label="Previous card">←</button><button type="button" id="nextCard" aria-label="Next card">→</button></div>
-    </div>
-    <div class="cards" id="cards" tabindex="0" aria-label="Share card styles">
-      <div class="sc s1"><svg class="loop" viewBox="0 0 200 160"><use href="#loop"/></svg>
-        <h3 class="js-title">Thattekad at sunrise</h3><div class="d" data-r="date">Wed 25 Nov 2026</div>
-        <div class="grid2 num"><div><span class="label">Distance</span><b><span data-r="km">30.3</span><small>km</small></b></div><div><span class="label">Moving time</span><b><span data-r="movC">1:47</span><small>h</small></b></div><div><span class="label">Climb</span><b><span data-r="climb">249</span><small>m</small></b></div><div><span class="label">Avg speed</span><b><span data-r="avg">17.1</span><small>km/h</small></b></div></div>
-        <div class="mk">Cycler</div></div>
-      <div class="sc s2"><svg class="loop" viewBox="0 0 200 160" style="color:#E5484D"><use href="#loop"/></svg>
-        <div class="inner"><h3 class="js-title">Thattekad at sunrise</h3><div class="d" data-r="date">Wed 25 Nov 2026</div>
-        <div class="grid2 num"><div><span class="label">Distance</span><b><span data-r="km">30.3</span><small>km</small></b></div><div><span class="label">Moving time</span><b><span data-r="movC">1:47</span><small>h</small></b></div><div><span class="label">Climb</span><b><span data-r="climb">249</span><small>m</small></b></div><div><span class="label">Avg speed</span><b><span data-r="avg">17.1</span><small>km/h</small></b></div></div>
-        <div class="mk">Cycler</div></div></div>
-      <div class="sc s3"><svg class="loop" viewBox="0 0 200 160"><use href="#loop"/></svg>
-        <h3 class="js-title">Thattekad at sunrise</h3><div class="d" data-r="date">Wed 25 Nov 2026</div>
-        <div class="grid2 num"><div><span class="label">Distance</span><b><span data-r="km">30.3</span><small>km</small></b></div><div><span class="label">Moving time</span><b><span data-r="movC">1:47</span><small>h</small></b></div><div><span class="label">Climb</span><b><span data-r="climb">249</span><small>m</small></b></div><div><span class="label">Avg speed</span><b><span data-r="avg">17.1</span><small>km/h</small></b></div></div>
-        <div class="mk">Cycler</div></div>
-      <div class="sc s4"><svg class="prof" viewBox="0 0 400 150" preserveAspectRatio="none"><path class="js-prof" fill="#2563EB" opacity=".85"/></svg><svg class="loop" viewBox="0 0 200 160" style="color:#E5484D"><use href="#loop"/></svg>
-        <h3 class="js-title">Thattekad at sunrise</h3><div class="d" data-r="date">Wed 25 Nov 2026</div>
-        <div class="grid2 num"><div><span class="label">Distance</span><b><span data-r="km">30.3</span><small>km</small></b></div><div><span class="label">Moving time</span><b><span data-r="movC">1:47</span><small>h</small></b></div><div><span class="label">Climb</span><b><span data-r="climb">249</span><small>m</small></b></div><div><span class="label">Avg speed</span><b><span data-r="avg">17.1</span><small>km/h</small></b></div></div>
-        <div class="mk">Cycler</div></div>
-      <div class="sc s5"><svg class="loop" viewBox="0 0 200 160"><use href="#loop"/></svg>
-        <h3 class="js-title">Thattekad at sunrise</h3><div class="d" data-r="date">Wed 25 Nov 2026</div>
-        <div class="grid2 num"><div><span class="label">Distance</span><b><span data-r="km">30.3</span><small>km</small></b></div><div><span class="label">Moving time</span><b><span data-r="movC">1:47</span><small>h</small></b></div><div><span class="label">Climb</span><b><span data-r="climb">249</span><small>m</small></b></div><div><span class="label">Avg speed</span><b><span data-r="avg">17.1</span><small>km/h</small></b></div></div>
-        <div class="mk">Cycler</div></div>
-    </div>
-    <p class="caption">The last one has a clear background, for laying over your own photo or story.</p>
 
     <div class="fly">
       <div class="fly-text">
@@ -689,7 +697,7 @@
 </section>
 
 <!-- ================= LOOK BACK ================= -->
-<section class="sec" id="lookback">
+<section class="sec quiet" id="lookback">
   <div class="wrap">
     <div class="sec-head">
       <p class="when">The weeks after</p>
@@ -697,7 +705,7 @@
       <p>A feed of every finished ride, charts by week, month or year, records and best efforts, and a bike that tells you when it needs attention.</p>
     </div>
     <div class="back-grid">
-      <div class="card panel act">
+      <div class="panel act">
         <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center">
           <h3>Activity, 16 to 22 Nov</h3>
           <div class="seg" role="radiogroup" aria-label="Chart shows" id="metric">
@@ -711,14 +719,14 @@
         <div class="days"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div>
         <p class="fine" style="color:var(--muted)">Sample week. Weekly goal of 50 km reached on Saturday.</p>
       </div>
-      <div class="card panel care">
+      <div class="panel care">
         <h3>Bike care</h3>
         <div class="job"><div class="r"><b>Lube the chain</b><button type="button" class="chip" id="lubeBtn">Mark done</button></div><small class="num" id="lubeTxt">238 of 250 km since last time</small><div class="bar due" id="lubeBar"><span style="width:95%"></span></div></div>
         <div class="job"><div class="r"><b>Check tyre pressure</b></div><small class="num">3 of 7 days</small><div class="bar"><span style="width:43%"></span></div></div>
         <div class="job"><div class="r"><b>Full service</b></div><small class="num">1,840 of 3,000 km</small><div class="bar"><span style="width:61%"></span></div></div>
         <p class="fine" style="color:var(--muted)">Jobs run on kilometres or days. You write the list.</p>
       </div>
-      <div class="card panel segm">
+      <div class="panel segm">
         <h3>Segments</h3>
         <p style="font-size:15.5px;color:var(--muted)">Cut a stretch from any ride. Every ride over it is timed and ranked against your own past efforts.</p>
         <div class="rank num">
@@ -728,75 +736,105 @@
         </div>
         <p class="fine" style="color:var(--muted)">Tea stall climb, 3.1 km. Sample times.</p>
       </div>
-      <div class="card widg">
-        <h3>Start from the home screen</h3>
-        <img src="img/widgets.webp" alt="Cycler's Ride and This week widgets on a home screen, in light and dark" width="1140" height="611" loading="lazy">
-        <p style="font-size:15.5px;color:var(--muted)">Four widgets: Ride starts, pauses and laps a ride. This week, Last ride and Riding stats keep the numbers in view.</p>
-      </div>
     </div>
 
-    <div class="screens" tabindex="0" aria-label="Screens from the app">
-      <figure><img src="img/screens-ride.webp" alt="The Ride screen, recording, big numbers and turn cues" width="1500" height="803" loading="lazy"></figure>
-      <figure><img src="img/screens-plan.webp" alt="Planning A to B and loops, the rides feed and a ride page" width="1500" height="803" loading="lazy"></figure>
-      <figure><img src="img/screens-more.webp" alt="Activity chart, bike care, share cards and settings" width="1500" height="803" loading="lazy"></figure>
-      <figure class="dk"><img src="img/screens-dark.webp" alt="Recording, rides, activity and about in dark mode" width="1500" height="803" loading="lazy"></figure>
+    <div class="gallery">
+      <div class="gal-head">
+        <h3>The app itself</h3>
+        <div class="tabs" role="tablist" aria-label="Screens from the app" id="galTabs">
+          <button type="button" role="tab" aria-selected="true">Ride</button>
+          <button type="button" role="tab" aria-selected="false" tabindex="-1">Plan and rides</button>
+          <button type="button" role="tab" aria-selected="false" tabindex="-1">Activity and care</button>
+          <button type="button" role="tab" aria-selected="false" tabindex="-1">Dark mode</button>
+          <button type="button" role="tab" aria-selected="false" tabindex="-1">Widgets</button>
+        </div>
+      </div>
+      <div class="gal-stage" id="galStage">
+        <figure class="on"><img src="img/screens-ride.webp" alt="The Ride screen, recording, big numbers and turn cues" width="1500" height="803" loading="lazy"></figure>
+        <figure><img src="img/screens-plan.webp" alt="Planning A to B and loops, the rides feed and a ride page" width="1500" height="803" loading="lazy"></figure>
+        <figure><img src="img/screens-more.webp" alt="Activity chart, bike care, share cards and settings" width="1500" height="803" loading="lazy"></figure>
+        <figure class="dk"><img src="img/screens-dark.webp" alt="Recording, rides, activity and about in dark mode" width="1500" height="803" loading="lazy"></figure>
+        <figure><img src="img/widgets.webp" alt="Cycler's Ride and This week widgets on a home screen, in light and dark" width="1140" height="611" loading="lazy"></figure>
+      </div>
+      <p class="caption">Screens from Cycler 0.1.12. The four home-screen widgets: Ride starts, pauses and laps a ride without opening the app. This week, Last ride and Riding stats keep the numbers in view.</p>
     </div>
-    <p class="caption">Screens from Cycler 0.1.12. Scroll sideways for more.</p>
   </div>
 </section>
 
 <!-- ================= FEATURES ================= -->
-<section class="sec feat" id="features">
-  <div class="wrap">
+<section class="sec quiet feat" id="features">
+  <div class="wrap split">
     <div class="sec-head">
       <h2>Everything Cycler does.</h2>
       <p>The ride above shows the main ideas. This is the full list, as of version 0.1.12.</p>
     </div>
-    <dl class="feat-grid">
-      <div><dt>Record with the screen off</dt><dd>Live map, start, pause and finish. Distance, speed, moving time, average, max and climb, with auto-pause when you stop.</dd></div>
-      <div><dt>Follow a route</dt><dd>Ride any saved or planned route with distance to go, the next turn, a nudge before each turn and a vibration if you leave the line.</dd></div>
-      <div><dt>Plan A to B</dt><dd>Start and end fields, optional stops, search or long-press the map. Up to three routes with distance, climb, time, difficulty and an elevation profile.</dd></div>
-      <div><dt>Plan a loop</dt><dd>Pick a distance from 5 to 200 km and get round trips in four directions, or ask for short, medium and long loops near you.</dd></div>
-      <div><dt>Laps and interval workouts</dt><dd>A Lap button and optional auto-lap. Interval workouts with on-screen, vibration and spoken prompts for each block.</dd></div>
-      <div><dt>Big-number ride screen</dt><dd>Swipeable pages of large numbers, with the fields you choose.</dd></div>
-      <div><dt>Weather and daylight</dt><dd>Wind, temperature and rain chance on the map, and a sunset warning before you start.</dd></div>
-      <div><dt>Rides feed</dt><dd>Every finished ride with stats, route shape, photos, how it felt, notes and tags. Filter by week, month or year, sort, search and filter by tag.</dd></div>
-      <div><dt>Ride pages</dt><dd>Photos and videos, laps, stops, stopped time, signal count, heart rate, and optional advanced speed, elevation and effort detail.</dd></div>
-      <div><dt>Activity and records</dt><dd>One chart by week, month or year for distance, time or climb, with totals, records and best efforts, and all rides on one map.</dd></div>
-      <div><dt>Segments</dt><dd>Cut a stretch from any ride. Every ride over it is timed and ranked.</dd></div>
-      <div><dt>Share cards and flyover</dt><dd>A card in 13 swipeable styles with editable title, numbers, photo and size, or an animated 3D flyover video of the ride.</dd></div>
-      <div><dt>Bike care</dt><dd>Jobs with kilometre or day intervals, notes and history. Mark one done today, on an earlier date or after a past ride.</dd></div>
-      <div><dt>Home-screen widgets</dt><dd>Ride, This week, Last ride and Riding stats. Start, pause and lap a ride without opening the app.</dd></div>
-      <div><dt>GPX import, FIT, TCX and GPX export</dt><dd>Bring routes in as GPX. Send rides out as FIT, TCX or GPX files to any app that imports them.</dd></div>
-      <div><dt>Health Connect</dt><dd>Reads heart rate and weight that other apps put in Health Connect. Read only.</dd></div>
-      <div><dt>Offline maps</dt><dd>Save the map around you for rides without signal. Recording itself never needs the internet.</dd></div>
-      <div><dt>Backup and restore</dt><dd>Rides, routes, photos, segments, bike care and settings in one zip file that you keep.</dd></div>
-    </dl>
+    <div class="feat-grid">
+      <div class="fgroup">
+        <h3>Ride</h3>
+        <dl>
+          <div><dt>Record with the screen off</dt><dd>Live map, start, pause and finish. Distance, speed, moving time, average, max and climb, with auto-pause when you stop.</dd></div>
+          <div><dt>Follow a route</dt><dd>Ride any saved or planned route with distance to go, the next turn, a nudge before each turn and a vibration if you leave the line.</dd></div>
+          <div><dt>Laps and interval workouts</dt><dd>A Lap button and optional auto-lap. Interval workouts with on-screen, vibration and spoken prompts for each block.</dd></div>
+          <div><dt>Big-number ride screen</dt><dd>Swipeable pages of large numbers, with the fields you choose.</dd></div>
+          <div><dt>Weather and daylight</dt><dd>Wind, temperature and rain chance on the map, and a sunset warning before you start.</dd></div>
+          <div><dt>Offline maps</dt><dd>Save the map around you for rides without signal. Recording itself never needs the internet.</dd></div>
+        </dl>
+      </div>
+      <div class="fgroup">
+        <h3>Plan</h3>
+        <dl>
+          <div><dt>Plan A to B</dt><dd>Start and end fields, optional stops, search or long-press the map. Up to three routes with distance, climb, time, difficulty and an elevation profile.</dd></div>
+          <div><dt>Plan a loop</dt><dd>Pick a distance from 5 to 200 km and get round trips in four directions, or ask for short, medium and long loops near you.</dd></div>
+        </dl>
+      </div>
+      <div class="fgroup">
+        <h3>Look back</h3>
+        <dl>
+          <div><dt>Rides feed</dt><dd>Every finished ride with stats, route shape, photos, how it felt, notes and tags. Filter by week, month or year, sort, search and filter by tag.</dd></div>
+          <div><dt>Ride pages</dt><dd>Photos and videos, laps, stops, stopped time, signal count, heart rate, and optional advanced speed, elevation and effort detail.</dd></div>
+          <div><dt>Activity and records</dt><dd>One chart by week, month or year for distance, time or climb, with totals, records and best efforts, and all rides on one map.</dd></div>
+          <div><dt>Segments</dt><dd>Cut a stretch from any ride. Every ride over it is timed and ranked.</dd></div>
+          <div><dt>Share cards and flyover</dt><dd>A card in 13 swipeable styles with editable title, numbers, photo and size, or an animated 3D flyover video of the ride.</dd></div>
+          <div><dt>Bike care</dt><dd>Jobs with kilometre or day intervals, notes and history. Mark one done today, on an earlier date or after a past ride.</dd></div>
+          <div><dt>Home-screen widgets</dt><dd>Ride, This week, Last ride and Riding stats. Start, pause and lap a ride without opening the app.</dd></div>
+        </dl>
+      </div>
+      <div class="fgroup">
+        <h3>Your data</h3>
+        <dl>
+          <div><dt>GPX import, FIT, TCX and GPX export</dt><dd>Bring routes in as GPX. Send rides out as FIT, TCX or GPX files to any app that imports them.</dd></div>
+          <div><dt>Health Connect</dt><dd>Reads heart rate and weight that other apps put in Health Connect. Read only.</dd></div>
+          <div><dt>Backup and restore</dt><dd>Rides, routes, photos, segments, bike care and settings in one zip file that you keep.</dd></div>
+        </dl>
+      </div>
+    </div>
   </div>
 </section>
 
 <!-- ================= PRIVACY ================= -->
-<section class="sec priv" id="privacy">
-  <div class="wrap">
+<section class="sec quiet priv" id="privacy">
+  <div class="wrap split">
     <div class="sec-head">
       <h2>What leaves your phone. All five things.</h2>
       <p>Rides, photos and settings stay in the app's own storage. Maps, weather and routing have to come from somewhere, so here is every request Cycler makes and what it carries.</p>
+      <ul class="never"><li>No account</li><li>No analytics</li><li>No ads</li><li>No tracking</li><li>No cloud backup</li></ul>
     </div>
-    <ul class="never"><li>No account</li><li>No analytics</li><li>No ads</li><li>No tracking</li><li>No cloud backup</li></ul>
-    <div class="leaves">
-      <div><b>Map tiles</b><span>OpenFreeMap, CyclOSM</span><span>The tiles you view, so the provider sees the area.</span></div>
-      <div><b>Weather</b><span>Open-Meteo</span><span>Your position rounded to about 100 m, at most every 15 minutes.</span></div>
-      <div><b>Route planning</b><span>BRouter</span><span>The waypoints of the route or loop you ask for.</span></div>
-      <div><b>Place search</b><span>Photon</span><span>The text you type, and your position rounded to about 1 km.</span></div>
-      <div><b>Traffic signals</b><span>Overpass API</span><span>A bounding box around the route you open or follow.</span></div>
+    <div>
+      <div class="leaves">
+        <div><b>Map tiles</b><span>OpenFreeMap, CyclOSM</span><span>The tiles you view, so the provider sees the area.</span></div>
+        <div><b>Weather</b><span>Open-Meteo</span><span>Your position rounded to about 100 m, at most every 15 minutes.</span></div>
+        <div><b>Route planning</b><span>BRouter</span><span>The waypoints of the route or loop you ask for.</span></div>
+        <div><b>Place search</b><span>Photon</span><span>The text you type, and your position rounded to about 1 km.</span></div>
+        <div><b>Traffic signals</b><span>Overpass API</span><span>A bounding box around the route you open or follow.</span></div>
+      </div>
+      <p class="fine">This website has no analytics either. Its planner uses the same servers. Map tiles from OpenFreeMap and the weather line from Open-Meteo load when you reach the planner. Your search text goes to Photon and the loop's waypoints go to BRouter only when you plan a loop of your own.</p>
+      <p class="fine">These are free community servers with no API keys. A backup is a zip file you save yourself. Full policy: <a href="https://github.com/Kunj-Company/cycler/blob/main/docs/PRIVACY.md">docs/PRIVACY.md</a>.</p>
     </div>
-    <p class="fine" style="margin-top:20px">This website has no analytics either. Its planner uses the same servers. Map tiles from OpenFreeMap and the weather line from Open-Meteo load when you reach the planner. Your search text goes to Photon and the loop's waypoints go to BRouter only when you plan a loop of your own.</p>
-    <p class="fine" style="margin-top:10px">These are free community servers with no API keys. A backup is a zip file you save yourself. Full policy: <a href="https://github.com/Kunj-Company/cycler/blob/main/docs/PRIVACY.md">docs/PRIVACY.md</a>.</p>
   </div>
 </section>
 
 <!-- ================= INSTALL ================= -->
-<section class="sec" id="install">
+<section class="sec quiet" id="install">
   <div class="wrap get-grid">
     <div style="display:flex;flex-direction:column;gap:28px;align-items:flex-start">
       <h2>Tomorrow morning, take it with you.</h2>
@@ -811,7 +849,7 @@
       </div>
       <details><summary>Check the signing certificate</summary>Release builds are signed with Cycler's release key. SHA-256:<code>fc:11:15:05:4d:d6:ec:d2:21:b7:3c:a6:a1:52:28:dc:0b:45:a8:1b:63:fc:2b:9b:bf:30:fe:b9:0f:f7:d9:00</code></details>
     </div>
-    <div class="card meta">
+    <div class="meta">
       <div><span class="label">Version</span><b class="num">0.1.12</b></div>
       <div><span class="label">Runs on</span><b>Android 8.0+</b></div>
       <div><span class="label">Licence</span><b>MIT</b></div>
@@ -823,8 +861,8 @@
   </div>
 </section>
 <!-- ================= FAQ ================= -->
-<section class="sec faq" id="faq">
-  <div class="wrap faq-grid">
+<section class="sec quiet faq" id="faq">
+  <div class="wrap split">
     <div class="sec-head">
       <h2>Questions people ask before installing.</h2>
       <p>Short answers. The longer ones are in the <a href="https://github.com/Kunj-Company/cycler#readme">Cycler README</a>.</p>

@@ -11,6 +11,11 @@ Notable changes to the Cycler landing page. Versions use the `0.1.N` format.
 - New top bar: fixed, gathers into a glass pill on scroll, turns dark over night sections, marks
   the current section, shows page progress as a recorded line, and has a menu on phones.
 
+- Everything after the yellow ticker is redesigned to be calmer: one paper surface with hairlines
+  instead of alternating bands and boxes. Share shows one card with a style picker, the app's
+  screens and widgets sit behind tabs, the feature list is grouped into Ride, Plan, Look back and
+  Your data, and privacy and install are plain lists. No content was removed.
+
 ### Added
 - A scroll speed cap, so a hard flick of the wheel, trackpad or finger cannot skip the story.
   Keyboard, scrollbar and in-page links are not capped. Off under reduced motion.
