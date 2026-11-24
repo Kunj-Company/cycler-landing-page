@@ -34,7 +34,8 @@ Open <http://localhost:8000> and check your change at a desktop width and at abo
 
 ## Commits and pull requests
 
-- One logical change per commit, with an imperative subject line: "Fix turn cue distance".
+- One logical change per commit, with a [Conventional Commits](https://www.conventionalcommits.org/)
+  subject in the imperative: `fix(follow): correct turn cue distance`.
 - Say what you checked: browsers, widths, reduced motion.
 - Add a line to `CHANGELOG.md` under the next version. Versions use the `0.1.N` format.
 
