@@ -79,7 +79,7 @@ function mmss(s){s=Math.floor(s);return String(Math.floor(s/60)).padStart(2,'0')
 addEventListener('scroll',function(){var now=performance.now(),dt=now-lastT;if(dt>16){target=Math.min(46,Math.abs(scrollY-lastY)/dt*1000/38);lastY=scrollY;lastT=now}lastMove=now},{passive:true});
 function frame(force){var now=performance.now(),dt=Math.min(.1,(now-prevFrame)/1000);prevFrame=now;
   var rr=ride.getBoundingClientRect(),vh=innerHeight,vis=rr.top<vh*.75&&rr.bottom>vh*.35;hud.classList.toggle('on',vis);
-  if(!vis&&force!==true)return;
+  if((!vis&&force!==true)||!L)return;
   var l=lenAt(vh*.5-rr.top);p=L?l/L:0;
   pRec.style.strokeDashoffset=L-l;var pt=pPlan.getPointAtLength(l);rider.setAttribute('cx',pt.x);rider.setAttribute('cy',pt.y);pulse.setAttribute('cx',pt.x);pulse.setAttribute('cy',pt.y);
   var active=now-lastMove<700&&p>0&&p<1;if(now-lastMove>140)target=0;speed+=(target-speed)*Math.min(1,dt*7);if(!active&&speed<.3)speed=0;
@@ -111,6 +111,9 @@ cards.addEventListener('keydown',function(e){if(e.key==='ArrowRight'){step(1);e.
     $('#actTotal').innerHTML=m===1?Math.floor(tot/60)+'h '+(tot%60)+'m':(m===0?tot.toFixed(1):tot)+'<small>'+U[m]+'</small>'}
   radio('#metric',function(b){show(+b.dataset.m)});show(0)})();
 $('#lubeBtn').addEventListener('click',function(){$('#lubeTxt').textContent='0 of 250 km since today';$('#lubeBar').className='bar';$('#lubeBar').firstElementChild.style.width='1%';this.textContent='Done today';this.disabled=true});
+
+/* ---- in-page links scroll smoothly; CSS smooth scrolling stays off for ScrollTrigger ---- */
+$$('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){var t=document.getElementById(a.getAttribute('href').slice(1));if(!t)return;e.preventDefault();t.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});if(a.classList.contains('skip')){t.setAttribute('tabindex','-1');t.focus({preventScroll:true})}})});
 
 /* ---- boot ---- */
 function layout(){maps();build()}
