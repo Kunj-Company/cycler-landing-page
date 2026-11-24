@@ -24,8 +24,10 @@ The story runs in time order, which is why chapters carry a time of day:
 | Finish | 7:49 am, km 32.4 | The save page: title, feeling, tags, notes |
 | Share | 8:15 am | Share cards, 3D flyover |
 | Look back | The weeks after | Activity, bike care, segments, widgets |
+| Features | | The full feature list, for readers and crawlers |
 | Privacy | | The five requests that leave the phone |
 | Install | | APK, version, licence |
+| FAQ | | Eleven short answers, mirrored in the structured data |
 
 ## Tokens
 
@@ -96,6 +98,13 @@ GSAP 3.12.5 with ScrollTrigger. All of it lives in the last block of `js/main.js
 - If GSAP fails to load, the same static page is shown. A timeout clears the pre-animation hiding
   of the hero after 3.5 seconds in any case.
 - Pointer effects only attach on devices with hover and a fine pointer.
+
+### One rule for ScrollTrigger
+
+`html` must not have `scroll-behavior: smooth` while ScrollTrigger is active. On refresh it jumps
+the scroll position to measure sections, and smooth scrolling turns that jump into an animation,
+so every start and end is measured wrong. The `gs` class on `html` switches it off, and in-page
+links call `scrollIntoView` with smooth behaviour instead.
 
 ## Content rules
 

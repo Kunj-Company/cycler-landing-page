@@ -275,6 +275,10 @@ gsap.from('.rank>*',{x:-18,autoAlpha:0,stagger:.04,duration:.6,ease:'power3.out'
 (function(){var sc=$('.screens');sc.style.scrollSnapType='none';
   gsap.to(sc,{scrollLeft:function(){return sc.scrollWidth-sc.clientWidth},ease:'none',scrollTrigger:{trigger:sc,start:'top 85%',end:'bottom 15%',scrub:.6,invalidateOnRefresh:true}})})();
 
+/* ---- features ---- */
+head($('.feat .sec-head'));
+gsap.from('.feat-grid>div',{y:34,autoAlpha:0,stagger:.045,duration:.7,ease:'power3.out',scrollTrigger:{trigger:'.feat-grid',start:'top 85%',once:true}});
+
 /* ---- 8. privacy and install ---- */
 head($('.priv .sec-head'));
 gsap.from('.never li',{scale:0,autoAlpha:0,stagger:.08,duration:.6,ease:'back.out(2.4)',scrollTrigger:{trigger:'.never',start:'top 88%',once:true}});
@@ -286,6 +290,9 @@ gsap.from('.leaves>div',{x:-60,autoAlpha:0,stagger:.14,duration:.9,ease:'power3.
     .from('#install .hero-cta .btn',{y:24,autoAlpha:0,stagger:.1,duration:.7,ease:'power3.out',clearProps:'transform'},.6)
     .from('.meta',{y:60,autoAlpha:0,rotation:3,duration:1.1,ease:'power3.out'},.2)
     .from('.meta>div',{y:18,autoAlpha:0,stagger:.06,duration:.6,ease:'power3.out'},.5)})();
+
+head($('.faq .sec-head'));
+gsap.from('.faq-list details',{y:22,autoAlpha:0,stagger:.06,duration:.6,ease:'power3.out',scrollTrigger:{trigger:'.faq-list',start:'top 85%',once:true}});
 
 addEventListener('load',function(){ScrollTrigger.refresh()});
 })();

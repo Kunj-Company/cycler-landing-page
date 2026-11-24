@@ -31,10 +31,40 @@ Then open <http://localhost:8000>. Opening `index.html` straight from disk works
 Any static host works with the repository root as the output folder and no build command:
 Vercel, Cloudflare Pages, Netlify or GitHub Pages. `404.html` is picked up automatically by all four.
 
-Two things need the final domain once it is known:
+`404.html` uses root-relative paths, so it assumes the site sits at the root of its domain.
 
-- `og:image` in `index.html` is a relative path. Most link previews want an absolute URL.
-- `404.html` uses root-relative paths, so it assumes the site sits at the root of its domain.
+## Search and sharing
+
+What is already in place:
+
+- A descriptive title and meta description, robots directives, author and theme colour.
+- Open Graph and Twitter card tags with a 1200x630 preview image and alt text.
+- Structured data (JSON-LD) in the head: `WebSite`, `Organization`, `Person`, a
+  `SoftwareApplication` entry for the app (category, Android requirement, version, free offer,
+  licence, feature list, screenshots) and an `FAQPage` that mirrors the visible FAQ.
+- A crawlable feature list and FAQ in plain HTML. All content is in the markup, not injected by
+  script.
+- One `h1`, section `h2`s, landmarks, a skip link, alt text and sizes on every image, lazy loading
+  below the fold.
+- Scripts are deferred and library hosts are preconnected, so nothing blocks first paint.
+- `robots.txt`, a web manifest, and `llms.txt` for AI crawlers.
+
+No ratings or reviews are marked up, because the app has none to cite.
+
+### When the domain is known
+
+The canonical URL, `og:url` and the sitemap are left out until the site has an address, because a
+wrong canonical does more harm than a missing one. Then:
+
+1. In `index.html`, find the comment that mentions `YOUR-DOMAIN`, put the real domain in and
+   uncomment the two lines.
+2. Make `og:image` and `twitter:image` absolute, for example `https://example.com/img/og.jpg`.
+3. In the JSON-LD block, change `"url": "./"` to the full address.
+4. Add `sitemap.xml` with the one URL, and a `Sitemap:` line to `robots.txt`.
+5. Submit the site in Google Search Console and Bing Webmaster Tools.
+
+When the app version changes, update `softwareVersion` in the JSON-LD, the version in the install
+section, the feature list heading and `llms.txt` together.
 
 ## Layout
 
@@ -45,7 +75,7 @@ Two things need the final domain once it is known:
 | `js/main.js` | Scroll-ride logic, the demos, and the GSAP choreography |
 | `404.html` | Self-contained "you have left the route" page |
 | `img/` | App logo, icons, social preview and screenshots |
-| `site.webmanifest`, `robots.txt` | Browser and crawler metadata |
+| `site.webmanifest`, `robots.txt`, `llms.txt` | Browser and crawler metadata |
 | `docs/DESIGN.md` | The concept, tokens, sections and motion inventory |
 
 ## How it is built

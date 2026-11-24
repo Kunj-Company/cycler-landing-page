@@ -2,6 +2,25 @@
 
 Notable changes to the Cycler landing page. Versions use the `0.1.N` format.
 
+## 0.1.2
+
+### Fixed
+- The hero stayed dark and zoomed after scrolling down and back to the top. CSS smooth scrolling
+  made ScrollTrigger measure every section from the wrong scroll position whenever it refreshed
+  mid-page (after a resize, a late font load or a hash link). Smooth scrolling is now handled in
+  script for in-page links only. The pinned dawn scene had the same fault.
+- Reloading the page while scrolled into the ride stopped every script, because the ride bar
+  tried to read the route before it was built.
+
+### Added
+- "Everything Cycler does", a full feature list, and an FAQ section.
+- Search and sharing: a descriptive title and description, robots directives, complete Open Graph
+  and Twitter tags, JSON-LD for the site, publisher, app and FAQ, and `llms.txt`.
+- A skip link, footer navigation, and Features and FAQ links in the top bar.
+
+### Changed
+- GSAP and the page script load with `defer`, and the CDN host is preconnected.
+
 ## 0.1.1
 
 ### Added

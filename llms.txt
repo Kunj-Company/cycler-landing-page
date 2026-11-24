@@ -1,0 +1,27 @@
+# Cycler
+
+> Cycler is a free, open-source cycling app for Android. It records rides with the screen off, plans routes and loops, and keeps every ride on the phone. There is no account, no cloud, no ads and no tracking. Licence: MIT. Requires Android 8.0 or later. Current version: 0.1.12.
+
+Cycler is distributed as an APK on GitHub Releases. It is not on Google Play and there is no iPhone version. It is developed by Abhiram N J and published by Kunj Company.
+
+## What it does
+
+- Record: live map, distance, speed, moving time, climb, auto-pause, laps, interval workouts with spoken prompts, and a big-number ride screen.
+- Follow a route: next turn and distance, a nudge before each turn, a vibration if you leave the line, climbs and traffic signals on the map.
+- Plan: A-to-B routes with optional stops, round-trip loops from 5 to 200 km in four directions, suggested loops nearby, GPX import.
+- Look back: a feed of finished rides with photos, notes and tags; activity charts by week, month or year; records, best efforts and segments.
+- Share: a card in 13 styles or an animated 3D flyover video.
+- Bike care: maintenance jobs by kilometres or days.
+- Also: four home-screen widgets, FIT, TCX and GPX export, Health Connect (read only), offline maps, backup and restore to a zip file.
+
+## Privacy
+
+Rides, photos and settings stay in the app's own storage. Only five kinds of request leave the phone: map tiles (OpenFreeMap, CyclOSM), weather (Open-Meteo), route planning (BRouter), place search (Photon) and traffic signals (Overpass API). Recording works without internet.
+
+## Links
+
+- [Download the latest APK](https://github.com/Kunj-Company/cycler/releases)
+- [App source code and README](https://github.com/Kunj-Company/cycler)
+- [Changelog](https://github.com/Kunj-Company/cycler/blob/main/CHANGELOG.md)
+- [Privacy policy](https://github.com/Kunj-Company/cycler/blob/main/docs/PRIVACY.md)
+- [Source of this website](https://github.com/Kunj-Company/cycler-landing-page)
