@@ -377,7 +377,8 @@ html.gs .dawn{height:100vh;height:100svh;max-height:1100px}
 .save input[type=text],.save textarea,.share-edit input{width:100%;font:500 16px/1.4 var(--body);padding:12px 14px;border:1.5px solid var(--hair);border-radius:12px;background:#fff;color:var(--ink)}
 .save textarea{min-height:96px;resize:vertical;font-weight:400}
 .save .seg{gap:8px}
-.saved-note{font-size:14.5px;color:#2F7D4F;font-weight:600;min-height:1.4em}
+.saved-note{font-size:14.5px;color:#2F7D4F;font-weight:600}
+.saved-note:empty{display:none}
 
 /* ---------- HUD: the ride bar ---------- */
 .hud{position:fixed;left:50%;bottom:14px;z-index:20;width:min(760px,calc(100% - 20px));transform:translate(-50%,140%);transition:transform .35s cubic-bezier(.2,.8,.2,1);background:var(--road);border:1px solid var(--hair);border-radius:20px;box-shadow:0 10px 40px rgba(28,28,26,.16);overflow:hidden}

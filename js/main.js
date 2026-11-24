@@ -195,7 +195,8 @@ radio('#feel');$$('#tags .chip').forEach(function(b){b.addEventListener('click',
 
 /* ---- title flows from the save page to the share cards ---- */
 $$('.js-title-in').forEach(function(inp){inp.addEventListener('input',function(){titleEdited=true;var v=inp.value.trim()||'Morning ride';$$('.js-title').forEach(function(t){t.textContent=v});$$('.js-title-in').forEach(function(o){if(o!==inp)o.value=inp.value})})});
-$('#saveForm').addEventListener('submit',function(e){e.preventDefault();if(fx.save)fx.save(e.submitter||$('#saveForm .btn'));$('#savedNote').textContent='Saved. In the app, this ride now lives in your phone\'s storage and nowhere else.';setTimeout(function(){if(fx.card)fx.card('Ride saved')},fx.save?750:0)}); // after the burst, offer a share card
+$('#saveForm').addEventListener('submit',function(e){e.preventDefault();if(fx.save)fx.save(e.submitter||$('#saveForm .btn'));/* after the burst, offer a share card. The popup says the ride is saved; the line of text is only for a browser with no <dialog> */
+  if($('#cardBox').showModal)setTimeout(function(){if(fx.card)fx.card('Ride saved')},fx.save?750:0);else $('#savedNote').textContent='Saved. In the app, this ride now lives in your phone\'s storage and nowhere else.'});
 
 /* ---- the track down the ride ---- */
 var ride=$('#ride'),svg=$('#track'),pPlan=$('#trackPlan'),pRec=$('#trackRec'),rider=$('#rider'),pulse=$('#riderPulse'),L=0,LUT=[],y0=0,y1=1;
