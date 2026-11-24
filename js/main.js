@@ -644,6 +644,8 @@ rise('.leaves>div','.leaves',{y:16,s:.07,d:.7});
     .from('#install .hero-cta .btn',{y:16,autoAlpha:0,stagger:.08,duration:.7,ease:'power3.out',clearProps:'transform'},.5)
     .from('.meta>*',{y:14,autoAlpha:0,stagger:.05,duration:.6,ease:'power3.out'},.3)})();
 
+rise('.support','.support',{y:18});
+
 head($('.faq .sec-head'));
 rise('.faq-list details','.faq-list',{y:14,s:.04,d:.6});
 

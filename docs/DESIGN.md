@@ -26,8 +26,8 @@ The story runs in time order, which is why chapters carry a time of day:
 | Look back | The weeks after | Activity, bike care, segments, widgets |
 | Features | | The full feature list, for readers and crawlers |
 | Privacy | | The five requests that leave the phone |
-| Install | | APK, version, licence |
-| FAQ | | Eleven short answers, mirrored in the structured data |
+| Install | | APK, version, licence, and the one ask: a Buy Me a Coffee link |
+| FAQ | | Twelve short answers, mirrored in the structured data |
 
 ## Tokens
 
