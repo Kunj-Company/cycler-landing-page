@@ -247,6 +247,15 @@
   </defs>
 </svg>
 
+<!-- the loader: a dark screen and a recording dot, shown until the page is ready. It is fixed to
+     the screen, so it works wherever the page opens, not only at the top -->
+<div class="loader" aria-hidden="true">
+  <div class="ld-iris"></div>
+  <svg class="ld-loop" viewBox="0 0 200 160"><path class="js-blob" pathLength="1"/></svg>
+  <p class="ld-label num"></p>
+  <div class="ld-dot"></div>
+</div>
+
 <a class="skip" href="#top">Skip to content</a>
 <header class="top">
   <div class="navbar">
@@ -331,8 +340,6 @@
     <div class="hero-dark" aria-hidden="true"><p class="hd-l"><span class="w"><span>Screen off.</span></span></p><p class="hd-r"><span class="w"><span>Still recording.</span></span></p></div>
     <div class="hero-cue" aria-hidden="true"><span>Scroll to ride</span><i></i></div>
   </div>
-  <div class="hero-iris" aria-hidden="true"></div>
-  <div class="hero-boot" aria-hidden="true"></div>
 </section>
 
 <!-- ================= PLAN ================= -->

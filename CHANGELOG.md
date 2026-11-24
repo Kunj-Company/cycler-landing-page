@@ -19,6 +19,9 @@ Notable changes to the Cycler landing page. Versions use the `0.1.N` format.
   on phones.
 
 ### Added
+- A loader for everywhere that is not the top. Reloading part-way down, or opening a link to a
+  section, used to show the page with no sequence at all. Now the recording dot draws the loop,
+  a line says where you are picking up, and the dot flies to your place on the route.
 - Save ride now opens a share card popup: a live preview, five styles, Download PNG (1080 by
   1920) and, where the browser supports it, Share. The share section has a "Download this card"
   button that opens the same popup. The image is drawn in the browser; nothing is uploaded.

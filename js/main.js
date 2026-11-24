@@ -404,24 +404,30 @@ gsap.set(rig,{rotationY:-18,rotationX:7,rotation:3});
 
 /* Load sequence. Everything in it is a transform or an opacity, so the browser never lays the
    page out mid-flight, and it starts only after the fonts are in and ScrollTrigger has measured.
-   Beats: the dark draws back into the recording dot, the headline rises, the phone swings in,
-   the supporting copy follows, then the ride records itself. */
+   The loader is fixed to the screen. Its dot ends by flying to a target and reads where that
+   target is on every frame, closing k of the distance, so at k = 1 it is locked on even though
+   the target is still moving into place. */
+var LD={el:$('.loader'),iris:$('.ld-iris'),dot:$('.ld-dot'),loop:$('.ld-loop'),label:$('.ld-label'),k:0,target:null,at:function(){var r=LD.target.getBoundingClientRect();return [r.left+r.width/2,r.top+r.height/2]}};
+function ldFollow(){var t=LD.at(),x=(t[0]-innerWidth/2)*LD.k,y=(t[1]-innerHeight/2)*LD.k;LD.sx[0](x);LD.sx[1](x);LD.sy[0](y);LD.sy[1](y)}
+function ldStart(){LD.sx=[gsap.quickSetter(LD.dot,'x','px'),gsap.quickSetter(LD.iris,'x','px')];LD.sy=[gsap.quickSetter(LD.dot,'y','px'),gsap.quickSetter(LD.iris,'y','px')];
+  gsap.set(LD.el,{display:'block'});gsap.ticker.add(ldFollow);root.classList.remove('pre')}
+function ldEnd(){gsap.ticker.remove(ldFollow);LD.el.style.display='none';introDone=true}
+/* what never stops: the comet on the phone's route, the float, the wandering speed */
+function idle(delay){
+  gsap.to('#heroComet',{strokeDashoffset:-1,duration:6,ease:'none',repeat:-1});
+  gsap.to(ptr,{y:-12,duration:3.2,ease:'sine.inOut',yoyo:true,repeat:-1,delay:delay});
+  Array.prototype.forEach.call(document.querySelectorAll('.fl-in'),function(f,i){gsap.to(f,{y:i%2?9:-9,duration:2.3+i*.5,ease:'sine.inOut',yoyo:true,repeat:-1,delay:delay+.8+i*.4})});
+  var spd=document.querySelectorAll('.js-hspd'),k=0;setInterval(function(){if(document.hidden||heroP>=1)return;k++;var v=RIDE.km/(RIDE.min/60)+Math.sin(k*1.7)*1.4+Math.sin(k*.6)*.8;set(spd,v.toFixed(1))},1100)}
+/* At the top of the page. Beats: the dark draws back into the recording dot, the headline rises,
+   the phone swings in, the supporting copy follows, the dot lands on the ride's start point and
+   the ride records itself out of it. */
 function intro(){
-  var track=$('#heroTrack'),dot=$('.ph-route .js-blob-start'),len=track.getTotalLength(),km=$('#hpKm'),iris=$('.hero-iris'),boot=$('.hero-boot'),kmTxt='';
-  gsap.set([iris,boot],{display:'block'});
-  /* The recording dot flies to where the ride starts on the phone's screen. The phone is still
-     swinging in while it travels, so the dot does not aim at a measured spot: every frame it
-     reads where the start point is now and closes k of the distance. At k = 1 it is locked on,
-     and the track is then drawn out of it. */
-  var hb=hero.getBoundingClientRect(),br=boot.getBoundingClientRect(),b0x=br.left+br.width/2-hb.left,b0y=br.top+br.height/2-hb.top,fol={k:0},
-      sx=[gsap.quickSetter(boot,'x','px'),gsap.quickSetter(iris,'x','px')],sy=[gsap.quickSetter(boot,'y','px'),gsap.quickSetter(iris,'y','px')];
-  function follow(){var h=hero.getBoundingClientRect(),r=dot.getBoundingClientRect(),x=(r.left+r.width/2-h.left-b0x)*fol.k,y=(r.top+r.height/2-h.top-b0y)*fol.k;sx[0](x);sx[1](x);sy[0](y);sy[1](y)}
-  gsap.ticker.add(follow);
-  root.classList.remove('pre');
+  var track=$('#heroTrack'),dot=$('.ph-route .js-blob-start'),len=track.getTotalLength(),km=$('#hpKm'),kmTxt='';
+  LD.target=dot;ldStart();
   gsap.timeline({defaults:{ease:'power4.out'}})
-    .fromTo(iris,{scale:15},{scale:0,duration:1.25,ease:'power3.inOut',onComplete:function(){iris.style.display='none'}},0)
-    .to(fol,{k:1,duration:1.25,ease:'power3.inOut'},0)
-    .to(boot,{scale:0,duration:.4,ease:'power2.in',onComplete:function(){gsap.ticker.remove(follow);boot.style.display='none';introDone=true}},1.4)
+    .fromTo(LD.iris,{scale:15},{scale:0,duration:1.25,ease:'power3.inOut'},0)
+    .to(LD,{k:1,duration:1.25,ease:'power3.inOut'},0)
+    .to(LD.dot,{scale:0,duration:.4,ease:'power2.in',onComplete:ldEnd},1.4)
     .from('#heroMap',{scale:1.22,duration:2.4,ease:'power3.out'},0)
     .from(HS.chars,{yPercent:112,duration:1,stagger:.014},.45)
     .from('.hl-u path',{strokeDashoffset:1,duration:.9,ease:'power3.inOut'},1.25)
@@ -433,15 +439,37 @@ function intro(){
     .fromTo(track,{strokeDashoffset:1},{strokeDashoffset:0,duration:2.4,ease:'power2.inOut',onUpdate:function(){var t=1-gsap.getProperty(track,'strokeDashoffset'),q=track.getPointAtLength(len*Math.min(.9999,t)),v=(RIDE.km*t).toFixed(1);dot.setAttribute('cx',q.x);dot.setAttribute('cy',q.y);if(v!==kmTxt){kmTxt=v;km.textContent=v}}},1.8)
     .from('.fl-in',{scale:.6,autoAlpha:0,duration:.8,stagger:.12,ease:'back.out(1.8)'},1.9)
     .from('.hero-cue',{autoAlpha:0,duration:1,ease:'power2.out'},2.3)
-    .to('#heroComet',{opacity:.9,duration:.6},3.8);
-  gsap.to('#heroComet',{strokeDashoffset:-1,duration:6,ease:'none',repeat:-1});
-  /* idle: the phone floats, the chips bob out of step, the speed reading wanders like a live one */
-  gsap.to(ptr,{y:-12,duration:3.2,ease:'sine.inOut',yoyo:true,repeat:-1,delay:2});
-  Array.prototype.forEach.call(document.querySelectorAll('.fl-in'),function(f,i){gsap.to(f,{y:i%2?9:-9,duration:2.3+i*.5,ease:'sine.inOut',yoyo:true,repeat:-1,delay:2.8+i*.4})});
-  var spd=document.querySelectorAll('.js-hspd'),k=0;setInterval(function(){if(document.hidden||heroP>=1)return;k++;var v=RIDE.km/(RIDE.min/60)+Math.sin(k*1.7)*1.4+Math.sin(k*.6)*.8;set(spd,v.toFixed(1))},1100);
-}
+    .to('#heroComet',{opacity:.9,duration:.6},4.2);
+  idle(2)}
+/* Anywhere else on the page (a reload part-way down, or a link to a section). The dot draws the
+   whole loop and comes back to where it started, a line under it says where you are picking up,
+   then you fall through the loop as the dark draws back, and the dot flies to your place: the
+   rider on the route line if you are on the ride, otherwise the tip of the top bar's progress
+   line. The top bar and the ride bar arrive as it lands. */
+function introAway(){
+  var path=$('path',LD.loop),tr=$('#heroTrack'),s0=tr.getPointAtLength(0),u=LD.loop.getBoundingClientRect().width/200||1.5,onRide=p>0&&p<1&&hud.classList.contains('on'),
+      names={plan:'the night before',dawn:'the night',ride:'the ride',share:'the share cards',lookback:'the weeks after',features:'the feature list',privacy:'privacy',install:'install',faq:'the questions'},where='',mid=innerHeight/2;
+  $$('main>section[id],main .pin-spacer>section[id]').forEach(function(sc){if(sc.getBoundingClientRect().top<=mid&&names[sc.id])where=names[sc.id]});
+  LD.label.textContent=onRide?'Resuming at '+(p*RIDE.km).toFixed(1)+' km':where?'Picking up at '+where:'Picking up where you left off';
+  LD.target=onRide?rider:$('.prog i');if(!onRide)LD.at=function(){var r=LD.target.getBoundingClientRect();return [r.right,r.top+r.height/2]};
+  /* the loop is placed so that its start point is under the dot, and it grows from there */
+  gsap.set(LD.loop,{left:innerWidth/2-s0.x*u,top:innerHeight/2-s0.y*u,transformOrigin:(s0.x*u).toFixed(1)+'px '+(s0.y*u).toFixed(1)+'px',visibility:'visible'});
+  gsap.set('#heroComet',{opacity:.9});ldStart();
+  gsap.timeline({defaults:{ease:'power3.out'}})
+    .fromTo(path,{strokeDashoffset:1},{strokeDashoffset:0,duration:.85,ease:'power2.inOut'},0)
+    .fromTo(LD.label,{y:12,autoAlpha:0},{y:0,autoAlpha:1,duration:.5},.2)
+    .to(LD.label,{y:-12,autoAlpha:0,duration:.3,ease:'power2.in'},.95)
+    .to(LD.loop,{scale:14,rotation:28,duration:1.05,ease:'power3.in'},.9)
+    .to(LD.loop,{autoAlpha:0,duration:.35,ease:'power1.in'},1.6)
+    .fromTo(LD.iris,{scale:15},{scale:0,duration:1.05,ease:'power3.inOut'},1)
+    .to(LD,{k:1,duration:1.05,ease:'power3.inOut'},1)
+    .from('.navbar',{y:-28,autoAlpha:0,duration:.9,clearProps:'transform'},1.35)
+    .fromTo(hud,{opacity:0},{opacity:1,duration:.7,clearProps:'opacity'},1.5) // opacity only: its position is a stylesheet transform
+    .to(LD.dot,{scale:0,duration:.4,ease:'power2.in',onComplete:ldEnd},2.15);
+  idle(0)}
 /* measure first, then give the browser two quiet frames before the first beat */
-var started=false;function go(){if(started)return;started=true;ScrollTrigger.refresh();requestAnimationFrame(function(){requestAnimationFrame(intro)})}
+var started=false;function go(){if(started)return;started=true;ScrollTrigger.refresh();requestAnimationFrame(function(){requestAnimationFrame(function(){
+  var away=heroP>.03||hero.getBoundingClientRect().bottom<innerHeight*.5;(away?introAway:intro)()})})}
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(go);setTimeout(go,1500);
 
 /* hero: scroll. On a screen with room the hero pins: the copy leaves through its masks, the phone

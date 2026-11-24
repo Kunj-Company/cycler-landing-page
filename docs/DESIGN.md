@@ -98,6 +98,7 @@ GSAP 3.12.5 with ScrollTrigger. All of it lives in the last block of `js/main.js
 | Where | What happens | Driven by |
 |---|---|---|
 | Top bar | Gathers into a glass pill, turns dark over night sections, marks the current section, fills a red progress line over a blue one | Scroll |
+| Loader | Away from the top: the recording dot draws the loop, a line says where you are picking up ("Resuming at 17.7 km"), you fall through the loop and the dot flies to the rider on the route, or to the tip of the top bar's progress line | Page load |
 | Hero | The dark draws back into a recording dot, the headline rises out of its masks, the phone swings in and records the loop while its distance counts. Transforms and opacity only | Page load |
 | Hero | The phone leans towards the cursor, the map drifts the other way, the chips bob | Pointer, idle |
 | Hero | Pinned. The copy leaves through its masks, the phone lies flat and switches to the big-number screen, the night spreads out from behind it | Scroll, scrubbed |
@@ -130,6 +131,9 @@ usual: what follows is reference, meant to be skimmed. Scrolling back up eases t
 ### Fallbacks
 
 - `prefers-reduced-motion: reduce` skips the whole GSAP layer. The page is static and complete.
+- The loader is fixed to the screen and shown by the `pre` class, so it covers the page wherever it
+  opens. Which sequence runs is decided once layout is measured: the hero's if the hero fills at
+  least half the screen and has not been scrolled, the other one everywhere else.
 - If GSAP fails to load, the same static page is shown. A timeout clears the pre-animation hiding
   of the hero after 3.5 seconds in any case.
 - Small or short screens (under 821 px wide or 680 px tall) get the hero's scroll transition
