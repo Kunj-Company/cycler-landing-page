@@ -60,8 +60,8 @@ p{margin:0;max-width:58ch}
    turns dark over night sections, marks the section you are in, and records your progress
    down the page as a red line over a blue one. */
 .top{position:fixed;inset:14px 0 auto 0;z-index:30;display:flex;justify-content:center;padding:0 14px;pointer-events:none}
-.navbar{pointer-events:auto;position:relative;isolation:isolate;display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;max-width:calc(var(--wrap) - 28px);padding:7px 7px 7px 12px;border-radius:999px;color:var(--ink);transition:max-width .7s cubic-bezier(.2,.8,.2,1),color .35s}
-.navbar::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:rgba(255,255,255,.64);border:1px solid rgba(255,255,255,.8);box-shadow:0 16px 44px -16px rgba(28,28,26,.34),inset 0 1px 0 rgba(255,255,255,.9);opacity:0;transition:opacity .4s,background-color .35s,border-color .35s,box-shadow .35s}
+.navbar{pointer-events:auto;position:relative;isolation:isolate;display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;max-width:calc(var(--wrap) - 28px);padding:7px 7px 7px 12px;border-radius:999px;color:var(--ink);transition:max-width .7s cubic-bezier(.2,.8,.2,1),color .6s}
+.navbar::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:rgba(255,255,255,.64);border:1px solid rgba(255,255,255,.8);box-shadow:0 16px 44px -16px rgba(28,28,26,.34),inset 0 1px 0 rgba(255,255,255,.9);opacity:0;transition:opacity .4s,background-color .6s,border-color .6s,box-shadow .6s}
 .top.stuck .navbar{max-width:700px}
 .top.stuck .navbar::before,.top.open .navbar::before{opacity:1;-webkit-backdrop-filter:blur(18px) saturate(1.7);backdrop-filter:blur(18px) saturate(1.7)}
 .top.dark .navbar{color:#EDEDEB}
@@ -110,6 +110,9 @@ p{margin:0;max-width:58ch}
 .hero-stage{position:relative;display:flex;align-items:center;min-height:100vh;min-height:100svh;background:var(--paper);overflow:hidden}
 .hero-bg{position:absolute;inset:-4%}
 .hero-bg canvas{position:absolute;inset:0;width:100%;height:100%}
+/* day to night in two soft layers: dusk is a feathered pool of dark that grows out from the
+   phone, night is the whole stage fading to dark under it. Neither has a hard edge */
+.hero-dusk{position:absolute;left:50%;top:50%;width:40vmax;height:40vmax;margin:-20vmax;border-radius:50%;background:radial-gradient(closest-side,rgb(17,18,20) 0,rgb(17,18,20) 38%,rgba(17,18,20,.72) 58%,rgba(17,18,20,.3) 78%,rgba(17,18,20,0) 100%);transform:scale(0);pointer-events:none}
 .hero-night{position:absolute;inset:0;background:var(--night);opacity:0;pointer-events:none}
 .hero-in{position:relative;width:100%;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:24px;align-items:center;padding-top:104px;padding-bottom:64px}
 .hero-copy{position:relative;z-index:2;display:flex;flex-direction:column;gap:28px;align-items:flex-start}

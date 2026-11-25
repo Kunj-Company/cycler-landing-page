@@ -101,7 +101,7 @@ GSAP 3.12.5 with ScrollTrigger. All of it lives in the last block of `js/main.js
 | Loader | Away from the top: the recording dot draws the loop, a line says where you are picking up ("Resuming at 17.7 km"), you fall through the loop and the dot flies to the rider on the route, or to the tip of the top bar's progress line | Page load |
 | Hero | The dark draws back into a recording dot, the headline rises out of its masks, the phone swings in and records the loop while its distance counts. Transforms and opacity only | Page load |
 | Hero | The phone leans towards the cursor, the map drifts the other way, the chips bob | Pointer, idle |
-| Hero | Pinned. The copy leaves through its masks, the phone lies flat and switches to the big-number screen, the night spreads out from behind it | Scroll, scrubbed |
+| Hero | Pinned. The copy leaves through its masks, the phone lies flat and its screen dims to the big-number screen, and day turns to night without an edge: a feathered pool of dark grows from behind the phone while the whole stage fades under it | Scroll, scrubbed |
 | Plan | Map wipes in; loop redraws and numbers roll on every change; the map flies to a new route | Enter, then input |
 | Dawn | Pinned. Clock runs 9:40 pm to 5:52 am, stars fade, sun rises, sky becomes the map | Scroll, scrubbed |
 | Chapters | Stone drops and bounces, heading rises from a mask, demo tilts up | Enter |

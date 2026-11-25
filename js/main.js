@@ -473,27 +473,33 @@ var started=false;function go(){if(started)return;started=true;ScrollTrigger.ref
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(go);setTimeout(go,1500);
 
 /* hero: scroll. On a screen with room the hero pins: the copy leaves through its masks, the phone
-   lies flat in the middle and switches to the big-number screen, then the night spreads out from
-   behind it and stays for the planner. Small screens get the same idea without the pin. */
-var mm=gsap.matchMedia(),heroPinned=false;
-fx.heroDark=function(){return heroP>(heroPinned?.8:.62)}; // when the night has reached the top bar
+   lies flat in the middle, and day turns to night slowly. The phone's screen dims to the
+   big-number screen, a feathered pool of dark grows out from behind the phone, and under it the
+   whole stage fades to night. Nothing has a hard edge and every part overlaps the next, so there
+   is no moment where light flips to dark. Small screens get the same idea without the pin. */
+var mm=gsap.matchMedia(),heroPinned=false,dusk=$('.hero-dusk');
+fx.heroDark=function(){return heroP>(heroPinned?.64:.6)}; // when the top of the stage is more dark than light
 mm.add('(min-width:821px) and (min-height:680px)',function(){
-  var cx,cy,dx,dy,S,R;
-  function measure(){var o=offTo(rig,stage),w=rig.offsetWidth,h=rig.offsetHeight,W=stage.offsetWidth,H=Math.min(stage.offsetHeight,innerHeight);cx=W/2;cy=H/2;dx=cx-(o[0]+w/2);dy=cy-(o[1]+h/2);S=Math.min(1.25,H*.8/h);R=Math.hypot(cx,stage.offsetHeight-cy)+30}
-  function circle(r){return 'circle('+r.toFixed(1)+'px at '+cx.toFixed(1)+'px '+cy.toFixed(1)+'px)'}
-  measure();gsap.set(night,{opacity:1});heroPinned=true;
-  gsap.timeline({defaults:{ease:'none'},scrollTrigger:{trigger:hero,start:'top top',end:'+=130%',pin:true,scrub:.6,invalidateOnRefresh:true,refreshPriority:1,onUpdate:function(s){heroP=s.progress;if(heroP>.02&&tilt)tilt(0,0)}}})
-    .fromTo(HS.inners,{yPercent:0},{yPercent:-118,duration:.2,stagger:.014,ease:'power2.in'},0)
-    .fromTo('.hl-u',{opacity:1},{opacity:0,duration:.08},0)
-    .fromTo('.hero-sub',{y:0,opacity:1},{y:-50,opacity:0,duration:.22,ease:'power1.in'},.02)
-    .set('.hero-sub',{pointerEvents:'none'},.2)
-    .fromTo('.fl',{opacity:1},{opacity:0,duration:.14,stagger:.03},0)
-    .fromTo('.hero-cue',{opacity:1},{opacity:0,duration:.1},0)
-    .fromTo(rig,{x:0,y:0,rotationY:-18,rotationX:7,rotation:3,scale:1},{x:function(){measure();return dx},y:function(){return dy},rotationY:0,rotationX:0,rotation:0,scale:function(){return S},duration:.58,ease:'power2.inOut'},0)
+  var cx,cy,dx,dy,S,K;
+  function measure(){var o=offTo(rig,stage),w=rig.offsetWidth,h=rig.offsetHeight,W=stage.offsetWidth,H=Math.min(stage.offsetHeight,innerHeight);cx=W/2;cy=H/2;dx=cx-(o[0]+w/2);dy=cy-(o[1]+h/2);S=Math.min(1.25,H*.8/h);
+    /* the pool is solid out to 38% of its radius; grow it until that part reaches the far corner */
+    K=(Math.hypot(cx,stage.offsetHeight-cy)+30)/.38/(dusk.offsetWidth/2||1);gsap.set(dusk,{left:cx,top:cy})}
+  measure();heroPinned=true;
+  gsap.timeline({defaults:{ease:'none'},scrollTrigger:{trigger:hero,start:'top top',end:'+=160%',pin:true,scrub:.8,invalidateOnRefresh:true,refreshPriority:1,onUpdate:function(s){heroP=s.progress;if(heroP>.02&&tilt)tilt(0,0)}}})
+    .fromTo(HS.inners,{yPercent:0},{yPercent:-118,duration:.17,stagger:.012,ease:'power2.in'},0)
+    .fromTo('.hl-u',{opacity:1},{opacity:0,duration:.07},0)
+    .fromTo('.hero-sub',{y:0,opacity:1},{y:-50,opacity:0,duration:.19,ease:'power1.in'},.02)
+    .set('.hero-sub',{pointerEvents:'none'},.18)
+    .fromTo('.fl',{opacity:1},{opacity:0,duration:.12,stagger:.025},0)
+    .fromTo('.hero-cue',{opacity:1},{opacity:0,duration:.09},0)
+    .fromTo(rig,{x:0,y:0,rotationY:-18,rotationX:7,rotation:3,scale:1},{x:function(){measure();return dx},y:function(){return dy},rotationY:0,rotationX:0,rotation:0,scale:function(){return S},duration:.5,ease:'power2.inOut'},0)
     .fromTo('.hero-bg',{scale:1},{scale:1.3,duration:1},0)
-    .fromTo('.soff',{opacity:0},{opacity:1,duration:.16},.36)
-    .fromTo(night,{clipPath:function(){return circle(0)}},{clipPath:function(){return circle(R)},duration:.5,ease:'power2.in'},.44)
-    .fromTo('.hero-dark .w>span',{yPercent:118},{yPercent:0,duration:.18,stagger:.06,ease:'power3.out'},.76)
+    /* the screen dims to black first and only then shows the big numbers, so the two screens are never read through each other */
+    .fromTo('.soff',{opacity:0},{opacity:1,duration:.22,ease:'sine.inOut'},.24)
+    .fromTo('.soff>*',{opacity:0},{opacity:1,duration:.16,stagger:.03,ease:'sine.out'},.44)
+    .fromTo(dusk,{scale:0},{scale:function(){return K},duration:.66,ease:'sine.in'},.24)
+    .fromTo(night,{opacity:0},{opacity:1,duration:.58,ease:'sine.inOut'},.34)
+    .fromTo('.hero-dark .w>span',{yPercent:118},{yPercent:0,duration:.14,stagger:.05,ease:'power3.out'},.82)
     /* once the night covers everything, take the map away so no light edge shows above the planner */
     .set('.hero-bg',{visibility:'hidden'},.96).set(stage,{backgroundColor:'#111214'},.96);
   ScrollTrigger.sort();
@@ -505,9 +511,10 @@ mm.add('(max-width:820px), (max-height:679px)',function(){
     .fromTo('.hero-copy',{opacity:1},{opacity:0,duration:.45},.05)
     .fromTo('.fl',{opacity:1},{opacity:0,duration:.3},.2)
     .fromTo(rig,{rotationY:-18,rotationX:7,rotation:3},{rotationY:0,rotationX:0,rotation:0,duration:.6,ease:'power1.inOut'},0)
-    .fromTo('.soff',{opacity:0},{opacity:1,duration:.09},.36)
-    .fromTo(night,{opacity:0},{opacity:1,duration:.7,ease:'power2.in'},.2)
-    .set('.hero-bg',{visibility:'hidden'},.92).set(stage,{backgroundColor:'#111214'},.92);
+    .fromTo('.soff',{opacity:0},{opacity:1,duration:.22,ease:'sine.inOut'},.2)
+    .fromTo('.soff>*',{opacity:0},{opacity:1,duration:.18,stagger:.03,ease:'sine.out'},.4)
+    .fromTo(night,{opacity:0},{opacity:1,duration:.8,ease:'sine.inOut'},.12)
+    .set('.hero-bg',{visibility:'hidden'},.94).set(stage,{backgroundColor:'#111214'},.94);
   ScrollTrigger.sort();
 });
 /* touch: a flick may carry the page a little way, not through whole chapters */

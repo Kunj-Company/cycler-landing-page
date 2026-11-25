@@ -38,6 +38,8 @@ Notable changes to the Cycler landing page. Versions use the `0.1.N` format.
   The cap eases off after the yellow ticker, where the story ends and the reference sections begin.
 
 ### Fixed
+- The hero's change from day to night was a hard-edged dark circle sweeping across the map, with
+  the phone's two screens showing through each other half-way. It is now a slow, edgeless fade.
 - On phones, reveal animations waiting off to the side widened the page layout.
 - The load sequence stalled twice in its first second. It now animates transforms and opacity
   only and starts after layout has been measured.
