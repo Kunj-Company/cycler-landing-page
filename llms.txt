@@ -1,6 +1,6 @@
 # Cycler
 
-> Cycler is a free, open-source cycling app for Android. It records rides with the screen off, plans routes and loops, and keeps every ride on the phone. There is no account, no cloud, no ads and no tracking. Licence: MIT. Requires Android 8.0 or later. Current version: 0.1.12.
+> Cycler is a free, open-source cycling app for Android. It records rides with the screen off, plans routes and loops, and keeps every ride on the phone. There is no account, no cloud and no ads. It keeps only the lightest anonymous usage counts, with no names, rides or locations. Licence: MIT. Requires Android 8.0 or later. Current version: 0.1.12.
 
 Cycler is available now as an APK on GitHub Releases and is coming soon to Google Play. There is no iPhone version yet, because publishing one needs a paid Apple developer licence; if enough donations come in to cover it, an iPhone version will follow soon after. Today Cycler is Android only. Cycler is free and can be supported at https://buymeacoffee.com/abhiramnj. It is developed by [Abhiram N J](https://abhiramnj.com) and published by [Kunj Company](https://kunj.company).
 
