@@ -594,3 +594,5 @@ footer{border-top:1px solid var(--hair);padding:64px 0 calc(40px + env(safe-area
   html{scroll-behavior:auto}
   .hud,.bars div{transition:none}
 }
+.hero-note a,.store-note a,.meta b a{color:var(--ink);font-weight:600;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+.hero-note a:hover,.store-note a:hover,.meta b a:hover{text-decoration-thickness:2px}
