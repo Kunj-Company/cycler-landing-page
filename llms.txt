@@ -18,6 +18,8 @@ Cycler is available now as an APK on GitHub Releases and is in closed testing on
 
 Rides, routes, GPS tracks, photos, names, notes and health data stay on the phone. The app makes five kinds of request to free community services: map tiles (OpenFreeMap, CyclOSM), weather (Open-Meteo), route planning (BRouter), place search (Photon) and traffic signals (Overpass API). Once a week it also sends anonymous usage stats to a server Cycler runs on Cloudflare: app version, the week, days opened, ride counts, total distance, feature counts, and the general area (about 10 km) of rides. Never exact location, routes, place names, photos, health data, device identifiers or IP address. The stats are on by default and can be turned off in Settings, Privacy; deletion on request by email with the stats ID. Recording works without internet.
 
+The website keeps cookie-free visit counts on Cloudflare: page, referring site, country, device type, browser and OS family, and clicks on download, beta, donate, source and share-card links. Unique visitors are counted with a one-way hash that changes every day; no IP address is stored.
+
 ## Links
 
 - [Download the latest APK](https://github.com/Kunj-Company/cycler/releases)

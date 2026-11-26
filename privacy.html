@@ -17,6 +17,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&amp;family=Hanken+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css">
 <link rel="stylesheet" href="css/legal.css">
+<script defer src="js/stats.js"></script>
 </head>
 <body class="legal">
 <a class="skip" href="#main">Skip to content</a>
@@ -39,7 +40,7 @@
       <p class="meta">Effective 27 November 2026. Applies to the Cycler app and to this website.</p>
     </div>
     <div class="lg-grid">
-      <nav class="lg-toc" aria-label="On this page"><p class="label">On this page</p><a href="#summary">In short</a><a href="#who">Who is responsible</a><a href="#phone">What stays on your phone</a><a href="#network">What leaves your phone</a><a href="#stats">Anonymous usage stats</a><a href="#location">Location</a><a href="#health">Health Connect</a><a href="#backups">Backups, photos and sharing</a><a href="#website">This website</a><a href="#beta">Beta sign-up form</a><a href="#keep">How long data is kept</a><a href="#rights">Your rights</a><a href="#children">Children</a><a href="#changes">Changes</a><a href="#contact">Contact</a></nav>
+      <nav class="lg-toc" aria-label="On this page"><p class="label">On this page</p><a href="#summary">In short</a><a href="#who">Who is responsible</a><a href="#phone">What stays on your phone</a><a href="#network">What leaves your phone</a><a href="#stats">Anonymous usage stats</a><a href="#location">Location</a><a href="#health">Health Connect</a><a href="#backups">Backups, photos and sharing</a><a href="#website">This website</a><a href="#webstats">Website visit counts</a><a href="#beta">Beta sign-up form</a><a href="#keep">How long data is kept</a><a href="#rights">Your rights</a><a href="#children">Children</a><a href="#changes">Changes</a><a href="#contact">Contact</a></nav>
       <div class="lg-body">
 
 <div class="lg-summary" id="summary">
@@ -48,6 +49,7 @@
     <li>Cycler has <strong>no account and no ads</strong>. Your rides, routes, GPS tracks, photos, names and notes stay on your phone. No health data is ever sent.</li>
     <li>The app talks to a few free community services for maps, weather and routing. They are listed below, with what each one receives.</li>
     <li>Once a week Cycler sends <strong>anonymous usage stats</strong> to a server it runs. They help improve the app. <strong>You can turn them off anytime</strong> in Settings, Privacy.</li>
+    <li>This website keeps <strong>cookie-free visit counts</strong>. Unique visitors are counted with a hash that changes every day, and no IP address is stored.</li>
     <li>A backup is a file you save yourself. Delete a ride or uninstall the app and it is gone from your phone.</li>
   </ul>
 </div>
@@ -149,16 +151,46 @@
 
 <section id="website">
   <h2>This website</h2>
-  <p>The website is a static site. We do not run accounts, forms or a database on it, and its own code does not set cookies or store anything in your browser to identify you. It runs no analytics of its own. The usage stats described above are sent by the app, not by this website.</p>
+  <p>The website is a static site. We do not run accounts or forms on it, and its own code does not set cookies or store anything in your browser. It keeps simple visit counts, described in the next section. Those are separate from the app's usage stats above, which are sent by the app, not by this website.</p>
   <p>To work, the page loads a few things from other providers. Each sees your IP address and your browser's details when it serves you a file:</p>
   <ul>
     <li><strong>Hosting:</strong> the site is served by Vercel, which keeps ordinary server logs for security and operation.</li>
     <li><strong>Fonts:</strong> Google Fonts serves the typefaces.</li>
     <li><strong>Animation code:</strong> the cdnjs content network (Cloudflare) serves the GSAP animation library.</li>
     <li><strong>The planner on the home page:</strong> map tiles from OpenFreeMap and the weather line from Open-Meteo load when you reach it. Your search text goes to Photon and the loop's waypoints go to BRouter only when you plan a loop of your own.</li>
+    <li><strong>Visit counts:</strong> each page sends a small visit report to our own counter on Cloudflare. See <a href="#webstats">Website visit counts</a>.</li>
     <li><strong>Links out:</strong> GitHub, Buy Me a Coffee, the Tally beta form and our other sites are separate services with their own policies. We do not receive anything from them about you, other than what a payment provider tells us about a donation (see the Terms).</li>
   </ul>
   <p>The share card on the home page is drawn in your browser. It is not uploaded anywhere.</p>
+</section>
+
+<section id="webstats">
+  <h2>Website visit counts</h2>
+  <p>This website counts its visits with a small counter of its own. It is separate from the app's usage stats and their server. It uses no cookies, and the site stores nothing in your browser.</p>
+
+  <h3>What is counted</h3>
+  <ul>
+    <li>The page you open, by its path, such as /privacy.html.</li>
+    <li>The name of the site that sent you here, such as google.com, or the utm_source or ref tag in the link you followed.</li>
+    <li>Your country.</li>
+    <li>Your device type (mobile, tablet or desktop), worked out from the width of the page.</li>
+    <li>The family of your browser and operating system, such as Firefox or Android.</li>
+    <li>The day.</li>
+    <li>Clicks on the links to download the app, join the beta, donate or see the source code, and on the share card's download button.</li>
+  </ul>
+
+  <h3>Counting unique visitors</h3>
+  <p>To count each visitor once a day without a cookie, the server combines your IP address and your browser string with a random salt that changes every day, and makes a one-way hash. The IP address and browser string are not stored. The salt and the hashes are deleted after the day ends, so visits cannot be linked across days or back to a person. The hashes are never exported.</p>
+  <p>This is different from the app's stats server, which never reads your IP address. The website counter reads it in memory to make this hash and does not keep it.</p>
+
+  <h3>Where the counts go and how long they are kept</h3>
+  <ul>
+    <li>They are stored in a Cloudflare D1 database. Cloudflare acts as the hosting provider.</li>
+    <li>The developer copies the counts to their own computer to make charts.</li>
+    <li>They are kept until the developer deletes them.</li>
+    <li>They are never sold, never used for ads, and never shared with anyone other than the hosting provider.</li>
+    <li>There is no visitor ID, so there is nothing to look up for any one person.</li>
+  </ul>
 </section>
 
 <section id="beta">
@@ -170,6 +202,7 @@
   <h2>How long data is kept</h2>
   <p>On your phone, data stays until you delete a ride or uninstall the app. Uninstalling removes everything Cycler stored, except files you saved yourself, such as a backup. We hold no copy of your rides.</p>
   <p>Anonymous usage stats are kept on the stats server until you ask for them to be deleted. We do not set a fixed retention period.</p>
+  <p>Website visit counts are kept until we delete them. The daily salt and hashes used to count unique visitors are deleted after each day.</p>
 </section>
 
 <section id="rights">

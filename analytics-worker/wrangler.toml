@@ -1,0 +1,15 @@
+name = "cycler-web-stats"
+main = "src/index.js"
+compatibility_date = "2026-11-01"
+workers_dev = true
+
+[[d1_databases]]
+binding = "DB"
+database_name = "cycler-web-stats"
+database_id = "a70be96b-e915-4bd1-83d5-6558c764d844"
+
+[triggers]
+crons = ["5 0 * * *"]
+
+[observability]
+enabled = false

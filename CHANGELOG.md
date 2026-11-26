@@ -11,6 +11,12 @@ Notable changes to the Cycler landing page. Versions use the `0.1.N` format.
   goes, how to turn it off and how to ask for deletion), the home page privacy list, features,
   FAQ (with a new "Does Cycler track me?" entry), meta descriptions and `llms.txt` match, and the
   terms point to the policy. Effective 27 November 2026.
+- The website now keeps cookie-free visit counts with `js/stats.js`, a small first-party beacon
+  that sends a page view and clicks on download, beta, donate, source and share-card links to
+  the `cycler-web-stats` Cloudflare Worker. Unique visitors use a daily-salted one-way hash and no
+  IP address is stored. The CSP allows the worker in `connect-src`, and the privacy policy has a
+  new "Website visit counts" section; the home page and `llms.txt` no longer say the site runs no
+  analytics.
 
 ## 0.1.5
 

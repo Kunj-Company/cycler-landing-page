@@ -1,0 +1,5 @@
+node_modules/
+.wrangler/
+laptop/backups/
+laptop/.env
+laptop/.pull.*

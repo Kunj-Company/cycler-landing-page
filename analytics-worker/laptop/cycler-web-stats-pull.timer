@@ -1,0 +1,11 @@
+[Unit]
+Description=Daily Cycler website visit counts pull
+
+[Timer]
+# 00:30 UTC, after the worker's 00:05 UTC cleanup, so each pull has the whole previous day.
+OnCalendar=*-*-* 00:30:00 UTC
+RandomizedDelaySec=10min
+Persistent=true
+
+[Install]
+WantedBy=timers.target

@@ -77,6 +77,7 @@ section, the feature list heading and `llms.txt` together.
 | `css/styles.css` | Design tokens and all styles |
 | `js/default-loop.js` | The stored default loop: place, settings and the routed track |
 | `js/main.js` | The ride model, the planner, scroll-ride logic, the demos, and the GSAP choreography |
+| `js/stats.js` | Cookie-free visit-count beacon (see [Visit counts](#visit-counts)) |
 | `404.html` | Self-contained "you have left the route" page |
 | `img/` | App logo, icons, social preview and screenshots |
 | `site.webmanifest`, `robots.txt`, `llms.txt` | Browser and crawler metadata |
@@ -102,7 +103,7 @@ section, the feature list heading and `llms.txt` together.
 ## Services the planner calls
 
 The same free community servers the app uses, with no API keys. The default loop is stored with
-the page, so nothing is called on load. Map tiles and the weather line load when the planner
+the page, so the planner calls nothing on load. Map tiles and the weather line load when the planner
 scrolls into view; search and routing run only when a visitor plans a loop.
 
 | What | Service | Sent |
@@ -116,6 +117,24 @@ These are shared servers, so the page goes easy on them: search waits for a paus
 routing runs once per change, an earlier request is cancelled when a new one starts, and results
 are cached for the visit. If the map cannot load, the route is drawn as a shape instead. If
 routing fails, the planner says why and offers a retry.
+
+## Visit counts
+
+`js/stats.js` is a small first-party beacon loaded by every page. It sets no cookies and stores
+nothing in the browser. It sends a `pageview` on load, and on click `download` (GitHub releases),
+`beta` (Tally), `donate` (Buy Me a Coffee), `source` (other links to the Cycler repositories) and
+`card` (the share card's download button). Each event is a small JSON body with the event name,
+the page URL, the referrer and the window width, sent with `sendBeacon`.
+
+- It only runs on `cycler.kunj.company` and `cycler-landing-page.vercel.app`, so local previews
+  send nothing, and it skips automated browsers (`navigator.webdriver`).
+- The endpoint is the `URL_` constant at the top of the file. It still holds the placeholder
+  `hi-480`; replace it with the account's workers.dev subdomain, and do the same in
+  the `connect-src` entry of the Content-Security-Policy in `vercel.json`.
+- To leave your own visits out, run this once in the browser console on the live site:
+  `localStorage.setItem('cycler_stats_ignore','1')`. Remove the key to be counted again.
+- The receiving Cloudflare Worker and its D1 database live in `analytics-worker/`. What is
+  counted and kept is described in the [privacy policy](privacy.html#webstats).
 
 ## Content
 

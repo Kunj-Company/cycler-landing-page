@@ -1,0 +1,15 @@
+# systemd user service: daily pull of the website visit counts. Install (on the laptop):
+#   mkdir -p ~/.config/systemd/user
+#   cp cycler-web-stats-pull.service cycler-web-stats-pull.timer ~/.config/systemd/user/
+#   systemctl --user daemon-reload && systemctl --user enable --now cycler-web-stats-pull.timer
+#   journalctl --user -u cycler-web-stats-pull     # logs
+[Unit]
+Description=Pull Cycler website visit counts from Cloudflare D1 into SQLite
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=%h/cycler-web-stats/pull.sh
+Environment=PATH=%h/.local/bin:/usr/local/bin:/usr/bin:/bin
+TimeoutStartSec=15min
