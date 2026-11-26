@@ -33,8 +33,7 @@ Then open <http://localhost:8000>. Opening `index.html` straight from disk works
 
 ## Deploy
 
-For now the site is at <https://cycler-landing-page.vercel.app>. That address is temporary, until
-the site has a domain of its own. It is a Vercel project linked to this repository: every push to
+The site is at <https://cycler.kunj.company>. The Vercel address <https://cycler-landing-page.vercel.app> keeps working. It is a Vercel project linked to this repository: every push to
 `main` is deployed to production, and other branches get preview URLs.
 
 Any static host works with the repository root as the output folder and no build command:
@@ -60,17 +59,12 @@ What is already in place:
 
 No ratings or reviews are marked up, because the app has none to cite.
 
-### When the domain is known
+### Domain
 
-The canonical URL, `og:url` and the sitemap are left out until the site has an address, because a
-wrong canonical does more harm than a missing one. Then:
-
-1. In `index.html`, find the comment that mentions `YOUR-DOMAIN`, put the real domain in and
-   uncomment the two lines.
-2. Make `og:image` and `twitter:image` absolute, for example `https://example.com/img/og.jpg`.
-3. In the JSON-LD block, change `"url": "./"` to the full address.
-4. Add `sitemap.xml` with the one URL, and a `Sitemap:` line to `robots.txt`.
-5. Submit the site in Google Search Console and Bing Webmaster Tools.
+The site's address is <https://cycler.kunj.company>. The canonical URL, `og:url`, the absolute `og:image` and
+`twitter:image`, the JSON-LD URLs and `sitemap.xml` all use it. If the domain ever changes, search
+for `cycler.kunj.company` and replace it everywhere, then submit the new address in Google Search
+Console and Bing Webmaster Tools.
 
 When the app version changes, update `softwareVersion` in the JSON-LD, the version in the install
 section, the feature list heading and `llms.txt` together.
