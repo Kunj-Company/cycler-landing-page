@@ -1,7 +1,7 @@
 # Cycler landing page
 
 The website for [Cycler](https://github.com/Kunj-Company/cycler), a personal cycling app for Android:
-record rides, plan routes and look back on every ride, with no account, no cloud and no ads.
+record rides, plan routes and look back on every ride, with no account and no ads, rides kept on the phone, and anonymous usage stats that can be turned off.
 
 ![The hero of the Cycler landing page](docs/preview-hero.jpg)
 

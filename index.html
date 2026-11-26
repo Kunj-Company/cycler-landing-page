@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cycler: a private, open-source cycling app for Android</title>
-<meta name="description" content="Cycler is a free, open-source cycling app for Android. Record rides with the screen off, plan routes and loops, and keep every ride on your phone. No account, no ads.">
+<title>Cycler: a free, open-source cycling app for Android</title>
+<meta name="description" content="Cycler is a free, open-source cycling app for Android. Record rides with the screen off, plan routes and loops, and keep every ride on your phone. No account, no ads. Anonymous usage stats you can turn off.">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
 <meta name="author" content="Abhiram N J">
 <link rel="author" href="https://abhiramnj.com">
@@ -16,16 +16,16 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Cycler">
 <meta property="og:locale" content="en_IN">
-<meta property="og:title" content="Cycler: a private, open-source cycling app for Android">
-<meta property="og:description" content="Cycler is a free, open-source cycling app for Android. Record rides with the screen off, plan routes and loops, and keep every ride on your phone. No account, no ads.">
+<meta property="og:title" content="Cycler: a free, open-source cycling app for Android">
+<meta property="og:description" content="Cycler is a free, open-source cycling app for Android. Record rides with the screen off, plan routes and loops, and keep every ride on your phone. No account, no ads. Anonymous usage stats you can turn off.">
 <meta property="og:image" content="https://cycler.kunj.company/img/og.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="The Cycler website: a map with a recorded cycling loop and the line Every ride, kept on your phone.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Cycler: a private, open-source cycling app for Android">
-<meta name="twitter:description" content="Cycler is a free, open-source cycling app for Android. Record rides with the screen off, plan routes and loops, and keep every ride on your phone. No account, no ads.">
+<meta name="twitter:title" content="Cycler: a free, open-source cycling app for Android">
+<meta name="twitter:description" content="Cycler is a free, open-source cycling app for Android. Record rides with the screen off, plan routes and loops, and keep every ride on your phone. No account, no ads. Anonymous usage stats you can turn off.">
 <meta name="twitter:image" content="https://cycler.kunj.company/img/og.jpg">
 <meta name="twitter:image:alt" content="The Cycler website: a map with a recorded cycling loop and the line Every ride, kept on your phone.">
 <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
@@ -54,7 +54,7 @@
    "@id": "#website",
    "url": "https://cycler.kunj.company/",
    "name": "Cycler",
-   "description": "Cycler is a free, open-source cycling app for Android. Record rides with the screen off, plan routes and loops, and keep every ride on your phone. No account, no ads.",
+   "description": "Cycler is a free, open-source cycling app for Android. Record rides with the screen off, plan routes and loops, and keep every ride on your phone. No account, no ads. Anonymous usage stats you can turn off.",
    "inLanguage": "en",
    "publisher": {
     "@id": "#org"
@@ -85,7 +85,7 @@
    "@id": "#app",
    "name": "Cycler",
    "url": "https://cycler.kunj.company/",
-   "description": "Cycler is a free, open-source cycling app for Android. Record rides with the screen off, plan routes and loops, and keep every ride on your phone. No account, no ads.",
+   "description": "Cycler is a free, open-source cycling app for Android. Record rides with the screen off, plan routes and loops, and keep every ride on your phone. No account, no ads. Anonymous usage stats you can turn off.",
    "applicationCategory": "SportsApplication",
    "applicationSubCategory": "Cycling",
    "operatingSystem": "Android",
@@ -237,7 +237,15 @@
      "name": "What data leaves my phone?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Only five kinds of request: map tiles, weather, route planning, place search and traffic signals. There is no account and no ad tracking. The only other thing is the lightest anonymous usage counting, which carries no name, no rides and no locations. The privacy section on this page lists what each request sends."
+      "text": "Your rides, routes, photos, notes and health data stay on your phone. The app makes five kinds of request for maps, weather, route planning, place search and traffic signals, and once a week it sends an anonymous usage summary to a server Cycler runs. There is no account and there are no ads. Each request is listed in the privacy section on this page."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Does Cycler track me?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Not in the sense of following you. Once a week Cycler sends an anonymous summary of the previous week to a server it runs. It holds a random stats ID made on your phone, the app version, the week, the days you opened the app, rides started, finished and discarded, total distance, and how many times each feature was used. A second report has no ID and cannot be linked to the first. It gives the general area where rides started and ended, as a grid cell of about 10 km, with the number of rides and km per cell. Cycler never sends your exact location, routes or GPS tracks, place names or search text, ride names, notes or photos, speed, heart rate or Health Connect data, Android or advertising ID, device model, exact times or IP address. It is on by default. You can turn it off anytime in Settings, Privacy, and then nothing is counted or sent."
      }
     }
    ]
@@ -297,7 +305,7 @@
         <div class="hero-sub">
           <p>Cycler is a personal cycling app for Android. Record rides with the screen off, plan routes and loops, and look back on every ride.</p>
           <ul class="hero-facts" aria-label="What Cycler leaves out">
-            <li>No account</li><li>No cloud</li><li>No ads</li><li>Open source, MIT</li>
+            <li>No account</li><li>No ads</li><li>Rides stay on your phone</li><li>Open source, MIT</li>
           </ul>
           <div class="hero-cta">
             <a class="btn" href="https://github.com/Kunj-Company/cycler/releases">Download the APK</a>
@@ -822,6 +830,7 @@
         <dl>
           <div><dt>GPX import, FIT, TCX and GPX export</dt><dd>Bring routes in as GPX. Send rides out as FIT, TCX or GPX files to any app that imports them.</dd></div>
           <div><dt>Health Connect</dt><dd>Reads heart rate and weight that other apps put in Health Connect. Read only.</dd></div>
+          <div><dt>Anonymous usage stats</dt><dd>A weekly summary of how the app is used, with no routes, places or health data. On by default, and you can switch it off in Settings, Privacy.</dd></div>
           <div><dt>Backup and restore</dt><dd>Rides, routes, photos, segments, bike care and settings in one zip file that you keep.</dd></div>
         </dl>
       </div>
@@ -833,9 +842,9 @@
 <section class="sec quiet priv" id="privacy">
   <div class="wrap split">
     <div class="sec-head">
-      <h2>What leaves your phone. All five things.</h2>
-      <p>Rides, photos and settings stay in the app's own storage. Maps, weather and routing have to come from somewhere, so here is every request Cycler makes and what it carries.</p>
-      <ul class="never"><li>No account</li><li>No ads</li><li>No ad tracking</li><li>No cloud backup</li></ul>
+      <h2>What leaves your phone. All of it.</h2>
+      <p>Rides, photos and settings stay in the app's own storage. Maps, weather and routing have to come from somewhere, and anonymous usage stats help improve the app, so here is every request Cycler makes and what it carries.</p>
+      <ul class="never"><li>No account</li><li>No ads</li><li>Rides never uploaded</li><li>Stats can be turned off</li></ul>
     </div>
     <div>
       <div class="leaves">
@@ -843,10 +852,11 @@
         <div><b>Weather</b><span>Open-Meteo</span><span>Your position rounded to about 100 m, at most every 15 minutes.</span></div>
         <div><b>Route planning</b><span>BRouter</span><span>The waypoints of the route or loop you ask for.</span></div>
         <div><b>Place search</b><span>Photon</span><span>The text you type, and your position rounded to about 1 km.</span></div>
+        <div><b>Anonymous usage stats</b><span>Cycler stats server, on Cloudflare</span><span>Once a week: counts of app use and features, and the general area (about 10 km) of rides, never routes, places or health data. On by default; turn it off in Settings, Privacy.</span></div>
         <div><b>Traffic signals</b><span>Overpass API</span><span>A bounding box around the route you open or follow.</span></div>
       </div>
-      <p class="fine">This website may count visits anonymously too, and nothing more. Its planner uses the same servers. Map tiles from OpenFreeMap and the weather line from Open-Meteo load when you reach the planner. Your search text goes to Photon and the loop's waypoints go to BRouter only when you plan a loop of your own.</p>
-      <p class="fine">These are free community servers with no API keys. A backup is a zip file you save yourself. Full policy: <a href="privacy.html">Privacy policy</a>, and the <a href="terms.html">Terms of service</a>.</p>
+      <p class="fine">This website runs no analytics of its own. Its planner uses the same servers. Map tiles from OpenFreeMap and the weather line from Open-Meteo load when you reach the planner. Your search text goes to Photon and the loop's waypoints go to BRouter only when you plan a loop of your own.</p>
+      <p class="fine">These are free community servers with no API keys. A backup is a zip file you save yourself. The stats server code is open source in the <a href="https://github.com/Kunj-Company/cycler/tree/main/stats-server">app repository</a>. Full policy: <a href="privacy.html">Privacy policy</a>, and the <a href="terms.html">Terms of service</a>.</p>
     </div>
   </div>
 </section>
@@ -909,7 +919,8 @@
       <details><summary>Is there an iPhone version?</summary><p>Not yet. Publishing on iPhone needs a paid Apple developer licence, and Cycler is free with no income behind it, so Android comes first. If enough donations come in to cover that cost, an iPhone version will follow soon after. You can help at <a href="https://buymeacoffee.com/abhiramnj" rel="noopener">buymeacoffee.com/abhiramnj</a>. Today Cycler needs Android 8.0 or later.</p></details>
       <details><summary>How do I back up my rides or move to a new phone?</summary><p>In Settings, open Maps and data and choose Back up everything. You get one zip file with your rides, routes, photos, segments, bike care and settings, which you can restore on another phone.</p></details>
       <details><summary>How is Cycler paid for, and can I support it?</summary><p>Cycler is free, with no ads and nothing to unlock, and it is built in spare time. If it is useful to you, you can pay it forward with a coffee at <a href="https://buymeacoffee.com/abhiramnj" rel="noopener">buymeacoffee.com/abhiramnj</a>. That money goes to what the app costs to build and publish, and keeps it free for the next rider. Support is optional and changes nothing in the app.</p></details>
-      <details><summary>What data leaves my phone?</summary><p>Only five kinds of request: map tiles, weather, route planning, place search and traffic signals. There is no account and no ad tracking. The only other thing is the lightest anonymous usage counting, which carries no name, no rides and no locations. The privacy section on this page lists what each request sends.</p></details>
+      <details><summary>What data leaves my phone?</summary><p>Your rides, routes, photos, notes and health data stay on your phone. The app makes five kinds of request for maps, weather, route planning, place search and traffic signals, and once a week it sends an anonymous usage summary to a server Cycler runs. There is no account and there are no ads. Each request is listed in the privacy section on this page.</p></details>
+      <details><summary>Does Cycler track me?</summary><p>Not in the sense of following you. Once a week Cycler sends an anonymous summary of the previous week to a server it runs. It holds a random stats ID made on your phone, the app version, the week, the days you opened the app, rides started, finished and discarded, total distance, and how many times each feature was used. A second report has no ID and cannot be linked to the first. It gives the general area where rides started and ended, as a grid cell of about 10 km, with the number of rides and km per cell. Cycler never sends your exact location, routes or GPS tracks, place names or search text, ride names, notes or photos, speed, heart rate or Health Connect data, Android or advertising ID, device model, exact times or IP address. It is on by default. You can turn it off anytime in Settings, Privacy, and then nothing is counted or sent. Details are in the <a href="privacy.html#stats">privacy policy</a>.</p></details>
     </div>
   </div>
 </section>

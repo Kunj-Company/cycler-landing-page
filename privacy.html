@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Privacy policy | Cycler</title>
-<meta name="description" content="What Cycler does with your data: rides stay on your phone, no account, no ads, a short list of map and weather requests, and the lightest anonymous usage counts.">
+<meta name="description" content="What Cycler does with your data: rides stay on your phone, no account, no ads, a short list of map and weather requests, and anonymous weekly usage stats you can turn off.">
 <link rel="canonical" href="https://cycler.kunj.company/privacy.html">
 <meta name="robots" content="index, follow">
 <meta name="author" content="Abhiram N J">
@@ -36,20 +36,19 @@
       <p class="label">Privacy policy</p>
       <h1 style="margin-top:14px">What happens to your data.</h1>
       <p class="lede">Cycler is built so your rides stay yours. This page says exactly what stays on your phone, what leaves it, and why.</p>
-      <p class="meta">Effective 26 November 2026. Applies to the Cycler app and to this website.</p>
+      <p class="meta">Effective 27 November 2026. Applies to the Cycler app and to this website.</p>
     </div>
     <div class="lg-grid">
-      <nav class="lg-toc" aria-label="On this page"><p class="label">On this page</p><a href="#summary">In short</a><a href="#who">Who is responsible</a><a href="#phone">What stays on your phone</a><a href="#network">What leaves your phone</a><a href="#counts">Anonymous usage counts</a><a href="#location">Location</a><a href="#health">Health Connect</a><a href="#backups">Backups, photos and sharing</a><a href="#website">This website</a><a href="#beta">Beta sign-up form</a><a href="#keep">How long data is kept</a><a href="#rights">Your rights</a><a href="#children">Children</a><a href="#changes">Changes</a><a href="#contact">Contact</a></nav>
+      <nav class="lg-toc" aria-label="On this page"><p class="label">On this page</p><a href="#summary">In short</a><a href="#who">Who is responsible</a><a href="#phone">What stays on your phone</a><a href="#network">What leaves your phone</a><a href="#stats">Anonymous usage stats</a><a href="#location">Location</a><a href="#health">Health Connect</a><a href="#backups">Backups, photos and sharing</a><a href="#website">This website</a><a href="#beta">Beta sign-up form</a><a href="#keep">How long data is kept</a><a href="#rights">Your rights</a><a href="#children">Children</a><a href="#changes">Changes</a><a href="#contact">Contact</a></nav>
       <div class="lg-body">
 
 <div class="lg-summary" id="summary">
   <h2>In short</h2>
   <ul>
-    <li>Cycler has <strong>no account, no ads and no cloud</strong>. Your rides, photos and settings stay in the app's own storage on your phone.</li>
-    <li>The developer cannot see your rides. Nothing is uploaded to a server we run.</li>
-    <li>The app talks to a handful of free community services for maps, weather and routing. They are listed below, with what each one receives.</li>
-    <li>Beyond those, Cycler keeps the <strong>lightest possible anonymous usage counts</strong>. They carry no name, no rides and no locations, and they are never used for advertising or sold.</li>
-    <li>A backup is a file you save yourself. Delete a ride or uninstall the app and it is gone.</li>
+    <li>Cycler has <strong>no account and no ads</strong>. Your rides, routes, GPS tracks, photos, names and notes stay on your phone. No health data is ever sent.</li>
+    <li>The app talks to a few free community services for maps, weather and routing. They are listed below, with what each one receives.</li>
+    <li>Once a week Cycler sends <strong>anonymous usage stats</strong> to a server it runs. They help improve the app. <strong>You can turn them off anytime</strong> in Settings, Privacy.</li>
+    <li>A backup is a file you save yourself. Delete a ride or uninstall the app and it is gone from your phone.</li>
   </ul>
 </div>
 
@@ -61,12 +60,12 @@
 
 <section id="phone">
   <h2>What stays on your phone</h2>
-  <p>Rides, GPS points, routes, photos and videos you attach, notes, tags, segments, bike care records and settings are stored in the app's own storage on your device. The developer cannot see them. Android's cloud backup is turned off for Cycler, so they are not copied to your Google account either.</p>
+  <p>Rides, GPS points, routes, photos and videos you attach, notes, tags, segments, bike care records and settings are stored in the app's own storage on your device. The developer cannot see them, and they are never uploaded. Android's cloud backup is turned off for Cycler, so they are not copied to your Google account either.</p>
 </section>
 
 <section id="network">
   <h2>What leaves your phone</h2>
-  <p>Maps, weather and routing have to come from somewhere. Cycler makes five kinds of request, all over HTTPS, to free community services. None of them needs an account or an API key.</p>
+  <p>Maps, weather and routing have to come from somewhere. Cycler makes six kinds of request, all over HTTPS. Five go to free community services that need no account or API key. The sixth is the weekly usage stats, sent to a server Cycler runs.</p>
   <table class="lg-table">
     <thead><tr><th>What</th><th>Sent to</th><th>When</th><th>What is sent</th></tr></thead>
     <tbody>
@@ -74,26 +73,66 @@
       <tr><td data-label="What">Weather</td><td data-label="Sent to">Open-Meteo</td><td data-label="When">Whenever the app has a position, at most every 15 minutes</td><td data-label="What is sent">Your position rounded to about 100 m</td></tr>
       <tr><td data-label="What">Route planning</td><td data-label="Sent to">BRouter (brouter.de)</td><td data-label="When">When you plan a route or loop, or ask for suggestions</td><td data-label="What is sent">The waypoints you route between. For a loop, your current position is the start</td></tr>
       <tr><td data-label="What">Place search</td><td data-label="Sent to">Photon (photon.komoot.io)</td><td data-label="When">When you search</td><td data-label="What is sent">The text you type, and your position rounded to about 1 km</td></tr>
+      <tr><td data-label="What">Anonymous usage stats</td><td data-label="Sent to">Cycler stats server (Cloudflare Workers and D1)</td><td data-label="When">Once a week, for the previous week</td><td data-label="What is sent">Two anonymous reports, described in the next section</td></tr>
       <tr><td data-label="What">Traffic signals</td><td data-label="Sent to">Overpass API (overpass-api.de)</td><td data-label="When">When you open or follow a ride or route</td><td data-label="What is sent">A bounding box around the route</td></tr>
     </tbody>
   </table>
-  <p>Like any web server, these services receive your IP address, and they have their own privacy policies. Cycler sends them nothing else and does not add any identifier of its own.</p>
+  <p>Like any web server, the five community services receive your IP address, and they have their own privacy policies. Cycler sends them nothing else and does not add any identifier of its own. The stats server is covered below.</p>
 </section>
 
-<section id="counts">
-  <h2>Anonymous usage counts</h2>
-  <p>Cycler keeps the lightest possible anonymous usage counts, just enough to know the app is being used and where it breaks. We use them to decide what to fix and what to build next.</p>
+<section id="stats">
+  <h2>Anonymous usage stats</h2>
+  <p>Once a week, Cycler sends a summary of the previous completed week to a server Cycler runs. It is used only to understand which features are used, how much people ride and where, so the app can be improved and its impact shown to supporters. It is sent over HTTPS.</p>
+
+  <h3>Report 1: the weekly install summary</h3>
   <ul>
-    <li><strong>What they are:</strong> simple counts, such as how often the app is opened, which app version and Android version are in use, and whether a feature or an error happened.</li>
-    <li><strong>What they never contain:</strong> your name or email, your rides, routes, photos or notes, your location, your contacts, or an advertising identifier.</li>
-    <li><strong>What we do not do:</strong> we do not build a profile of you, follow you across other apps or sites, show ads, or sell or share this data for marketing.</li>
+    <li>A random stats ID, created on your phone. It is not taken from the Android ID or the advertising ID, and it is not linked to a name, email or account.</li>
+    <li>The app version.</li>
+    <li>The week, for example 2026-W48. Nothing finer than a week is sent.</li>
+    <li>The number of days you opened the app that week (0 to 7).</li>
+    <li>Rides started, finished and discarded.</li>
+    <li>The total distance of the rides you finished that week, in km.</li>
+    <li>How many times each feature was used, such as GPX, TCX or FIT export, share video or cards, route planning (A to B and loop), GPX import, search, laps, pause, workouts, widgets, offline maps, backups, bike care, and map or routing errors. For Health Connect, only that it was connected, never its data.</li>
   </ul>
-  <p>Because they are anonymous, we cannot look up or delete the counts of one particular person. If you would rather not take part, tell us at <a href="mailto:hellokunjcompany@gmail.com">hellokunjcompany@gmail.com</a> and we will say how to opt out of the current version.</p>
+
+  <h3>Report 2: the anonymous area summary</h3>
+  <p>This report has no stats ID and cannot be linked to report 1.</p>
+  <ul>
+    <li>The general area where finished rides started and ended, as a grid cell of about 10 km. It is not the exact point, an address or a place name.</li>
+    <li>The number of rides and km for each area cell that week.</li>
+  </ul>
+
+  <h3>What is never sent</h3>
+  <ul>
+    <li>Your exact location, routes or GPS tracks.</li>
+    <li>Place names or search text.</li>
+    <li>Ride names, notes or photos.</li>
+    <li>Speed, heart rate or anything from Health Connect.</li>
+    <li>Android ID, advertising ID or device model.</li>
+    <li>Exact times. Only the week is sent.</li>
+    <li>Your IP address. The stats server does not read or store it, and its logging is turned off. Cloudflare's network still sees the IP address in transit, to deliver the request.</li>
+  </ul>
+
+  <h3>Your choice</h3>
+  <p>Stats are on by default. On first launch, and once after an update, the app shows a notice that explains what is shared. It has a Continue button and says you can turn this off anytime in Settings, then Privacy.</p>
+  <p>Settings, Privacy has a "Share anonymous stats" switch. When it is off, nothing is counted or sent, and stats not yet sent are deleted from your phone.</p>
+
+  <h3>Where the data goes and how long it is kept</h3>
+  <ul>
+    <li>It is stored in a Cloudflare Workers and Cloudflare D1 database run by Cycler. Cloudflare acts as the hosting provider.</li>
+    <li>The developer keeps a daily copy on their own computer to make charts.</li>
+    <li>It is kept until you ask for it to be deleted.</li>
+    <li>It is never sold, never used for ads, and never shared with anyone other than the hosting provider.</li>
+    <li>The server code is open source, in the <a href="https://github.com/Kunj-Company/cycler/tree/main/stats-server">stats-server folder</a> of the app repository.</li>
+  </ul>
+
+  <h3>Deleting your stats</h3>
+  <p>Your stats ID is shown in Settings, Privacy. Email <a href="mailto:hellokunjcompany@gmail.com">hellokunjcompany@gmail.com</a> with that ID and your stats will be deleted. The area reports have no ID, so they are already anonymous and are not tied to anyone.</p>
 </section>
 
 <section id="location">
   <h2>Location</h2>
-  <p>Cycler uses your precise location to show you on the map and to record rides. Recording can continue with the screen off and shows a notification while it runs. Your location is not sent anywhere except as described in the table above, and in rounded form where the table says so.</p>
+  <p>Cycler uses your precise location to show you on the map and to record rides. Recording can continue with the screen off and shows a notification while it runs. Your location is not sent anywhere except as described in the table above, in rounded form where the table says so, and in the anonymous usage stats as a grid cell of about 10 km, never the exact point.</p>
 </section>
 
 <section id="health">
@@ -110,7 +149,7 @@
 
 <section id="website">
   <h2>This website</h2>
-  <p>The website is a static site. We do not run accounts, forms or a database on it, and its own code does not set cookies or store anything in your browser to identify you. It may count visits anonymously, in the same lightest-touch way as the app, and nothing more.</p>
+  <p>The website is a static site. We do not run accounts, forms or a database on it, and its own code does not set cookies or store anything in your browser to identify you. It runs no analytics of its own. The usage stats described above are sent by the app, not by this website.</p>
   <p>To work, the page loads a few things from other providers. Each sees your IP address and your browser's details when it serves you a file:</p>
   <ul>
     <li><strong>Hosting:</strong> the site is served by Vercel, which keeps ordinary server logs for security and operation.</li>
@@ -129,13 +168,19 @@
 
 <section id="keep">
   <h2>How long data is kept</h2>
-  <p>Data stays on your phone until you delete a ride or uninstall the app. Uninstalling removes everything Cycler stored, except files you saved yourself, such as a backup. We hold no copy of your rides and so have nothing to delete on your behalf. Anonymous counts are kept only as long as they are useful.</p>
+  <p>On your phone, data stays until you delete a ride or uninstall the app. Uninstalling removes everything Cycler stored, except files you saved yourself, such as a backup. We hold no copy of your rides.</p>
+  <p>Anonymous usage stats are kept on the stats server until you ask for them to be deleted. We do not set a fixed retention period.</p>
 </section>
 
 <section id="rights">
   <h2>Your rights</h2>
-  <p>Your rides and photos are yours and already in your hands: you can view, export, move or delete them in the app at any time. For anything else, depending on where you live you may have the right to ask what data we hold about you, to have it corrected or deleted, to object to how it is used, and to complain to your data protection authority. Because we hold no personal data about you beyond anonymous counts and any message you send us, there is usually little to look up, but ask at <a href="mailto:hellokunjcompany@gmail.com">hellokunjcompany@gmail.com</a> and we will answer in good faith.</p>
-  <p>The services in the table above act on their own account. To exercise rights over what they hold, contact them directly.</p>
+  <ul>
+    <li><strong>Turn stats off at any time</strong> in Settings, Privacy. Nothing is counted or sent after that, and unsent stats are deleted from your phone.</li>
+    <li><strong>Ask for deletion</strong> of the stats already sent. Email <a href="mailto:hellokunjcompany@gmail.com">hellokunjcompany@gmail.com</a> with your stats ID from Settings, Privacy. Area reports have no ID, so they cannot be tied to you and are already anonymous.</li>
+    <li>Your rides and photos are yours and already in your hands. You can view, export, move or delete them in the app at any time.</li>
+  </ul>
+  <p>Depending on where you live, you may have other rights over your data, such as asking what we hold about you, having it corrected, or complaining to your data protection authority. Write to <a href="mailto:hellokunjcompany@gmail.com">hellokunjcompany@gmail.com</a> and we will answer in good faith.</p>
+  <p>The five community services in the table above act on their own account. To exercise rights over what they hold, contact them directly.</p>
 </section>
 
 <section id="children">

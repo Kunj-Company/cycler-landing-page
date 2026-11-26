@@ -2,6 +2,16 @@
 
 Notable changes to the Cycler landing page. Versions use the `0.1.N` format.
 
+## 0.1.6
+
+### Changed
+- The site no longer says "no analytics", "no tracking" or "no cloud". Cycler now sends anonymous
+  usage stats once a week, on by default and switchable in Settings, Privacy. The privacy policy
+  has a full "Anonymous usage stats" section (both reports, what is never sent, where the data
+  goes, how to turn it off and how to ask for deletion), the home page privacy list, features,
+  FAQ (with a new "Does Cycler track me?" entry), meta descriptions and `llms.txt` match, and the
+  terms point to the policy. Effective 27 November 2026.
+
 ## 0.1.5
 
 ### Changed
