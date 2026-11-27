@@ -149,9 +149,10 @@ the page URL, the referrer and the window width, sent with `sendBeacon`.
 
 - It only runs on `cycler.kunj.company` and `cycler-landing-page.vercel.app`, so local previews
   send nothing, and it skips automated browsers (`navigator.webdriver`).
-- The endpoint is the `URL_` constant at the top of the file. It still holds the placeholder
-  `hi-480`; replace it with the account's workers.dev subdomain, and do the same in
-  the `connect-src` entry of the Content-Security-Policy in `vercel.json`.
+- The endpoint is the `URL_` constant at the top of the file:
+  `https://cycler-web-stats.hi-480.workers.dev/e`. If it moves (for example to
+  `stats.kunj.company`), change it there and in the `connect-src` entry of the
+  Content-Security-Policy in `vercel.json`.
 - To leave your own visits out, run this once in the browser console on the live site:
   `localStorage.setItem('cycler_stats_ignore','1')`. Remove the key to be counted again.
 - The receiving Cloudflare Worker and its D1 database live in `analytics-worker/`. What is
