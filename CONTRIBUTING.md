@@ -30,7 +30,24 @@ Open <http://localhost:8000> and check your change at a desktop width and at abo
   turned on and with GSAP blocked. Animate `transform` and `opacity`, not layout.
 - **The route line depends on layout.** It is built from element offsets, so do not animate the
   size or position of `.lane`, `.ch-in` or `.stone` containers with anything but transforms.
-- **Pin library versions.** External scripts are loaded by exact version.
+- **Pin library versions.** Libraries are self-hosted by exact version, with the version in the
+  file name (`js/vendor/gsap-3.12.5.min.js`), because those files are cached for a year. A new
+  version is a new file name. The only external script is the planner's MapLibre from cdnjs.
+- **Keep the facts in step.** A change to the FAQ or the feature list also updates the JSON-LD
+  `FAQPage` and `llms-full.txt`. A new outside host also goes into the CSP in `vercel.json` and
+  the privacy policy.
+
+## Branches
+
+There is one long-lived branch: `main`. It is always deployable, and every push to it goes live.
+
+- Small fixes can go straight to `main`.
+- Anything bigger goes on a short-lived branch named after the change type,
+  `feat/<short-name>` or `fix/<short-name>`, which gets a Vercel preview URL on push. Open a pull
+  request, check the preview, and squash-merge it.
+- The repository only allows squash merges and deletes the branch automatically after merging, so
+  `main` stays one commit per change and no stale branches pile up.
+- No `develop`, release or long-running branches. Releases are just commits on `main`.
 
 ## Commits and pull requests
 

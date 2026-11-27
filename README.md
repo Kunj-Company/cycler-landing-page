@@ -41,23 +41,39 @@ Vercel, Cloudflare Pages, Netlify or GitHub Pages. `404.html` is picked up autom
 
 `404.html` uses root-relative paths, so it assumes the site sits at the root of its domain.
 
-## Search and sharing
+## Search, answer engines and AI assistants
 
-What is already in place:
+What is in place:
 
-- A descriptive title and meta description, robots directives, author and theme colour.
-- Open Graph and Twitter card tags with a 1200x630 preview image and alt text.
-- Structured data (JSON-LD) in the head: `WebSite`, `Organization`, `Person`, a
-  `SoftwareApplication` entry for the app (category, Android requirement, version, free offer,
-  licence, feature list, screenshots) and an `FAQPage` that mirrors the visible FAQ.
-- A crawlable feature list and FAQ in plain HTML. All content is in the markup, not injected by
+- **Search (SEO).** Title, meta description, canonical URL and Open Graph and Twitter tags on every
+  indexable page, with a 1200x630 preview image. `sitemap.xml` with `lastmod`, and `robots.txt`
+  pointing at it. `404.html` is `noindex`. The old `cycler-landing-page.vercel.app` address
+  redirects permanently (308) to `cycler.kunj.company`, so there is one canonical site; preview
+  deployments are not affected.
+- **Structured data (JSON-LD).** Home: `WebSite`, `Organization`, `Person`,
+  `SoftwareApplication`/`MobileApplication` (version, free offer, licence, Android requirement,
+  APK file type, features, screenshots, keywords, `dateModified`), an `FAQPage` that mirrors the
+  visible FAQ exactly, and a `HowTo` for installing. Privacy and terms: `WebPage` with a
+  `BreadcrumbList`. All `@id`s are absolute URLs.
+- **Answer engines (AEO).** The FAQ opens with "What is Cycler?" and "How do I install Cycler?",
+  each answered in its first sentence. All content is plain HTML in the markup, not injected by
   script.
-- One `h1`, section `h2`s, landmarks, a skip link, alt text and sizes on every image, lazy loading
-  below the fold.
-- Scripts are deferred and library hosts are preconnected, so nothing blocks first paint.
-- `robots.txt`, a web manifest, and `llms.txt` for AI crawlers.
+- **AI assistants and generative search (GEO).** `robots.txt` names the AI crawlers (OpenAI,
+  Anthropic, Perplexity, Google-Extended, Apple, Bing, DuckDuckGo, Mistral, Common Crawl) and
+  allows them. `llms.txt` is the short summary and `llms-full.txt` the whole site as plain
+  markdown (key facts, every feature, install steps, every FAQ). The home page links both with
+  `rel="alternate"`. They are served as UTF-8 plain text.
+- **Speed.** Fonts (`fonts/`, preloaded) and GSAP (`js/vendor/`) are self-hosted with a one-year
+  immutable cache; only the planner's map library comes from cdnjs, and only when you reach it.
+  Scripts are deferred.
+- **Accessibility.** One `h1`, section `h2`s, landmarks, a skip link, alt text and sizes on every
+  image, lazy loading below the fold. Lighthouse: SEO, accessibility and best practices 100.
+- `/.well-known/security.txt` with a contact address (renew its `Expires` line yearly).
 
 No ratings or reviews are marked up, because the app has none to cite.
+
+After changing the FAQ or the feature list, keep the JSON-LD `FAQPage` in step with the visible
+FAQ, and update `llms-full.txt`, which repeats both.
 
 ### Domain
 
@@ -66,8 +82,9 @@ The site's address is <https://cycler.kunj.company>. The canonical URL, `og:url`
 for `cycler.kunj.company` and replace it everywhere, then submit the new address in Google Search
 Console and Bing Webmaster Tools.
 
-When the app version changes, update `softwareVersion` in the JSON-LD, the version in the install
-section, the feature list heading and `llms.txt` together.
+When the app version changes, update `softwareVersion` and `dateModified` in the JSON-LD, the APK
+name and version in the install section, the feature list heading, `llms.txt`, `llms-full.txt`
+and the `lastmod` dates in `sitemap.xml` together.
 
 ## Layout
 
@@ -80,7 +97,11 @@ section, the feature list heading and `llms.txt` together.
 | `js/stats.js` | Cookie-free visit-count beacon (see [Visit counts](#visit-counts)) |
 | `404.html` | Self-contained "you have left the route" page |
 | `img/` | App logo, icons, social preview and screenshots |
-| `site.webmanifest`, `robots.txt`, `llms.txt` | Browser and crawler metadata |
+| `site.webmanifest`, `robots.txt`, `sitemap.xml`, `llms.txt`, `llms-full.txt`, `.well-known/security.txt` | Browser, crawler and AI-assistant metadata |
+| `fonts/`, `css/fonts.css`, `js/vendor/` | Self-hosted typefaces and GSAP |
+| `privacy.html`, `terms.html`, `css/legal.css` | Privacy policy and terms of service |
+| `vercel.json` | Security headers, cache rules and the vercel.app redirect |
+| `analytics-worker/` | The visit-count collector (Cloudflare Worker + D1) and the laptop Metabase pipeline |
 | `docs/DESIGN.md` | The concept, tokens, sections and motion inventory |
 
 ## How it is built
@@ -94,11 +115,11 @@ section, the feature list heading and `llms.txt` together.
 - **Scroll-ride.** A single SVG path is laid through the ride chapters from their layout
   positions. Scroll position maps to a length along it, which drives the red track, the rider dot,
   the kilometre stones and the ride bar.
-- **Motion.** [GSAP](https://gsap.com) 3.12.5 and ScrollTrigger, loaded from cdnjs. Details are in
+- **Motion.** [GSAP](https://gsap.com) 3.12.5 and ScrollTrigger, self-hosted in `js/vendor/` (byte-identical to cdnjs, checked against its SRI hashes). Details are in
   [docs/DESIGN.md](docs/DESIGN.md).
 - **Fallback.** With reduced motion turned on, or if GSAP does not load, every section is visible
   and static. The scroll-ride itself needs no library.
-- **Type.** Bricolage Grotesque and Hanken Grotesk from Google Fonts.
+- **Type.** Bricolage Grotesque and Hanken Grotesk (OFL), self-hosted in `fonts/` (variable, latin and latin-ext) with `css/fonts.css`; the two latin files are preloaded.
 
 ## Services the planner calls
 
@@ -140,7 +161,7 @@ the page URL, the referrer and the window width, sent with `sendBeacon`.
 
 Feature descriptions, the privacy list and version details follow the Cycler
 [README](https://github.com/Kunj-Company/cycler#readme) and
-[changelog](https://github.com/Kunj-Company/cycler/blob/main/CHANGELOG.md), currently 0.1.12.
+[changelog](https://github.com/Kunj-Company/cycler/blob/main/CHANGELOG.md), currently 0.1.13.
 
 Some things on the page are illustrations, and the page says so where it matters:
 
@@ -165,5 +186,5 @@ Not covered by that licence:
 
 - The Cycler app is a separate project under the MIT licence.
 - The app logo and screenshots in `img/` come from the Cycler repository.
-- GSAP and the two typefaces are loaded from their own hosts under their own licences.
+- GSAP (standard GSAP licence, free) and the two typefaces (SIL Open Font License 1.1) are self-hosted under their own licences.
 - Maps in the screenshots are © OpenStreetMap contributors.

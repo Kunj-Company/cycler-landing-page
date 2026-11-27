@@ -32,17 +32,19 @@
 <link rel="icon" type="image/png" sizes="192x192" href="img/icon-192.png">
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
-<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="alternate" type="text/markdown" href="llms.txt" title="Cycler, summary for language models">
+<link rel="alternate" type="text/markdown" href="llms-full.txt" title="Cycler, full text for language models">
+<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
 <link rel="dns-prefetch" href="https://brouter.de">
 <link rel="dns-prefetch" href="https://photon.komoot.io">
 <link rel="dns-prefetch" href="https://tiles.openfreemap.org">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preload" href="fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/hanken-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/fonts.css">
 <script>if(!matchMedia("(prefers-reduced-motion: reduce)").matches){document.documentElement.classList.add("pre");setTimeout(function(){document.documentElement.classList.remove("pre")},3500)}</script>
 <link rel="stylesheet" href="css/styles.css">
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script defer src="js/vendor/gsap-3.12.5.min.js"></script>
+<script defer src="js/vendor/ScrollTrigger-3.12.5.min.js"></script>
 <script defer src="js/default-loop.js"></script>
 <script defer src="js/main.js"></script>
 <script defer src="js/stats.js"></script>
@@ -52,18 +54,19 @@
  "@graph": [
   {
    "@type": "WebSite",
-   "@id": "#website",
+   "@id": "https://cycler.kunj.company/#website",
    "url": "https://cycler.kunj.company/",
    "name": "Cycler",
    "description": "Cycler is a free, open-source cycling app for Android. Record rides with the screen off, plan routes and loops, and keep every ride on your phone. No account, no ads. Anonymous usage stats you can turn off.",
    "inLanguage": "en",
    "publisher": {
-    "@id": "#org"
-   }
+    "@id": "https://cycler.kunj.company/#org"
+   },
+   "dateModified": "2026-11-27"
   },
   {
    "@type": "Organization",
-   "@id": "#org",
+   "@id": "https://cycler.kunj.company/#org",
    "name": "Kunj Company",
    "url": "https://kunj.company",
    "logo": "https://cycler.kunj.company/img/icon-192.png",
@@ -74,7 +77,7 @@
   },
   {
    "@type": "Person",
-   "@id": "#author",
+   "@id": "https://cycler.kunj.company/#author",
    "name": "Abhiram N J",
    "url": "https://abhiramnj.com"
   },
@@ -83,7 +86,7 @@
     "SoftwareApplication",
     "MobileApplication"
    ],
-   "@id": "#app",
+   "@id": "https://cycler.kunj.company/#app",
    "name": "Cycler",
    "url": "https://cycler.kunj.company/",
    "description": "Cycler is a free, open-source cycling app for Android. Record rides with the screen off, plan routes and loops, and keep every ride on your phone. No account, no ads. Anonymous usage stats you can turn off.",
@@ -91,7 +94,7 @@
    "applicationSubCategory": "Cycling",
    "operatingSystem": "Android",
    "softwareRequirements": "Android 8.0 or later",
-   "softwareVersion": "0.1.12",
+   "softwareVersion": "0.1.13",
    "isAccessibleForFree": true,
    "offers": {
     "@type": "Offer",
@@ -99,7 +102,7 @@
     "priceCurrency": "USD",
     "availability": "https://schema.org/InStock"
    },
-   "downloadUrl": "https://github.com/Kunj-Company/cycler/releases",
+   "downloadUrl": "https://github.com/Kunj-Company/cycler/releases/latest",
    "installUrl": "https://github.com/Kunj-Company/cycler/releases",
    "releaseNotes": "https://github.com/Kunj-Company/cycler/blob/main/CHANGELOG.md",
    "license": "https://opensource.org/licenses/MIT",
@@ -107,18 +110,18 @@
     "https://github.com/Kunj-Company/cycler"
    ],
    "author": {
-    "@id": "#author"
+    "@id": "https://cycler.kunj.company/#author"
    },
    "publisher": {
-    "@id": "#org"
+    "@id": "https://cycler.kunj.company/#org"
    },
    "inLanguage": "en",
    "image": "https://cycler.kunj.company/img/og.jpg",
    "screenshot": [
-    "img/screens-ride.webp",
-    "img/screens-plan.webp",
-    "img/screens-more.webp",
-    "img/screens-dark.webp"
+    "https://cycler.kunj.company/img/screens-ride.webp",
+    "https://cycler.kunj.company/img/screens-plan.webp",
+    "https://cycler.kunj.company/img/screens-more.webp",
+    "https://cycler.kunj.company/img/screens-dark.webp"
    ],
    "featureList": [
     "Record with the screen off",
@@ -139,12 +142,31 @@
     "Health Connect",
     "Offline maps",
     "Backup and restore"
-   ]
+   ],
+   "dateModified": "2026-11-27",
+   "fileFormat": "application/vnd.android.package-archive",
+   "keywords": "cycling app, bike ride tracker, GPS ride recorder, route planner, loop planner, Android, open source, no account, offline maps, FIT export, GPX"
   },
   {
    "@type": "FAQPage",
-   "@id": "#faq",
+   "@id": "https://cycler.kunj.company/#faq",
    "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "What is Cycler?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Cycler is a free, open-source cycling app for Android, made by Abhiram N J and published by Kunj Company. It records rides with GPS even with the screen off, plans A-to-B routes and round-trip loops, guides you along a route turn by turn, and lets you look back on every ride with charts, records and segments. There is no account and there are no ads, and your rides stay on your phone. It needs Android 8.0 or later."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "How do I install Cycler?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "On an Android 8.0 or later phone, download the latest Cycler APK from the GitHub Releases page and open it, then allow installing from your browser or files app when Android asks. Installing a newer version over an older one keeps your rides. Cycler is also in closed testing on Google Play, and you can ask to join the beta with the sign-up form."
+     }
+    },
     {
      "@type": "Question",
      "name": "Is Cycler free?",
@@ -222,7 +244,7 @@
      "name": "How do I back up my rides or move to a new phone?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "In Settings, open Maps and data and choose Back up everything. You get one zip file with your rides, routes, photos, segments, bike care and settings, which you can restore on another phone."
+      "text": "In Settings, open Maps and data and choose Back up everything. You get one zip file with your rides, routes, photos, segments, bikes, bike care and settings, which you can restore on another phone."
      }
     },
     {
@@ -248,6 +270,40 @@
       "@type": "Answer",
       "text": "Not in the sense of following you. Once a week Cycler sends an anonymous summary of the previous week to a server it runs. It holds a random stats ID made on your phone, the app version, the week, the days you opened the app, rides started, finished and discarded, total distance, and how many times each feature was used. A second report has no ID and cannot be linked to the first. It gives the general area where rides started and ended, as a grid cell of about 10 km, with the number of rides and km per cell. Cycler never sends your exact location, routes or GPS tracks, place names or search text, ride names, notes or photos, speed, heart rate or Health Connect data, Android or advertising ID, device model, exact times or IP address. It is on by default. You can turn it off anytime in Settings, Privacy, and then nothing is counted or sent."
      }
+    }
+   ]
+  },
+  {
+   "@type": "HowTo",
+   "@id": "https://cycler.kunj.company/#install",
+   "name": "How to install Cycler on Android",
+   "description": "Install the Cycler cycling app from its GitHub Releases page.",
+   "totalTime": "PT2M",
+   "supply": [
+    {
+     "@type": "HowToSupply",
+     "name": "An Android phone with Android 8.0 or later"
+    }
+   ],
+   "step": [
+    {
+     "@type": "HowToStep",
+     "position": 1,
+     "name": "Download the APK",
+     "text": "On the phone, open the GitHub Releases page and download the latest Cycler APK.",
+     "url": "https://github.com/Kunj-Company/cycler/releases/latest"
+    },
+    {
+     "@type": "HowToStep",
+     "position": 2,
+     "name": "Allow the install",
+     "text": "Open the downloaded file and allow installing from your browser or files app when Android asks."
+    },
+    {
+     "@type": "HowToStep",
+     "position": 3,
+     "name": "Start riding",
+     "text": "Pick your bike and a weekly goal, then press Start ride."
     }
    ]
   }
@@ -793,7 +849,7 @@
   <div class="wrap split">
     <div class="sec-head">
       <h2>Everything Cycler does.</h2>
-      <p>The ride above shows the main ideas. This is the full list, as of version 0.1.12.</p>
+      <p>The ride above shows the main ideas. This is the full list, as of version 0.1.13.</p>
     </div>
     <div class="feat-grid">
       <div class="fgroup">
@@ -803,7 +859,7 @@
           <div><dt>Follow a route</dt><dd>Ride any saved or planned route with distance to go, the next turn, a nudge before each turn and a vibration if you leave the line.</dd></div>
           <div><dt>Laps and interval workouts</dt><dd>A Lap button and optional auto-lap. Interval workouts with on-screen, vibration and spoken prompts for each block.</dd></div>
           <div><dt>Big-number ride screen</dt><dd>Swipeable pages of large numbers, with the fields you choose.</dd></div>
-          <div><dt>Weather and daylight</dt><dd>Wind, temperature and rain chance on the map, and a sunset warning before you start.</dd></div>
+          <div><dt>Weather and daylight</dt><dd>Wind, temperature and rain chance on the map, and a sunset warning before you start, with a rain warning under it when rain is likely.</dd></div>
           <div><dt>Offline maps</dt><dd>Save the map around you for rides without signal. Recording itself never needs the internet.</dd></div>
         </dl>
       </div>
@@ -822,7 +878,7 @@
           <div><dt>Activity and records</dt><dd>One chart by week, month or year for distance, time or climb, with totals, records and best efforts, and all rides on one map.</dd></div>
           <div><dt>Segments</dt><dd>Cut a stretch from any ride. Every ride over it is timed and ranked.</dd></div>
           <div><dt>Share cards and flyover</dt><dd>A card in 13 swipeable styles with editable title, numbers, photo and size, or an animated 3D flyover video of the ride.</dd></div>
-          <div><dt>Bike care</dt><dd>Jobs with kilometre or day intervals, notes and history. Mark one done today, on an earlier date or after a past ride.</dd></div>
+          <div><dt>Bikes and bike care</dt><dd>More than one bike, each with a profile, photo, odometer and its own distance and rides. Care jobs with kilometre or day intervals, notes and history. Mark one done today, on an earlier date or after a past ride.</dd></div>
           <div><dt>Home-screen widgets</dt><dd>Ride, This week, Last ride and Riding stats. Start, pause and lap a ride without opening the app.</dd></div>
         </dl>
       </div>
@@ -832,7 +888,7 @@
           <div><dt>GPX import, FIT, TCX and GPX export</dt><dd>Bring routes in as GPX. Send rides out as FIT, TCX or GPX files to any app that imports them.</dd></div>
           <div><dt>Health Connect</dt><dd>Reads heart rate and weight that other apps put in Health Connect. Read only.</dd></div>
           <div><dt>Anonymous usage stats</dt><dd>A weekly summary of how the app is used, with no routes, places or health data. On by default, and you can switch it off in Settings, Privacy.</dd></div>
-          <div><dt>Backup and restore</dt><dd>Rides, routes, photos, segments, bike care and settings in one zip file that you keep.</dd></div>
+          <div><dt>Backup and restore</dt><dd>Rides, routes, photos, segments, bikes, bike care and settings in one zip file that you keep.</dd></div>
         </dl>
       </div>
     </div>
@@ -868,7 +924,7 @@
     <div style="display:flex;flex-direction:column;gap:28px;align-items:flex-start">
       <h2>Tomorrow morning, take it with you.</h2>
       <ol class="steps">
-        <li><p>Download <b>Cycler-0.1.12.apk</b> from the Releases page on an Android 8.0+ phone and open it.</p></li>
+        <li><p>Download <b>Cycler-0.1.13.apk</b> from the Releases page on an Android 8.0+ phone and open it.</p></li>
         <li><p>Allow installing from your browser or files app when Android asks.</p></li>
         <li><p>Pick your bike and a weekly goal, then press Start ride.</p></li>
       </ol>
@@ -880,7 +936,7 @@
       <details><summary>Check the signing certificate</summary>Release builds are signed with Cycler's release key. SHA-256:<code>fc:11:15:05:4d:d6:ec:d2:21:b7:3c:a6:a1:52:28:dc:0b:45:a8:1b:63:fc:2b:9b:bf:30:fe:b9:0f:f7:d9:00</code></details>
     </div>
     <div class="meta">
-      <div><span class="label">Version</span><b class="num">0.1.12</b></div>
+      <div><span class="label">Version</span><b class="num">0.1.13</b></div>
       <div><span class="label">Runs on</span><b>Android 8.0+</b></div>
       <div><span class="label">Licence</span><b>MIT</b></div>
       <div><span class="label">Price</span><b>Free</b></div>
@@ -909,7 +965,9 @@
       <p>Short answers. The longer ones are in the <a href="https://github.com/Kunj-Company/cycler#readme">Cycler README</a>.</p>
     </div>
     <div class="faq-list">
-      <details open><summary>Is Cycler free?</summary><p>Yes. Cycler is free and open source under the MIT licence, with no ads.</p></details>
+      <details open><summary>What is Cycler?</summary><p>Cycler is a free, open-source cycling app for Android, made by Abhiram N J and published by Kunj Company. It records rides with GPS even with the screen off, plans A-to-B routes and round-trip loops, guides you along a route turn by turn, and lets you look back on every ride with charts, records and segments. There is no account and there are no ads, and your rides stay on your phone. It needs Android 8.0 or later.</p></details>
+      <details><summary>How do I install Cycler?</summary><p>On an Android 8.0 or later phone, download the latest Cycler APK from the <a href="https://github.com/Kunj-Company/cycler/releases">GitHub Releases page</a> and open it, then allow installing from your browser or files app when Android asks. Installing a newer version over an older one keeps your rides. Cycler is also in closed testing on Google Play, and you can ask to join the beta with the <a href="https://tally.so/r/OQGl0A" rel="noopener">sign-up form</a>.</p></details>
+      <details><summary>Is Cycler free?</summary><p>Yes. Cycler is free and open source under the MIT licence, with no ads.</p></details>
       <details><summary>Do I need an account to use Cycler?</summary><p>No. There is no sign-up and no login. Rides, photos and settings stay in the app's own storage on your phone.</p></details>
       <details><summary>Does Cycler work without internet?</summary><p>Recording does not need the internet. Maps, route planning and weather do, so save the map around you for offline use before a ride without signal.</p></details>
       <details><summary>Does it keep recording with the screen off?</summary><p>Yes. Cycler records in the background with the screen off. If Android stops the app during a ride, recording restarts by itself and keeps your laps.</p></details>
@@ -918,7 +976,7 @@
       <details><summary>Is Cycler on Google Play?</summary><p>Not publicly yet. Cycler is in closed testing on Google Play, and the public listing is coming soon. You can ask to join the closed beta with the <a href="https://tally.so/r/OQGl0A" rel="noopener">sign-up form</a>, and until then it is available as an APK on its GitHub Releases page.</p></details>
       <details><summary>How do I update Cycler?</summary><p>Cycler does not check for updates. Download a newer release from the Releases page and install it over the old one. Your rides are kept.</p></details>
       <details><summary>Is there an iPhone version?</summary><p>Not yet. Publishing on iPhone needs a paid Apple developer licence, and Cycler is free with no income behind it, so Android comes first. If enough donations come in to cover that cost, an iPhone version will follow soon after. You can help at <a href="https://buymeacoffee.com/abhiramnj" rel="noopener">buymeacoffee.com/abhiramnj</a>. Today Cycler needs Android 8.0 or later.</p></details>
-      <details><summary>How do I back up my rides or move to a new phone?</summary><p>In Settings, open Maps and data and choose Back up everything. You get one zip file with your rides, routes, photos, segments, bike care and settings, which you can restore on another phone.</p></details>
+      <details><summary>How do I back up my rides or move to a new phone?</summary><p>In Settings, open Maps and data and choose Back up everything. You get one zip file with your rides, routes, photos, segments, bikes, bike care and settings, which you can restore on another phone.</p></details>
       <details><summary>How is Cycler paid for, and can I support it?</summary><p>Cycler is free, with no ads and nothing to unlock, and it is built in spare time. If it is useful to you, you can pay it forward with a coffee at <a href="https://buymeacoffee.com/abhiramnj" rel="noopener">buymeacoffee.com/abhiramnj</a>. That money goes to what the app costs to build and publish, and keeps it free for the next rider. Support is optional and changes nothing in the app.</p></details>
       <details><summary>What data leaves my phone?</summary><p>Your rides, routes, photos, notes and health data stay on your phone. The app makes five kinds of request for maps, weather, route planning, place search and traffic signals, and once a week it sends an anonymous usage summary to a server Cycler runs. There is no account and there are no ads. Each request is listed in the privacy section on this page.</p></details>
       <details><summary>Does Cycler track me?</summary><p>Not in the sense of following you. Once a week Cycler sends an anonymous summary of the previous week to a server it runs. It holds a random stats ID made on your phone, the app version, the week, the days you opened the app, rides started, finished and discarded, total distance, and how many times each feature was used. A second report has no ID and cannot be linked to the first. It gives the general area where rides started and ended, as a grid cell of about 10 km, with the number of rides and km per cell. Cycler never sends your exact location, routes or GPS tracks, place names or search text, ride names, notes or photos, speed, heart rate or Health Connect data, Android or advertising ID, device model, exact times or IP address. It is on by default. You can turn it off anytime in Settings, Privacy, and then nothing is counted or sent. Details are in the <a href="privacy.html#stats">privacy policy</a>.</p></details>

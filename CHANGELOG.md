@@ -2,6 +2,22 @@
 
 Notable changes to the Cycler landing page. Versions use the `0.1.N` format.
 
+## 0.1.7
+
+### Added
+- Search, answer-engine and AI-assistant readiness: "What is Cycler?" and "How do I install Cycler?"
+  open the FAQ; JSON-LD gains a `HowTo`, absolute `@id`s, `dateModified`, keywords and the APK file
+  type; privacy and terms get Open Graph, Twitter and `WebPage`/`BreadcrumbList` data; `robots.txt`
+  names and allows the AI crawlers; new `llms-full.txt` (the whole site as plain text), linked from
+  `llms.txt` and the home page; sitemap `lastmod`; `/.well-known/security.txt`.
+- The old `cycler-landing-page.vercel.app` address redirects permanently to `cycler.kunj.company`.
+
+### Changed
+- Fonts and GSAP are self-hosted (byte-identical GSAP, checked against cdnjs SRI hashes), with
+  a one-year immutable cache. Visitors no longer contact Google, and the CSP drops Google's hosts.
+  The privacy policy's list of outside hosts is updated to match.
+- Content updated for app 0.1.13: version, APK name, more than one bike, rain warning.
+
 ## 0.1.6
 
 ### Changed

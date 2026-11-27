@@ -1,4 +1,25 @@
+# Everyone, including search engines and AI assistants, may read the whole site.
 User-agent: *
 Allow: /
 
+# AI search, answer and assistant crawlers: welcome, named so the intent is explicit.
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: ClaudeBot
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: Google-Extended
+User-agent: Applebot
+User-agent: Applebot-Extended
+User-agent: Bingbot
+User-agent: DuckAssistBot
+User-agent: MistralAI-User
+User-agent: CCBot
+Allow: /
+
 Sitemap: https://cycler.kunj.company/sitemap.xml
+
+# Plain-text summaries for language models: /llms.txt and /llms-full.txt

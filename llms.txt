@@ -1,6 +1,6 @@
 # Cycler
 
-> Cycler is a free, open-source cycling app for Android. It records rides with the screen off, plans routes and loops, and keeps every ride on the phone. There is no account and there are no ads. Rides stay on the phone. Anonymous usage stats are sent once a week and can be turned off in Settings. Licence: MIT. Requires Android 8.0 or later. Current version: 0.1.12.
+> Cycler is a free, open-source cycling app for Android. It records rides with the screen off, plans routes and loops, and keeps every ride on the phone. There is no account and there are no ads. Rides stay on the phone. Anonymous usage stats are sent once a week and can be turned off in Settings. Licence: MIT. Requires Android 8.0 or later. Current version: 0.1.13.
 
 Cycler is available now as an APK on GitHub Releases and is in closed testing on Google Play (sign up for the beta at https://tally.so/r/OQGl0A), with a public listing coming soon. There is no iPhone version yet, because publishing one needs a paid Apple developer licence; if enough donations come in to cover it, an iPhone version will follow soon after. Today Cycler is Android only. Cycler is free and can be supported at https://buymeacoffee.com/abhiramnj. It is developed by [Abhiram N J](https://abhiramnj.com) and published by [Kunj Company](https://kunj.company).
 
@@ -11,7 +11,7 @@ Cycler is available now as an APK on GitHub Releases and is in closed testing on
 - Plan: A-to-B routes with optional stops, round-trip loops from 5 to 200 km in four directions, suggested loops nearby, GPX import.
 - Look back: a feed of finished rides with photos, notes and tags; activity charts by week, month or year; records, best efforts and segments.
 - Share: a card in 13 styles or an animated 3D flyover video.
-- Bike care: maintenance jobs by kilometres or days.
+- Bikes: more than one bike, each with a profile, photo and odometer; maintenance jobs by kilometres or days per bike.
 - Also: four home-screen widgets, FIT, TCX and GPX export, Health Connect (read only), offline maps, backup and restore to a zip file.
 
 ## Privacy
@@ -22,6 +22,7 @@ The website keeps cookie-free visit counts on Cloudflare: page, referring site, 
 
 ## Links
 
+- [Full plain-text version of this site, with every feature and FAQ](https://cycler.kunj.company/llms-full.txt)
 - [Download the latest APK](https://github.com/Kunj-Company/cycler/releases)
 - [App source code and README](https://github.com/Kunj-Company/cycler)
 - [Changelog](https://github.com/Kunj-Company/cycler/blob/main/CHANGELOG.md)
